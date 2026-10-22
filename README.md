@@ -349,7 +349,7 @@ Report vulnerabilities via [SECURITY.md](SECURITY.md).
 
 ## Contact
 
-Medy Gribkov - [Portfolio](https://medygribkov.site) - [medy@sporesec.com](mailto:medy@sporesec.com) - [SporeSec](https://sporesec.com) - [GitHub](https://github.com/medy-gribkov)
+Mahdy Lorens Gribkov - [SporeSec](https://sporesec.com) - [mahdy@sporesec.com](mailto:mahdy@sporesec.com) - [GitHub](https://github.com/medy-gribkov)
 
 ## License
 
