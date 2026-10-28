@@ -203,11 +203,12 @@ const meaningfulName = 1;
 
 ## Additional Details
 
-More content here to ensure we have enough lines.
+More content here to ensure we have enough lines. See references/guide.md for the full list.
 ${Array(30).fill("Content line for length.\n").join("")}
 `;
 
     const skillDir = makeTempSkill("perfect-skill", perfectSkill, ["scripts", "references"]);
+    writeFileSync(join(skillDir, "references", "guide.md"), "# Guide\n");
     const result = auditSkill(skillDir, "perfect-skill");
 
     expect(result.rating).toBe("PERFECT");
@@ -278,33 +279,32 @@ ${Array(30).fill("Content line for length.\n").join("")}
     expect(longCheck?.passed).toBe(false);
   });
 
-  it("detects scripts/ and references/ directories", () => {
-    const content = `---\nname: test\ndescription: ${"A".repeat(100)}\n---\n## Heading\n\`\`\`\ncode\n\`\`\`\n\`\`\`\ncode\n\`\`\`\n${Array(60).fill("Line\n").join("")}`;
+  // Regression: any scripts/ or references/ folder earned the credit, so 13 four-line stub
+  // scripts that no SKILL.md mentioned scored as fully as real tools.
+  it("credits bundled files only when SKILL.md references them", () => {
+    const body = (refs: string) =>
+      `---\nname: test\ndescription: ${"A".repeat(100)}\n---\n## Heading\n${refs}\n${Array(60).fill("Line\n").join("")}`;
+    const withFiles = (name: string, content: string) => {
+      const dir = makeTempSkill(name, content, ["scripts", "references"]);
+      writeFileSync(join(dir, "scripts", "tool.py"), "print(1)\n");
+      writeFileSync(join(dir, "scripts", "test_tool.py"), "assert True\n");
+      writeFileSync(join(dir, "references", "guide.md"), "# Guide\n");
+      return dir;
+    };
+    const check = (dir: string) =>
+      auditSkill(dir, "test").checks.find((c) => c.name === "Uses scripts/ or references/ from SKILL.md");
 
-    const noExtras = makeTempSkill("no-extras", content);
-    const withScripts = makeTempSkill("with-scripts", content, ["scripts"]);
-    const withRefs = makeTempSkill("with-refs", content, ["references"]);
-    const withBoth = makeTempSkill("with-both", content, ["scripts", "references"]);
+    const unreferenced = check(withFiles("unreferenced", body("No links here.")));
+    const testOnly = check(withFiles("test-only", body("Run scripts/test_tool.py")));
+    const both = check(withFiles("both", body("Run scripts/tool.py, read references/guide.md")));
 
-    const noResult = auditSkill(noExtras, "no-extras");
-    const scriptsResult = auditSkill(withScripts, "with-scripts");
-    const refsResult = auditSkill(withRefs, "with-refs");
-    const bothResult = auditSkill(withBoth, "with-both");
-
-    const noCheck = noResult.checks.find((c) => c.name.includes("scripts/ or references/"));
-    const scriptsCheck = scriptsResult.checks.find((c) => c.name.includes("scripts/ or references/"));
-    const refsCheck = refsResult.checks.find((c) => c.name.includes("scripts/ or references/"));
-    const bothCheck = bothResult.checks.find((c) => c.name.includes("scripts/ or references/"));
-
-    expect(noCheck?.passed).toBe(false);
-    expect(noCheck?.detail).toBe("none");
-    expect(scriptsCheck?.passed).toBe(true);
-    expect(scriptsCheck?.detail).toBe("scripts");
-    expect(refsCheck?.passed).toBe(true);
-    expect(refsCheck?.detail).toBe("references");
-    expect(bothCheck?.passed).toBe(true);
-    expect(bothCheck?.detail).toContain("scripts");
-    expect(bothCheck?.detail).toContain("references");
+    expect(unreferenced).toEqual({ name: "Uses scripts/ or references/ from SKILL.md", passed: false, detail: "none" });
+    expect(testOnly?.passed).toBe(false);
+    expect(both).toEqual({
+      name: "Uses scripts/ or references/ from SKILL.md",
+      passed: true,
+      detail: "scripts, references",
+    });
   });
 
   it("returns WEAK with 'SKILL.md readable' when readFileSync throws (line 28)", () => {

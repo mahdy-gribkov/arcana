@@ -12,6 +12,18 @@ export interface AuditResult {
   checks: { name: string; passed: boolean; detail?: string }[];
 }
 
+const BUNDLED_DIRS = ["scripts", "references"] as const;
+const TEST_FILE_REGEX = /(?:\.test\.[cm]?[jt]s|^test_.*\.py)$/;
+
+/** Files in skillDir/dir (tests excluded) whose relative path SKILL.md mentions. */
+function referencedFiles(skillDir: string, dir: string, skillMd: string): string[] {
+  const full = join(skillDir, dir);
+  if (!existsSync(full)) return [];
+  return readdirSync(full)
+    .filter((file) => !TEST_FILE_REGEX.test(file) && statSync(join(full, file)).isFile())
+    .filter((file) => skillMd.includes(`${dir}/${file}`));
+}
+
 export function auditSkill(skillDir: string, skillName: string): AuditResult {
   const checks: AuditResult["checks"] = [];
   let score = 0;
@@ -81,14 +93,14 @@ export function auditSkill(skillDir: string, skillName: string): AuditResult {
   if (goodLength) score += 10;
   if (lineCount > SKILL_MAX_LINES) score -= 10;
 
-  // 8. Has scripts/ or references/ directory (bonus)
-  const hasScripts = existsSync(join(skillDir, "scripts"));
-  const hasRefs = existsSync(join(skillDir, "references")) || existsSync(join(skillDir, "rules"));
-  const hasExtras = hasScripts || hasRefs;
+  // 8. Bundled scripts/ or references/ files that SKILL.md actually points to. An empty or
+  // unreferenced folder used to earn this credit, which rewarded stub scripts nothing ever ran.
+  const usedDirs = BUNDLED_DIRS.filter((dir) => referencedFiles(skillDir, dir, content).length > 0);
+  const hasExtras = usedDirs.length > 0;
   checks.push({
-    name: "Has scripts/ or references/",
+    name: "Uses scripts/ or references/ from SKILL.md",
     passed: hasExtras,
-    detail: hasExtras ? [hasScripts && "scripts", hasRefs && "references"].filter(Boolean).join(", ") : "none",
+    detail: hasExtras ? usedDirs.join(", ") : "none",
   });
   if (hasExtras) score += 10;
 
