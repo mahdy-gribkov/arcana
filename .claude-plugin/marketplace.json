@@ -46,24 +46,6 @@
       "conflicts": []
     },
     {
-      "name": "aws-essentials",
-      "source": "./skills/aws-essentials",
-      "description": "AWS core services: Lambda, S3, RDS, CloudFront, IAM, SQS/SNS, DynamoDB. Least-privilege policies, presigned URLs, and cost optimization.",
-      "version": "1.0.0",
-      "tags": [
-        "cloud",
-        "aws",
-        "devops"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "terraform-iac",
-        "cost-optimization"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "ci-cd-pipelines",
       "source": "./skills/ci-cd-pipelines",
       "description": "GitHub Actions and GitLab CI/CD pipeline expertise. Workflow syntax, caching, reusable workflows, deployment patterns, Docker builds, and branch protection.",
@@ -143,9 +125,7 @@
       ],
       "verified": true,
       "author": "arcana",
-      "companions": [
-        "aws-essentials"
-      ],
+      "companions": [],
       "conflicts": []
     },
     {
@@ -1061,9 +1041,7 @@
       ],
       "verified": true,
       "author": "arcana",
-      "companions": [
-        "aws-essentials"
-      ],
+      "companions": [],
       "conflicts": []
     },
     {
