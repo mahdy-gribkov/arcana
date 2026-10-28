@@ -180,20 +180,15 @@ const TOOL_FILES: Record<
 /* v8 ignore stop */
 
 export const SKILL_SUGGESTIONS: Record<string, string[]> = {
-  Go: ["golang-pro", "go-linter-configuration", "testing-strategy", "security-review"],
-  Rust: ["rust-best-practices", "testing-strategy", "security-review"],
-  Python: ["python-best-practices", "testing-strategy", "security-review"],
-  "Next.js": ["typescript", "typescript-advanced", "frontend-design", "performance-optimization", "security-review"],
-  React: ["typescript", "frontend-design", "frontend-code-review", "testing-strategy"],
-  "Node.js": ["typescript", "npm-package", "testing-strategy", "security-review"],
+  Go: ["go-dev", "testing", "security-review"],
+  Rust: ["testing", "security-review"],
+  Python: ["python-best-practices", "testing", "security-review"],
+  "Next.js": ["ts-dev", "nextjs-16", "tailwind-css", "performance-optimization", "security-review"],
+  React: ["ts-dev", "tailwind-css", "accessibility-wcag", "testing"],
+  "Node.js": ["ts-dev", "api-design", "testing", "security-review"],
 };
 
-export const SKILL_SUGGESTIONS_DEFAULT = [
-  "code-reviewer",
-  "security-review",
-  "codebase-dissection",
-  "testing-strategy",
-];
+export const SKILL_SUGGESTIONS_DEFAULT = ["codebase-analysis", "security-review", "testing", "git-workflow"];
 
 /* v8 ignore start */
 export async function initCommand(opts: { tool?: string }): Promise<void> {

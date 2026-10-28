@@ -69,7 +69,7 @@ export async function loadCommand(skillNames: string[], opts: { json?: boolean; 
     } else {
       console.error("Specify one or more skill names.");
       console.error("Usage: arcana load <skill> [skill2 ...]");
-      console.error("       arcana load golang-pro typescript --append");
+      console.error("       arcana load go-dev ts-dev --append");
     }
     process.exit(1);
   }

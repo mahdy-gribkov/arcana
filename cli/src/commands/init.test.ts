@@ -99,22 +99,22 @@ describe("SKILL_SUGGESTIONS", () => {
   it("has suggestions for Go projects", () => {
     expect(SKILL_SUGGESTIONS["Go"]).toBeDefined();
     expect(SKILL_SUGGESTIONS["Go"]!.length).toBeGreaterThan(0);
-    expect(SKILL_SUGGESTIONS["Go"]).toContain("golang-pro");
+    expect(SKILL_SUGGESTIONS["Go"]).toContain("go-dev");
   });
 
   it("has suggestions for Next.js projects", () => {
     expect(SKILL_SUGGESTIONS["Next.js"]).toBeDefined();
-    expect(SKILL_SUGGESTIONS["Next.js"]).toContain("typescript");
+    expect(SKILL_SUGGESTIONS["Next.js"]).toContain("ts-dev");
   });
 
   it("has suggestions for React projects", () => {
     expect(SKILL_SUGGESTIONS["React"]).toBeDefined();
-    expect(SKILL_SUGGESTIONS["React"]).toContain("frontend-design");
+    expect(SKILL_SUGGESTIONS["React"]).toContain("ts-dev");
   });
 
   it("has default suggestions for unknown types", () => {
     expect(SKILL_SUGGESTIONS_DEFAULT.length).toBeGreaterThan(0);
-    expect(SKILL_SUGGESTIONS_DEFAULT).toContain("code-reviewer");
+    expect(SKILL_SUGGESTIONS_DEFAULT).toContain("codebase-analysis");
   });
 });
 

@@ -158,7 +158,7 @@ export const COMMANDS: CommandDef[] = [
       { flags: "-j, --json", description: "Output as JSON" },
     ],
     helpText:
-      "\nExamples:\n  arcana curate\n  arcana curate --model gpt-5.4 --budget 40\n  arcana curate --include golang-pro typescript",
+      "\nExamples:\n  arcana curate\n  arcana curate --model gpt-5.4 --budget 40\n  arcana curate --include go-dev ts-dev",
     module: "./commands/curate.js",
     handler: "curateCommand",
   },
@@ -422,8 +422,7 @@ export const COMMANDS: CommandDef[] = [
       { flags: "--append", description: "Write loaded skills to _loaded.md aggregate file" },
       { flags: "-j, --json", description: "Output as JSON" },
     ],
-    helpText:
-      "\nExamples:\n  arcana load golang-pro\n  arcana load golang-pro typescript\n  arcana load golang-pro --append",
+    helpText: "\nExamples:\n  arcana load go-dev\n  arcana load go-dev ts-dev\n  arcana load go-dev --append",
     module: "./commands/load.js",
     handler: "loadCommand",
   },
