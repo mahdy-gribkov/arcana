@@ -291,19 +291,6 @@
       "conflicts": []
     },
     {
-      "name": "skill-creator",
-      "source": "./skills/skill-creator",
-      "description": "Create or update Claude skills. SKILL.md structure, frontmatter rules, references, scripts, and validation.",
-      "version": "1.1.0",
-      "tags": [
-        "meta"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "stripe-payments",
       "source": "./skills/stripe-payments",
       "description": "Stripe integration: Checkout Sessions, subscriptions, webhook verification, idempotency, and SCA/3D Secure.",
