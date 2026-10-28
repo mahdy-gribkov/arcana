@@ -1,6 +1,6 @@
 ---
 name: performance-optimization
-description: Web and backend performance optimization including Core Web Vitals (LCP, FID, INP, CLS), bundle analysis with webpack-bundle-analyzer, code splitting, lazy loading, image optimization (WebP, AVIF, responsive srcset), caching strategies (HTTP Cache-Control, CDN, Redis, application-level), database query optimization (indexing, EXPLAIN ANALYZE, N+1), memory leak detection with Chrome DevTools and Node --inspect, connection pooling, and async processing patterns. Use when diagnosing slow pages, reducing bundle size, optimizing API response times, or fixing memory leaks.
+description: Finds and fixes web and backend performance problems, covering Core Web Vitals (LCP, INP, CLS), bundle analysis and code splitting, image formats, caching (Cache-Control, CDN, Redis), slow queries and N+1, memory leaks with Chrome DevTools and Node --inspect, connection pooling, and moving work off the request path. Use when a page is slow, a Lighthouse or Web Vitals score is poor, a bundle is too big, an API endpoint is slow, or a Node process leaks memory.
 ---
 
 Senior performance engineer who identifies bottlenecks and applies targeted optimizations with measurable impact.
@@ -16,13 +16,13 @@ Senior performance engineer who identifies bottlenecks and applies targeted opti
 
 ## Core Web Vitals
 
-### LCP (Largest Contentful Paint) — Target: < 2.5s
+### LCP (Largest Contentful Paint) (target: < 2.5s)
 
 LCP measures when the largest visible element finishes rendering. Usually a hero image, video, or large text block.
 
 **Common fixes:**
 1. Preload the LCP resource: `<link rel="preload" as="image" href="/hero.webp">`
-2. Inline critical CSS, defer the rest. Use `critters` for automated critical CSS extraction.
+2. Inline critical CSS, defer the rest. Use a critical CSS inliner such as `beasties` (the maintained fork of the archived `critters`).
 3. Set `fetchpriority="high"` on the LCP image. Remove `loading="lazy"` from above-the-fold images.
 4. Serve from CDN. Eliminate redirect chains.
 5. Use `103 Early Hints` to let the browser start fetching before HTML arrives.
@@ -41,14 +41,14 @@ LCP measures when the largest visible element finishes rendering. Usually a hero
 />
 ```
 
-### INP (Interaction to Next Paint) — Target: < 200ms
+### INP (Interaction to Next Paint) (target: < 200ms)
 
 INP replaced FID in March 2024. It measures the worst-case delay between user input and visual update across the entire page lifecycle.
 
 **Common fixes:**
-1. Break long tasks (>50ms) with `scheduler.yield()` or `setTimeout(0)`.
+1. Break long tasks (>50ms) with `scheduler.yield()`. Fall back to a `setTimeout` promise where it is missing.
 2. Move heavy computation to Web Workers.
-3. Debounce rapid-fire events (scroll, resize, input) — 100-150ms debounce.
+3. Debounce rapid-fire events (scroll, resize, input). Use a 100-150ms debounce.
 4. Avoid layout thrashing: batch DOM reads, then batch DOM writes.
 5. Use `content-visibility: auto` on offscreen sections.
 
@@ -59,13 +59,17 @@ async function processItems(items: Item[]) {
     processItem(items[i]);
     if (i % 50 === 0) {
       // Yield to main thread every 50 items
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      if ("scheduler" in globalThis && "yield" in scheduler) {
+        await scheduler.yield();
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      }
     }
   }
 }
 ```
 
-### CLS (Cumulative Layout Shift) — Target: < 0.1
+### CLS (Cumulative Layout Shift) (target: < 0.1)
 
 **Common fixes:**
 1. Always set explicit `width` and `height` on images and videos (browser calculates aspect ratio).
@@ -79,7 +83,7 @@ async function processItems(items: Item[]) {
 ### Analyze First
 
 ```bash
-# Next.js — built-in analyzer
+# Next.js: needs @next/bundle-analyzer wired into next.config
 ANALYZE=true next build
 
 # Webpack
@@ -125,7 +129,7 @@ function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
 
 - Use ESM (`import/export`), not CJS (`require`). CJS is not tree-shakeable.
 - Set `"sideEffects": false` in package.json (or list files with side effects).
-- Avoid barrel files (`index.ts` re-exporting everything) — they defeat tree shaking.
+- Avoid barrel files (`index.ts` re-exporting everything): they defeat tree shaking.
 
 ## Image Optimization
 
@@ -150,7 +154,7 @@ import Image from "next/image";
   height={600}
   alt="Product photo"
   sizes="(max-width: 768px) 100vw, 50vw"
-  priority={isAboveFold} // Sets fetchpriority="high", disables lazy load
+  priority={isAboveFold} // Sets fetchpriority="high", disables lazy load. Next.js 16 deprecates it in favor of preload.
 />
 ```
 
@@ -195,7 +199,8 @@ async function getCachedOrFetch<T>(
   if (cached) return JSON.parse(cached) as T;
 
   const data = await fetcher();
-  // SET with EX (expire) and NX (only if not exists) to prevent thundering herd
+  // EX sets a TTL so stale entries expire. To stop a thundering herd on a
+  // cold key, also take a short lock (SET lock:key 1 EX 10 NX) around fetcher().
   await redis.set(key, JSON.stringify(data), "EX", ttlSeconds);
   return data;
 }
@@ -207,10 +212,13 @@ async function getWithSWR<T>(key: string, fetcher: () => Promise<T>, ttl: number
     const parsed = JSON.parse(cached) as { data: T; fetchedAt: number };
     const age = Date.now() - parsed.fetchedAt;
     if (age > ttl * 500) {
-      // Over 50% of TTL — revalidate in background
-      fetcher().then((fresh) =>
-        redis.set(key, JSON.stringify({ data: fresh, fetchedAt: Date.now() }), "EX", ttl)
-      );
+      // Over 50% of TTL: revalidate in background. Catch errors so a failed
+      // refresh does not crash the process with an unhandled rejection.
+      fetcher()
+        .then((fresh) =>
+          redis.set(key, JSON.stringify({ data: fresh, fetchedAt: Date.now() }), "EX", ttl)
+        )
+        .catch((error) => logger.warn({ key, error }, "cache revalidation failed"));
     }
     return parsed.data;
   }
@@ -244,7 +252,7 @@ CREATE INDEX idx_orders_pending ON orders (created_at)
 ### N+1 Detection and Fix
 
 ```typescript
-// BAD: N+1 — 1 query for users + N queries for orders
+// BAD: N+1: 1 query for users + N queries for orders
 const users = await db.query("SELECT * FROM users LIMIT 100");
 for (const user of users) {
   user.orders = await db.query("SELECT * FROM orders WHERE user_id = $1", [user.id]);
@@ -266,10 +274,10 @@ for (const user of users) {
 
 ```bash
 # Start with inspector
-node --inspect dist/server.js
+node --inspect --heapsnapshot-signal=SIGUSR2 dist/server.js
 
 # Generate heap snapshot programmatically
-kill -USR2 <pid>  # Node writes .heapsnapshot to cwd
+kill -USR2 <pid>  # needs the flag above; Node then writes a .heapsnapshot file to cwd
 ```
 
 Common Node.js leak sources:
@@ -293,13 +301,13 @@ const cache = new LRUCache<string, object>({
 1. Open Memory tab. Take a heap snapshot (Snapshot 1).
 2. Perform the suspected leaking action (navigate, open modal, etc.).
 3. Take Snapshot 2. Use "Comparison" view to see allocated-but-not-freed objects.
-4. Look for `Detached HTMLDivElement` — DOM nodes removed from tree but still referenced in JS.
+4. Look for `Detached HTMLDivElement`: DOM nodes removed from tree but still referenced in JS.
 5. Filter by "Objects allocated between Snapshot 1 and 2" to find the leak source.
 
 ## Connection Pooling
 
 ```go
-// Go database/sql — pool is built in
+// Go database/sql: pool is built in
 db, err := sql.Open("postgres", connStr)
 db.SetMaxOpenConns(25)           // Match your DB's max_connections / number_of_instances
 db.SetMaxIdleConns(10)           // Keep idle connections warm
@@ -317,7 +325,7 @@ const pool = new Pool({
   connectionTimeoutMillis: 5000, // Fail fast if no connection available
 });
 
-// Always release connections — use pool.query() for auto-release
+// Always release connections: use pool.query() for auto-release
 const result = await pool.query("SELECT * FROM users WHERE id = $1", [userId]);
 ```
 
@@ -343,7 +351,7 @@ app.post("/signup", async (req, res) => {
 });
 ```
 
-Use BullMQ (Node.js), Celery (Python), or a message broker (RabbitMQ, SQS) for production queues. Always make queue consumers idempotent — jobs may be retried.
+Use BullMQ (Node.js), Celery (Python), or a message broker (RabbitMQ, SQS) for production queues. Always make queue consumers idempotent, because jobs may be retried.
 
 ## Game Performance
 
