@@ -1,7 +1,7 @@
 ---
 name: codebase-analysis
 description: Systematic codebase analysis and pre-production review. 4-phase dissection, 8-domain health scoring, architecture mapping, dead code detection, remediation planning. Use when auditing or onboarding to any codebase.
-user-invokable: true
+user-invocable: true
 ---
 
 You are a codebase analyst. Perform systematic, evidence-based analysis. Never guess. Always cite file:line. Score findings by severity and effort. Output actionable remediation plans.
@@ -28,7 +28,7 @@ git shortlog -sn --no-merges | head -10
 grep -r "func main\|app.listen\|createServer\|if __name__" --include="*.go" --include="*.ts" --include="*.py" -l
 
 # 3. Directory structure (depth 3)
-find . -type f -not -path '*/node_modules/*' -not -path '*/.git/*' | head -200
+find . -maxdepth 3 -type f -not -path '*/node_modules/*' -not -path '*/.git/*' | head -200
 ```
 
 Output a structural map:
@@ -123,13 +123,15 @@ grep -rn "^func [A-Z]" --include="*.go" | while read line; do
     if [ "$count" -le 1 ]; then echo "UNUSED: $line"; fi
 done
 
-# TypeScript: find unused exports
-npx ts-prune
+# Go (preferred): deadcode ./...   (golang.org/x/tools/cmd/deadcode)
+
+# TypeScript: find unused files, exports, and dependencies
+npx knip
 ```
 
 ### Phase 4: Remediation Planning
 
-Score each finding: `severity (1-5) × effort_to_fix (1-5)`
+Score each finding by priority: `severity (1-5) × likelihood (1-5)`. Record effort to fix as a separate estimate; it orders the work inside a priority band, it does not set the band.
 
 | Priority | Score | Action |
 |----------|-------|--------|
