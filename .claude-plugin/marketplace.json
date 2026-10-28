@@ -113,22 +113,6 @@
       "conflicts": []
     },
     {
-      "name": "game-programming-languages",
-      "source": "./skills/game-programming-languages",
-      "description": "Game programming with C#, C++, GDScript. Syntax, patterns, and engine-specific idioms.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev",
-        "csharp",
-        "cpp",
-        "gdscript"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "game-servers",
       "source": "./skills/game-servers",
       "description": "Game server architecture, matchmaking, WebSocket reconnection, and scalable backend systems for online games.",
@@ -201,9 +185,7 @@
       ],
       "verified": true,
       "author": "arcana",
-      "companions": [
-        "game-programming-languages"
-      ],
+      "companions": [],
       "conflicts": []
     },
     {
