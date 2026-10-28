@@ -196,20 +196,6 @@
       "conflicts": []
     },
     {
-      "name": "particle-systems",
-      "source": "./skills/particle-systems",
-      "description": "Particle systems, physics simulation, and post-processing for dynamic game VFX.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev",
-        "graphics"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "performance-optimization",
       "source": "./skills/performance-optimization",
       "description": "Web and backend performance: Core Web Vitals, bundle analysis, caching, database optimization, and memory leak detection.",
