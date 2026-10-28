@@ -178,24 +178,6 @@
       "conflicts": []
     },
     {
-      "name": "npm-package",
-      "source": "./skills/npm-package",
-      "description": "npm/pnpm package authoring: tsup bundling, dual ESM/CJS exports, semver, changesets, and monorepo setup.",
-      "version": "1.0.0",
-      "tags": [
-        "typescript",
-        "node",
-        "npm"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "typescript",
-        "ci-cd-pipelines"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "oauth-auth",
       "source": "./skills/oauth-auth",
       "description": "OAuth2 with PKCE, OIDC, JWT validation, session management, refresh token rotation, and Auth.js patterns.",
