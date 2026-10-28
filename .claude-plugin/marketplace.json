@@ -286,20 +286,6 @@
       "conflicts": []
     },
     {
-      "name": "update-docs",
-      "source": "./skills/update-docs",
-      "description": "Documentation update workflow for Next.js projects. MDX support and PR-based update patterns.",
-      "version": "1.0.0",
-      "tags": [
-        "documentation",
-        "next"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "vercel-deploy",
       "source": "./skills/vercel-deploy",
       "description": "Vercel deployment: Edge Functions, middleware, environment variables, preview deployments, caching, and monorepo config.",
