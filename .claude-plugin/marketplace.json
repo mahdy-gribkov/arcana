@@ -169,8 +169,7 @@
       "author": "arcana",
       "companions": [
         "tailwind-css",
-        "vercel-deploy",
-        "typescript"
+        "vercel-deploy"
       ],
       "conflicts": []
     },
@@ -284,19 +283,6 @@
       "companions": [
         "nextjs-16"
       ],
-      "conflicts": []
-    },
-    {
-      "name": "typescript",
-      "source": "./skills/typescript",
-      "description": "TypeScript strict types, generics, utility types, discriminated unions, and type-safe patterns.",
-      "version": "1.0.1",
-      "tags": [
-        "typescript"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
       "conflicts": []
     },
     {
