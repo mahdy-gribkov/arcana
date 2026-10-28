@@ -1,7 +1,7 @@
 {
   "name": "@sporesec/arcana",
-  "version": "4.0.0",
-  "description": "Context intelligence for AI coding agents. 74 skills, budget-aware curation, output compression, cross-session memory, MCP management. 7 platforms.",
+  "version": "5.0.0",
+  "description": "Context intelligence for AI coding agents: 22 focused, tested skills, budget-aware curation, output compression, cross-session memory and MCP management across 7 agent tools.",
   "bin": {
     "arcana": "dist/index.js"
   },
@@ -18,7 +18,8 @@
     "lint:fix": "eslint src/ --fix",
     "format:check": "prettier --check \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\"",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm run build",
+    "ci": "pnpm run lint && pnpm run format:check && tsc --noEmit && vitest run --coverage && pnpm run build && bash ../scripts/check-skills.sh && bash ../scripts/security-scan.sh"
   },
   "keywords": [
     "agent-skills",
@@ -51,6 +52,7 @@
     "curation"
   ],
   "license": "Apache-2.0",
+  "packageManager": "pnpm@10.34.7",
   "author": {
     "name": "Mahdy Lorens Gribkov",
     "email": "mahdy@sporesec.com",
