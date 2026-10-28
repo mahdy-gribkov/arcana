@@ -60,7 +60,7 @@
   <!-- Skill count badge -->
   <g transform="translate(424, 235)">
     <rect width="100" height="26" rx="4" fill="rgba(212,148,58,0.12)" stroke="#d4943a" stroke-width="0.5" opacity="0.8"/>
-    <text x="50" y="18" fill="#d4943a" font-family="'JetBrains Mono','Fira Code',monospace" font-size="13" font-weight="600" text-anchor="middle">74 skills</text>
+    <text x="50" y="18" fill="#d4943a" font-family="'JetBrains Mono','Fira Code',monospace" font-size="13" font-weight="600" text-anchor="middle">22 skills</text>
   </g>
   <g transform="translate(536, 235)">
     <rect width="120" height="26" rx="4" fill="rgba(212,148,58,0.12)" stroke="#d4943a" stroke-width="0.5" opacity="0.8"/>

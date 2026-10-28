@@ -4,353 +4,130 @@
 
 <p align="center">
   <strong>Context intelligence for AI coding agents.</strong><br/>
-  74 skills, 40 commands, 7 platforms. By <a href="https://sporesec.com">SporeSec</a>.
+  22 focused, tested skills and a CLI that loads only what your project needs. By <a href="https://sporesec.com">SporeSec</a>.
 </p>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@sporesec/arcana"><img src="https://img.shields.io/npm/v/@sporesec/arcana?style=for-the-badge&color=d4943a" alt="npm"/></a>
-  <a href="https://www.npmjs.com/package/@sporesec/arcana"><img src="https://img.shields.io/npm/dw/@sporesec/arcana?style=for-the-badge&color=d4943a" alt="downloads"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-d4943a?style=for-the-badge" alt="Apache 2.0"/></a>
-  <a href="https://github.com/medy-gribkov/arcana/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/medy-gribkov/arcana/ci.yml?style=for-the-badge&color=d4943a" alt="CI"/></a>
-  <a href="#skills"><img src="https://img.shields.io/badge/Skills-74-d4943a?style=for-the-badge" alt="Skills"/></a>
-  <a href="#compatibility"><img src="https://img.shields.io/badge/Platforms-7-d4943a?style=for-the-badge" alt="Platforms"/></a>
+  <a href="https://github.com/mahdy-gribkov/arcana/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/mahdy-gribkov/arcana/ci.yml?style=for-the-badge&color=d4943a" alt="CI"/></a>
+  <a href="#skills"><img src="https://img.shields.io/badge/Skills-22-d4943a?style=for-the-badge" alt="Skills"/></a>
 </p>
 
 ---
 
-## What It Does
+## What it does
 
-Arcana manages the context your AI coding agent reads. It installs structured skill packages (production code, BAD/GOOD pairs, procedural workflows), then curates which skills load into context based on your project, your token budget, and your usage patterns.
+Every skill an agent has installed costs context on every turn. Load all of them and the context bloats; load none and
+the agent does not know your stack. Arcana installs skills and then curates which ones load, based on your project,
+your token budget and your usage.
 
-Without arcana, you either load everything (context bloat) or nothing (agent doesn't know your stack). Arcana solves this with budget-aware curation, output compression, cross-session memory, and session management.
+Each skill is a `SKILL.md` with job-first triggers, references for the detail, tested scripts where a step is
+mechanical, and eval cases that check the skill fires when it should and stays quiet when it should not.
 
-## Quick Start
+## Install
+
+Pick one:
 
 ```bash
-# npm
+# Claude Code plugin marketplace
+claude plugin marketplace add mahdy-gribkov/arcana
+
+# Any agent, via skills.sh
+npx skills add mahdy-gribkov/arcana
+
+# The Arcana CLI (curation, compression, memory)
 npm i -g @sporesec/arcana
-
-# pnpm
-pnpm add -g @sporesec/arcana
-
-# without global install
-npx @sporesec/arcana install --all
 ```
 
-Then in your project:
+Then, in a project:
 
 ```bash
-arcana init          # detect project, configure AI tools
-arcana install --all # install all 74 skills
-arcana curate        # auto-select skills within token budget
+arcana init          # detect the project, scaffold agent config, suggest skills
+arcana install go-dev testing security-review
+arcana curate        # write _active.md: the relevant skills that fit your budget
 ```
 
-Skills install to `~/.agents/skills/`. Config scaffolds for Claude Code, Cursor, Codex, Gemini, Windsurf, Antigravity, and Aider.
+Skills install to `~/.agents/skills/`.
 
-## Demo
-
-<p align="center">
-  <img src="assets/arcana-promo.gif" alt="Arcana CLI demo" width="720"/>
-</p>
-
-<sub>Built with arcana's own <code>remotion-best-practices</code> skill.</sub>
-
-## Core Features
-
-### Context Curation
-
-`arcana curate` auto-generates `_active.md` containing full content of project-relevant skills within your model's token budget. Skills are ranked by project detection (tags, dependencies, file patterns) and usage history, then greedily packed until the budget fills.
+## The CLI
 
 ```bash
-arcana curate                                    # default: 30% of 200K context
-arcana curate --model gpt-5.4 --budget 40        # 40% of 1M context
-arcana curate --include golang-pro typescript     # force-include specific skills
+arcana curate --model gpt-5.4 --budget 40     # 40% of that model's context
+arcana curate --include go-dev ts-dev          # force-include skills
+arcana compress git status                     # strip noise from tool output
+arcana compress npm test                       # keep failures and the summary
+arcana remember "use vitest, not jest"         # memory that survives sessions
+arcana recall vitest
+arcana mcp install context7                    # add an MCP server to your agent config
+arcana index && arcana load go-dev             # tiny index first, full skill on demand
 ```
 
-Supported models: Claude Opus 4.6, Sonnet 4.6, Haiku 4.5 (200K), GPT-5.4 (1M), Gemini 3.1 Pro/Flash/Thinking (1M).
+| Group | Commands |
+|-------|----------|
+| Getting started | `init`, `doctor [--fix]` |
+| Skills | `list`, `search`, `info`, `install`, `update`, `uninstall`, `recommend` |
+| Context | `curate`, `compress`, `remember`, `recall`, `forget`, `mcp`, `index`, `load` |
+| Security | `scan [--all]`, `verify [--all]`, `lock [--ci]` |
+| Development | `create`, `validate [--all --fix --cross]`, `audit` |
+| Inspection | `diff`, `outdated` |
+| Configuration | `config`, `providers`, `clean` |
+| Workflow | `export`, `import`, `completions` |
 
-### Output Compression
-
-`arcana compress` runs commands through a 4-stage pipeline (filter, group, truncate, dedup) that reduces token waste from tool output. Shell hooks make it transparent.
-
-```bash
-arcana compress git status                # compressed git output
-arcana compress npm test                  # keep failures + summary only
-echo "..." | arcana compress --stdin --tool tsc
-arcana hook install                       # transparent shell hooks
-arcana hook status                        # show cumulative savings
-```
-
-Rules for: git, npm/pnpm, tsc, vitest, jest, pytest, go test.
-
-### Cross-Session Memory
-
-`arcana remember` persists facts and preferences across sessions. `arcana recall` searches them. Project-relevant memories inject into `_active.md` automatically.
-
-```bash
-arcana remember "always use pnpm for this project"
-arcana remember "use vitest not jest" --tag testing
-arcana recall "package manager"
-arcana recall --all
-arcana forget abc123
-```
-
-### Session Intelligence
-
-`arcana snapshot` saves session state before compaction or context loss. `arcana trim` analyzes and reduces session bloat without touching the original session files.
-
-```bash
-arcana snapshot pre-refactor              # save current session
-arcana snapshot --list                    # list all snapshots
-arcana trim --dry-run                     # analyze trimmable content
-arcana trim                              # create trimmed copy
-```
-
-### MCP Server Management
-
-`arcana mcp` installs and manages MCP servers (like Context7 for live docs) in your AI tool's config.
-
-```bash
-arcana mcp list                           # available MCP servers
-arcana mcp install context7               # install into Claude/Cursor config
-arcana mcp status                         # show configured servers
-```
-
-### Progressive Disclosure
-
-Three tiers of context loading:
-
-| Tier | File | Tokens/Skill | Use Case |
-|------|------|-------------|----------|
-| Index | `_index.md` | ~50 | Discovery, agent reads at startup |
-| Active | `_active.md` | Full (budgeted) | Auto-curated, project-relevant |
-| On-demand | `arcana load` | Full | Manual, specific skill needed |
-
-```bash
-arcana index                              # generate lightweight index
-arcana load golang-pro typescript         # load specific skills on demand
-arcana benchmark --all --progressive      # compare index vs full token cost
-```
-
-## CLI Commands
-
-### Getting Started
-
-| Command | Description |
-|---------|-------------|
-| `arcana` | Interactive TUI menu |
-| `arcana init` | Detect project, configure AI tools, install skills, set up MCP |
-| `arcana doctor` | Diagnose environment issues |
-| `arcana doctor --fix` | Auto-fix common issues |
-
-### Skills
-
-| Command | Description |
-|---------|-------------|
-| `arcana install <skill>` | Install one or more skills |
-| `arcana install --all` | Install all 74 skills |
-| `arcana uninstall <skill>` | Remove one or more skills |
-| `arcana update --all` | Update all installed skills |
-| `arcana list` | List available skills |
-| `arcana search <query>` | Search across providers |
-| `arcana info <skill>` | Show skill details and metadata |
-| `arcana recommend` | Smart skill recommendations for current project |
-
-### Context Intelligence
-
-| Command | Description |
-|---------|-------------|
-| `arcana curate` | Auto-generate budget-aware `_active.md` |
-| `arcana compress <cmd>` | Run command with output compression |
-| `arcana hook install` | Install transparent shell compression hooks |
-| `arcana remember "..."` | Save a cross-session memory |
-| `arcana recall <query>` | Search saved memories |
-| `arcana snapshot [name]` | Save session state snapshot |
-| `arcana trim` | Analyze and trim session bloat |
-| `arcana mcp install <name>` | Install an MCP server |
-
-### Progressive Disclosure
-
-| Command | Description |
-|---------|-------------|
-| `arcana index` | Generate skill metadata index (~50 tokens/skill) |
-| `arcana load <skill>` | Load full skill content on demand |
-| `arcana benchmark --progressive` | Show before/after token comparison |
-
-### Security
-
-| Command | Description |
-|---------|-------------|
-| `arcana scan --all` | Scan for prompt injection, malware, credential theft |
-| `arcana verify --all` | Verify SHA-256 integrity against lockfile |
-| `arcana lock --ci` | Generate or validate reproducible lockfile |
-
-### Development
-
-| Command | Description |
-|---------|-------------|
-| `arcana create <name>` | Create a new skill from template |
-| `arcana validate --all --fix` | Validate and auto-fix all skills |
-| `arcana audit` | Audit skill quality (code examples, BAD/GOOD pairs) |
-
-### Inspection
-
-| Command | Description |
-|---------|-------------|
-| `arcana benchmark` | Measure token cost of installed skills |
-| `arcana diff <skill>` | Show installed vs remote changes |
-| `arcana outdated` | List skills with newer versions available |
-| `arcana stats` | Session analytics and token usage |
-| `arcana optimize` | Suggest token/performance improvements |
-
-### Configuration
-
-| Command | Description |
-|---------|-------------|
-| `arcana config` | View or modify configuration |
-| `arcana providers --add <repo>` | Manage skill providers |
-| `arcana clean` | Remove orphaned data and temp files |
-| `arcana compact` | Remove agent logs, preserve session history |
-
-### Workflow
-
-| Command | Description |
-|---------|-------------|
-| `arcana profile <name>` | Manage named skill sets |
-| `arcana team` | Shared team skill configuration |
-| `arcana export` / `arcana import` | Portable skill manifests |
-| `arcana completions <shell>` | Shell completions (bash, zsh, fish) |
-
-All commands support `--json` for machine-readable output and respect `NO_COLOR`.
+Every command supports `--json` and respects `NO_COLOR`. `arcana <command> --help` shows the options.
 
 ## Skills
 
-| Skill | Category | Description |
-|-------|----------|-------------|
-| accessibility-wcag | Design | WCAG 2.1 AA compliance, semantic HTML, ARIA patterns, keyboard navigation, color contrast |
-| api-design | API | REST and GraphQL design. Resource naming, status codes, pagination, versioning |
-| api-testing | API | Contract testing (Pact), API mocking (MSW), load testing (k6), BAD/GOOD patterns |
-| asset-optimization | Game Dev | Compression workflows, WebP/AVIF conversion, streaming, batch processing |
-| audio-systems | Game Dev | FMOD, Wwise, spatial audio, dynamic mixing, Unity/Godot integration code |
-| aws-essentials | Cloud | Lambda, S3, RDS, CloudFront, IAM, SQS/SNS, DynamoDB, least-privilege policies |
-| ci-cd-pipelines | DevOps | GitHub Actions and GitLab CI. Matrix strategy, caching, deployment patterns |
-| code-reviewer | Code Quality | Code review with concrete examples. Severity definitions, inline comments |
-| codebase-analysis | Code Quality | 4-phase dissection + 8-domain health scoring. Architecture mapping, dead code |
-| container-security | DevOps | Dockerfile BAD/GOOD, rootless containers, image scanning, runtime security |
-| cost-optimization | DevOps | HPA config, spot instances, right-sizing, CDN caching, cost calculations |
-| data-visualization | Frontend | Recharts, Chart.js, D3.js. Chart selection, responsive layouts, dashboards |
-| database-design | Database | Schema design, normalization, indexing, EXPLAIN ANALYZE, migrations |
-| doc-generation | Docs | OpenAPI, JSDoc, godoc, Mermaid diagrams, procedural walkthrough |
-| docker-kubernetes | DevOps | Multi-stage builds (Go, Node, Python), K8s manifests, health checks, Helm |
-| docx | Documents | Word document creation/editing. XML reference, tracked changes, page setup |
-| email-notifications | Integration | SendGrid, AWS SES, React Email templates, SPF/DKIM/DMARC, bounce handling |
-| env-config | DevOps | .env management, Zod validation, secret management, 12-factor patterns |
-| flutter-mobile | Mobile | Widget composition, Riverpod state, GoRouter, platform channels, performance |
-| framer-motion | Design | Framer Motion animations. Variants, gestures, layout animations, spring physics |
-| frontend-code-review | Code Quality | Frontend review checklist. cn() usage, memoization, accessibility, inline rules |
-| frontend-design | Design | Production interfaces. CSS custom properties, accessibility, DON'T/DO guidelines |
-| fullstack-developer | Full-Stack | React, Node.js, databases, auth flow (JWT), API error handling patterns |
-| game-engines | Game Dev | Unity, Unreal, Godot 4.x. Architecture patterns, GDScript 2.0, C# code |
-| game-programming-languages | Languages | C# 12, C++ 23, GDScript 2.0. Syntax, patterns, engine idioms |
-| game-servers | Game Dev | Server architecture, matchmaking, WebSocket reconnection, cost analysis |
-| gameplay-design | Game Dev | MDA framework, balance formulas, combat systems, progression curves |
-| git-workflow | DevOps | Merge vs rebase decision tree, worktrees, SSH signing, sparse checkout |
-| go-linter-configuration | Linting | golangci-lint setup, .golangci.yml, import resolution, troubleshooting |
-| godot-4 | Game Dev | Godot 4 with GDScript 2.0. Typed syntax, physics, state machines, exports |
-| golang-pro | Languages | Go 1.26+. Error handling, HTTP routing, concurrency, testing, profiling |
-| graphics-rendering | Game Dev | PBR shaders, WebGPU, VFX recipes, optimization matrix |
-| i18n-localization | Web | next-intl, react-intl, ICU message syntax, plurals, RTL, dynamic locales |
-| incident-response | Ops | Severity levels, runbooks, PagerDuty/OpsGenie webhooks, blameless postmortems |
-| level-design | Game Dev | Whitebox workflow, pacing graphs, procedural generation seeds |
-| llm-integration | AI | OpenAI and Anthropic APIs. Structured output, tool calling, streaming, prompts |
-| local-security | Security | SSH, GPG, credential managers, Windows OpenSSH agent, file permissions |
-| memory-management | Game Dev | Object pooling, GC optimization, Rust ownership comparison, budgets |
-| monetization-systems | Game Dev | IAP manager, battle pass design, A/B test revenue formulas, KPIs |
-| monitoring-observability | Monitoring | JSON logging, Prometheus, OpenTelemetry, Grafana dashboard JSON, SLO alerts |
-| multiplayer-netcode | Game Dev | Client prediction, server reconciliation, rollback netcode, lag compensation |
-| nextjs-16 | Framework | Turbopack, Cache Components, proxy.ts, Server Actions, React 19.2, App Router |
-| notebooklm-research | Research | Google NotebookLM automation via Playwright CDP. Sources, queries, artifacts |
-| npm-package | Packages | tsup bundling, ESM/CJS exports, semver, changesets, monorepo setup |
-| oauth-auth | Security | OAuth2 PKCE, OIDC, JWT validation, session management, refresh token rotation |
-| particle-systems | Game Dev | VFX, physics simulation, LOD strategy, post-processing |
-| performance-optimization | Performance | Core Web Vitals, bundle analysis, caching, memory leaks, game frame budgets |
-| playwright-testing | Testing | E2E testing, page objects, role-based locators, visual regression, CI integration |
-| postgres-advanced | Database | Window functions, CTEs, JSONB, full-text search, partitioning, PgBouncer |
-| programming-architecture | Game Dev | ECS, data-oriented design, clean architecture, concrete implementations |
-| project-migration | Migration | Project folder migration preserving Claude Code session data and paths |
-| publishing-platforms | Game Dev | Steam, Epic, console submission. Revenue splits, certification checklists |
-| python-best-practices | Languages | Python 3.14+. Type hints, ruff, uv, async, Pydantic v2, pyproject.toml |
-| react-native | Mobile | Expo, React Navigation, Zustand, FlatList optimization, Reanimated |
-| redis-patterns | Database | Caching, sessions, rate limiting, pub/sub, sorted sets, distributed locks |
-| refactoring-patterns | Code Quality | Before/after diffs for extract method, replace conditional, dead code, DI |
-| remotion-best-practices | Video | React video creation. Composition, spring(), interpolate, Sequence, Audio |
-| rust-best-practices | Languages | Ownership, lifetimes, error handling, async Tokio, lifetime diagrams |
-| scraping-automation | Tooling | Playwright, Puppeteer. Stealth mode, proxy rotation, structured extraction |
-| security-review | Security | OWASP Top 10, injection prevention, secrets rotation, csrf-csrf patterns |
-| seo-meta | Web | Next.js metadata API, Open Graph, JSON-LD structured data, sitemaps |
-| shader-techniques | Game Dev | HLSL/GLSL, mobile GPU gotchas, custom materials, optimization |
-| skill-creator | Meta | Create or update skills. References layout, frontmatter rules, validation |
-| spec-driven-dev | Planning | Specification-first development. Requirements, task breakdown, quality gates |
-| stripe-payments | Integration | Checkout Sessions, subscriptions, webhook verification, SCA/3D Secure |
-| tailwind-css | Design | Config, plugins, cn() utility, responsive design, dark mode, theming |
-| terraform-iac | DevOps | State management, modules, workspaces, lifecycle rules, CI/CD, AWS patterns |
-| testing-strategy | Testing | Test pyramid, pytest/Vitest/Jest/Go, flakiness detection, TDD workflow |
-| typescript | Languages | Strict types, generics constraints, utility types, discriminated unions |
-| typescript-advanced | Languages | Branded types, conditional types, satisfies operator, type-level programming |
-| update-docs | Docs | MDX workflow for Next.js docs, screenshot patterns, PR-based updates |
-| vercel-deploy | DevOps | Edge Functions, middleware, preview deployments, caching, monorepo config |
-| websocket-realtime | Networking | Reconnection, heartbeat, SSE, Socket.io rooms, Redis pub/sub scaling |
-| xlsx | Documents | Spreadsheet operations. Pivot tables, chart formulas, financial models |
+| Category | Skills |
+|----------|--------|
+| Code quality and review | `codebase-analysis`, `testing`, `git-workflow`, `performance-optimization`, `design-doc` |
+| Security | `security-review`, `bugbounty-report`, `oauth-auth` |
+| Languages and frameworks | `ts-dev`, `go-dev`, `python-best-practices`, `nextjs-16`, `tailwind-css` |
+| APIs, data and AI | `api-design`, `database-design`, `llm-integration`, `scraping-automation` |
+| Infrastructure | `docker-kubernetes`, `ci-cd-pipelines` |
+| Web quality | `accessibility-wcag`, `i18n-localization`, `seo-meta` |
+
+Version 5 cut the library from 74 broad skills to these 22 deep ones. The removed skills (game development, mobile,
+cloud vendors and others) remain in the git history at tag `v4.0.0`.
 
 ## Compatibility
 
-Skills are plain markdown with YAML frontmatter. Claude Code loads them natively from `~/.agents/skills/`. Other platforms read them as project context after running `arcana init`.
+Skills are plain markdown with YAML frontmatter. Claude Code loads them natively; `arcana init` scaffolds the config
+that points other agents at them.
 
-| Platform | Config File | Integration |
-|----------|------------|-------------|
-| Claude Code | `CLAUDE.md` | Native skill loading + `_active.md` curation |
-| Codex CLI | `AGENTS.md` | Config scaffold via `arcana init` |
-| Cursor AI | `.cursor/rules/` | Config scaffold via `arcana init` |
-| Gemini CLI | `GEMINI.md` | Config scaffold via `arcana init` |
-| Windsurf | `.windsurfrules` | Config scaffold via `arcana init` |
-| Antigravity | `AGENT.md` | Config scaffold via `arcana init` |
-| Aider | `.aider.conf.yml` | Config scaffold via `arcana init` |
+| Agent | Config file |
+|-------|-------------|
+| Claude Code | `CLAUDE.md` (plus native skill loading) |
+| Codex CLI | `AGENTS.md` |
+| Cursor | `.cursor/rules/` |
+| Gemini CLI | `GEMINI.md` |
+| Windsurf | `.windsurfrules` |
+| Antigravity | `AGENT.md` |
+| Aider | `.aider.conf.yml` |
+
+## Quality gates
+
+`pnpm run ci` in `cli/` runs what CI runs: lint, format, types, tests with coverage, build, then
+`scripts/check-skills.sh` (strict YAML frontmatter, a "Use when" trigger, a 500-line cap, licence and version
+checks, the audit score floor, every skill script test) and `scripts/security-scan.sh`. The manifest passes
+`claude plugin validate . --strict`.
 
 ## Acknowledgments
 
-Arcana was built on the shoulders of these projects:
+| Project | What it shaped |
+|---------|----------------|
+| [skills.sh](https://skills.sh) | Skill discovery and install patterns |
+| [token-optimizer](https://github.com/alexgreensh/token-optimizer) | Token budgets, progressive disclosure, backup-first safety |
+| [RTK](https://github.com/rtk-ai/rtk) | The tool-output compression pipeline |
+| [mem0](https://github.com/mem0ai/mem0) | Cross-session memory |
+| [Context7](https://github.com/upstash/context7) | The MCP server for live documentation |
 
-| Project | Inspiration |
-|---------|------------|
-| [skills.sh](https://skills.sh) | Marketplace UX patterns and community-driven skill discovery |
-| [token-optimizer](https://github.com/alexgreensh/token-optimizer) | Token budget estimation, progressive disclosure, backup-first safety |
-| [RTK](https://github.com/rtk-ai/rtk) | Tool output compression pipeline, 60-90% token reduction patterns |
-| [CMV](https://github.com/CosmoNaught/claude-code-cmv) | Session snapshot/restore, context bloat analysis, trim strategies |
-| [mem0](https://github.com/mem0ai/mem0) | Cross-session memory persistence, project-scoped recall |
-| [Context7](https://github.com/upstash/context7) | MCP server for live version-specific documentation |
-| [best-practices](https://github.com/shanraisshan/claude-code-best-practice) | Unified setup flow, Command/Agent/Skill pattern, session hygiene |
-| [notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill) | NotebookLM browser automation via CDP |
-| [notebooklm-py](https://github.com/teng-lin/notebooklm-py) | NotebookLM Python SDK patterns |
+## Contributing, security, contact
 
-## Support
-
-If these skills save you time, consider supporting the project.
-
-- [GitHub Sponsors](https://github.com/sponsors/medy-gribkov)
-- [Buy Me a Coffee](https://buymeacoffee.com/medygribkov)
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Security
-
-Report vulnerabilities via [SECURITY.md](SECURITY.md).
-
-## Contact
-
-Mahdy Lorens Gribkov - [SporeSec](https://sporesec.com) - [mahdy@sporesec.com](mailto:mahdy@sporesec.com) - [GitHub](https://github.com/medy-gribkov)
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- Report vulnerabilities via [SECURITY.md](SECURITY.md).
+- Mahdy Lorens Gribkov, [SporeSec](https://sporesec.com), [GitHub](https://github.com/mahdy-gribkov)
 
 ## License
 
-[Apache 2.0](LICENSE) - See [NOTICE](NOTICE) for attribution requirements.
+[Apache 2.0](LICENSE). See [NOTICE](NOTICE).
