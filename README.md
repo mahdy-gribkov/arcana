@@ -4,7 +4,8 @@
 
 <p align="center">
   <strong>Context intelligence for AI coding agents.</strong><br/>
-  22 focused, tested skills and a CLI that loads only what your project needs. By <a href="https://sporesec.com">SporeSec</a>.
+  22 focused, tested skills and a CLI that loads only what your project needs.<br/>
+  Built and maintained by <a href="https://sporesec.com/en">SporeSec</a>, AI agents and integrations for businesses.
 </p>
 
 <p align="center">
@@ -112,6 +113,15 @@ that points other agents at them.
 checks, the audit score floor, every skill script test) and `scripts/security-scan.sh`. The manifest passes
 `claude plugin validate . --strict`.
 
+## Built by SporeSec
+
+Arcana is the open-source agent toolkit of [SporeSec](https://sporesec.com/en), which builds AI agents and
+integrations for businesses. Private versions of these skills drive SporeSec's own engineering, which is why the public
+ones ship with tests and evals.
+
+- Arcana on the SporeSec site: [sporesec.com/en/tools](https://sporesec.com/en/tools)
+- Want agents wired into your own stack? [SporeSec services](https://sporesec.com/en/services)
+
 ## Acknowledgments
 
 | Project | What it shaped |
@@ -126,7 +136,7 @@ checks, the audit score floor, every skill script test) and `scripts/security-sc
 
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - Report vulnerabilities via [SECURITY.md](SECURITY.md).
-- Mahdy Lorens Gribkov, [SporeSec](https://sporesec.com), [GitHub](https://github.com/mahdy-gribkov)
+- Mahdy Lorens Gribkov, [SporeSec](https://sporesec.com/en), [GitHub](https://github.com/mahdy-gribkov)
 
 ## License
 

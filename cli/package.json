@@ -22,6 +22,7 @@
     "ci": "pnpm run lint && pnpm run format:check && tsc --noEmit && vitest run --coverage && pnpm run build && bash ../scripts/check-skills.sh && bash ../scripts/security-scan.sh"
   },
   "keywords": [
+    "sporesec",
     "agent-skills",
     "claude",
     "claude-code",
@@ -49,21 +50,23 @@
     "security",
     "testing",
     "compression",
-    "curation"
+    "curation",
+    "claude-skills",
+    "agent-skills-library"
   ],
   "license": "Apache-2.0",
   "packageManager": "pnpm@10.34.7",
   "author": {
     "name": "Mahdy Lorens Gribkov",
     "email": "mahdy@sporesec.com",
-    "url": "https://sporesec.com"
+    "url": "https://sporesec.com/en"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mahdy-gribkov/arcana.git",
     "directory": "cli"
   },
-  "homepage": "https://github.com/mahdy-gribkov/arcana",
+  "homepage": "https://sporesec.com/en/tools",
   "bugs": {
     "url": "https://github.com/mahdy-gribkov/arcana/issues"
   },

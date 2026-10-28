@@ -6,7 +6,7 @@
     "url": "https://github.com/mahdy-gribkov"
   },
   "metadata": {
-    "description": "Focused, tested agent skills for TypeScript, Go, testing, security and web work",
+    "description": "Focused, tested agent skills for TypeScript, Go, testing, security and web work, by SporeSec (sporesec.com)",
     "version": "5.0.0"
   },
   "plugins": [
@@ -16,8 +16,8 @@
       "description": "Audit and fix web accessibility issues against WCAG 2.1/2.2 AA: semantic HTML, ARIA patterns, keyboard navigation, focus management, color contrast, and screen reader support. Use when reviewing or writing React/HTML/CSS for accessibility, fixing axe or Lighthouse findings, adding ARIA labels, building accessible modals, forms, menus, or tabs, or when the user mentions a11y, WCAG, screen readers, or keyboard access.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "accessibility",
@@ -29,7 +29,8 @@
           "companions": [],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "api-design",
@@ -37,8 +38,8 @@
       "description": "Designs and reviews REST and GraphQL APIs, covering resource naming, HTTP methods and status codes, cursor vs offset pagination, filtering, RFC 9457 error responses, versioning, OpenAPI specs, API authentication, rate limiting, and GraphQL schema, N+1 and subscription design. Use when designing a new endpoint or schema, reviewing an API for consistency, choosing pagination or error formats, writing an OpenAPI spec, or fixing GraphQL resolver performance.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "api",
@@ -52,7 +53,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "bugbounty-report",
@@ -60,8 +62,8 @@
       "description": "Builds and verifies a bug bounty or vulnerability report before submission (HackerOne and similar) with kill-or-keep checks on the finding, the report body and PoC package in platform format, and a compliance check against the program's public policy. Use when writing, formatting or pre-submit auditing a security finding, its PoC zip or its report text, or when someone says bug bounty report, HackerOne report, vulnerability report, security disclosure, PoC package or pre-submit review. For reviewing your own code for vulnerabilities use security-review instead.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "security",
@@ -75,7 +77,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "ci-cd-pipelines",
@@ -83,8 +86,8 @@
       "description": "GitHub Actions and GitLab CI/CD pipeline expertise. Workflow syntax, job matrix, dependency caching (npm, pip, go, docker layers), artifact management, reusable workflows, composite actions, environment secrets, deployment patterns (blue-green, canary, rolling), Docker builds in CI, version bumping, branch protection, status checks. Use when creating CI/CD pipelines, optimizing build times, setting up deployment automation, or configuring GitHub Actions workflows.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "ci-cd",
@@ -98,7 +101,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "codebase-analysis",
@@ -106,8 +110,8 @@
       "description": "Systematic codebase analysis and pre-production review. 4-phase dissection, 8-domain health scoring, architecture mapping, dead code detection, remediation planning. Use when auditing or onboarding to any codebase.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "code-review",
@@ -120,7 +124,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "database-design",
@@ -128,8 +133,8 @@
       "description": "Designs PostgreSQL and SQLite schemas and speeds up queries, covering normalization, indexing (B-tree, GIN, partial, covering), EXPLAIN ANALYZE reading, zero-downtime migrations, connection pooling, ORM setup (Prisma, Drizzle, SQLAlchemy, GORM), transactions and isolation levels. Use when designing or changing a schema, fixing a slow query, writing or reviewing a migration, choosing indexes, setting up pooling, or chasing N+1 queries and deadlocks.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "database",
@@ -143,7 +148,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "design-doc",
@@ -151,8 +157,8 @@
       "description": "Writes the design note a non-trivial change needs before code (problem, evidence, options weighed, decision and why, invariants, failure modes, observability, rollback) and, when the change spans apps, packages or services, builds a high-level design diagram or a step-by-step HLD with a defect-checked Excalidraw builder. Use when asked for a design note, design doc, technical spec, HLD, high-level design, architecture diagram, component diagram, flow diagram or \"how should we build this\", or before adding a new table, route, package, seam, third-party service, or a payment, auth or data-boundary change.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "architecture",
@@ -168,7 +174,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "docker-kubernetes",
@@ -176,8 +183,8 @@
       "description": "Writes and reviews production Dockerfiles (multi-stage, minimal base image, non-root user, layer caching), docker-compose files for development, and Kubernetes manifests (Deployments, Services, Ingress, ConfigMaps, Secrets, probes, resource limits, HPA, security contexts) plus Helm basics. Use when containerizing an app, reviewing a Dockerfile or compose file, writing or hardening Kubernetes YAML, tuning health checks or autoscaling, or debugging a pod that will not start.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "docker",
@@ -191,7 +198,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "git-workflow",
@@ -199,8 +207,8 @@
       "description": "Git workflow practices: conventional commits, merge vs rebase decisions, worktrees, SSH commit signing, and monorepo sparse checkout. Use when writing commit messages, choosing between merge and rebase, resolving conflicts, setting up branches or worktrees, configuring commit signing, or working with large monorepos in git.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "git"
@@ -210,7 +218,8 @@
           "companions": [],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "go-dev",
@@ -218,8 +227,8 @@
       "description": "Writes, reviews and lints Go code, with idiomatic error handling, table-driven tests, golangci-lint v2 configuration, and a one-command run of format, lint, vet, tidy, govulncheck and race tests. Use when working on a .go file or go.mod, reviewing a Go PR or function, asking \"is this idiomatic Go\", setting up or fixing golangci-lint, writing Go tests, or chasing a Go lint, vet or race failure. Not for other languages.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "go",
@@ -235,7 +244,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "i18n-localization",
@@ -243,8 +253,8 @@
       "description": "Internationalize and localize web applications with next-intl, react-intl, ICU MessageFormat, RTL layouts, locale routing, and dynamic locale loading. Use when adding translations or a new language, writing plural or select messages, supporting Hebrew or Arabic RTL, formatting dates, numbers, or currency per locale, or when the user mentions i18n, l10n, next-intl, or locale files.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "web",
@@ -258,7 +268,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "llm-integration",
@@ -266,8 +277,8 @@
       "description": "Integrate OpenAI and Anthropic APIs into applications: client setup, streaming, schema-validated responses, tool calling, token budgets, retries, and cost control. Use when writing code that calls an LLM API, adding streaming responses or function calling, validating model replies against a schema, handling rate limits, or when the user mentions the OpenAI or Anthropic SDK.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "ai",
@@ -279,7 +290,8 @@
           "companions": [],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "nextjs-16",
@@ -287,8 +299,8 @@
       "description": "Build and review Next.js 16 apps: Turbopack, Cache Components, proxy.ts (renamed from middleware.ts), Server Actions, React 19.2 View Transitions, streaming SSR, ISR, error boundaries, and App Router patterns. Use when writing or migrating Next.js 16 code, working in an app/ directory, editing next.config, page.tsx, layout.tsx, route.ts or proxy.ts, or when the user asks about caching, server components, or server actions in Next.js.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "react",
@@ -303,7 +315,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "oauth-auth",
@@ -311,8 +324,8 @@
       "description": "Implements secure sign-in with OAuth2 authorization code flow with PKCE, OIDC ID token checks, JWT signing and validation, httpOnly cookie sessions with CSRF protection, refresh token rotation with reuse detection, password hashing, and auth middleware. Use when adding login or SSO, reviewing token or session handling, choosing where to store tokens, or debugging an OAuth callback, JWT or refresh failure.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "security",
@@ -327,7 +340,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "performance-optimization",
@@ -335,8 +349,8 @@
       "description": "Finds and fixes web and backend performance problems, covering Core Web Vitals (LCP, INP, CLS), bundle analysis and code splitting, image formats, caching (Cache-Control, CDN, Redis), slow queries and N+1, memory leaks with Chrome DevTools and Node --inspect, connection pooling, and moving work off the request path. Use when a page is slow, a Lighthouse or Web Vitals score is poor, a bundle is too big, an API endpoint is slow, or a Node process leaks memory.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "web",
@@ -348,7 +362,8 @@
           "companions": [],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "python-best-practices",
@@ -356,8 +371,8 @@
       "description": "Writes, reviews and scaffolds modern Python 3.14+ code with strict type hints, ruff, uv, src layout and pyproject.toml, async/await with TaskGroup, dataclasses vs Pydantic v2, and pytest conventions. Use when writing or reviewing a .py file, starting a Python project, choosing dataclass or Pydantic, configuring ruff, mypy or pyright, fixing async or blocking-IO bugs, or writing pytest tests.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "python"
@@ -367,7 +382,8 @@
           "companions": [],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "scraping-automation",
@@ -375,8 +391,8 @@
       "description": "Build resilient web scrapers with Playwright and Puppeteer: browser contexts, rate limiting, proxy rotation, retries, structured data extraction, and respectful crawling. Use when writing or debugging a scraper, crawler, or browser automation script, extracting data from pages or APIs, handling dynamic content, selectors that break, blocked requests, or when the user mentions Playwright, Puppeteer, scraping, or crawling.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "scraping",
@@ -389,7 +405,8 @@
           "companions": [],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "security-review",
@@ -397,8 +414,8 @@
       "description": "Reviews code for security flaws and hardens applications, covering OWASP Top 10 risks, injection (SQL, XSS, command), authentication and authorization, secrets handling and rotation, dependency scanning, input validation, CORS, CSRF, rate limiting and security headers, with examples in JavaScript, Python and Go. Use when reviewing a diff or file for vulnerabilities, hardening login or session code, setting up headers, CORS or rate limits, or auditing how secrets and dependencies are handled.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "security",
@@ -411,7 +428,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "seo-meta",
@@ -419,8 +437,8 @@
       "description": "Implement SEO metadata for Next.js applications: Metadata API, Open Graph and Twitter tags, JSON-LD structured data, sitemaps, robots, canonical URLs, and dynamic OG images. Use when adding or fixing page titles, descriptions, canonical tags, social cards, schema.org markup, sitemap.ts or robots.ts, or when the user mentions SEO, meta tags, or rich results.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "web",
@@ -434,7 +452,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "tailwind-css",
@@ -442,8 +461,8 @@
       "description": "Writes and reviews Tailwind CSS v4 code with the CSS-first setup (@import, @theme, @utility, @plugin, @source), the cn() class merge helper, mobile-first responsive design, class-based dark mode, built-in container queries, and variant-driven components. Also migrates v3 projects to v4. Use when styling with Tailwind, fixing classes that do not apply or conflict, setting up or upgrading Tailwind, adding design tokens or dark mode, or building reusable Tailwind components.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "css",
@@ -457,7 +476,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "testing",
@@ -465,8 +485,8 @@
       "description": "Writes, fixes and reviews tests for TypeScript and JavaScript projects, which means vitest unit and DOM tests, Playwright end-to-end specs, coverage thresholds, regression tests that reproduce the bug state, and tests of Cloudflare Workers code on real bindings. Use when adding or fixing a test, a coverage gate is red, a spec is flaky or fails in CI, a bug fix needs its regression test, a test passes but you doubt it can fail, or asked \"how do we test this\". Not for Go tests (go-dev), Lighthouse audits or manual QA scripts.",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "testing",
@@ -482,7 +502,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     },
     {
       "name": "ts-dev",
@@ -490,8 +511,8 @@
       "description": "Writes and reviews TypeScript, React and Next.js code against one senior checklist (outcome, what becomes dead, reuse, names, types parsed once, one error model, boundaries, required config values, comments) and one findings format. Use when reviewing a TypeScript or TSX diff or a PR, asked \"is this idiomatic TypeScript\" or \"review my code\", designing a type, an error shape or a function signature, replacing any, a non-null assertion or a type cast, fixing a tsc or typescript-eslint complaint, or deciding whether to extract a helper or add a layer. Not for building a page, route or migration (nextjs-16, api-design, database-design), writing tests (testing), Go (go-dev) or design notes (design-doc).",
       "version": "5.0.0",
       "author": {
-        "name": "Mahdy Lorens Gribkov",
-        "url": "https://sporesec.com"
+        "name": "Mahdy Lorens Gribkov (SporeSec)",
+        "url": "https://sporesec.com/en"
       },
       "tags": [
         "typescript",
@@ -507,7 +528,8 @@
           ],
           "conflicts": []
         }
-      }
+      },
+      "homepage": "https://sporesec.com/en/tools"
     }
   ]
 }
