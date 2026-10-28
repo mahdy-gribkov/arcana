@@ -2,4 +2,4 @@
 max_turns: 8
 allowed_tools: [Read, Glob, Grep, Skill]
 ---
-Write the tests for this Go function: ParseSize(s string) (int64, error). It accepts 100B, 2KB and 3MB and returns an error for empty or unknown input.
+Write the tests for this Go function: ParseSize(s string) (int64, error). It accepts 100B, 2KB and 3MB. For empty input it returns ErrEmpty and for an unknown unit it returns an error wrapping ErrUnknownUnit (both are package-level sentinel errors).
