@@ -273,24 +273,6 @@
       "conflicts": []
     },
     {
-      "name": "spec-driven-dev",
-      "source": "./skills/spec-driven-dev",
-      "description": "Specification-driven development with structured requirements, planning workflows, task breakdown, and quality gates.",
-      "version": "1.0.0",
-      "tags": [
-        "planning",
-        "architecture",
-        "agile"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "codebase-analysis",
-        "testing-strategy"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "stripe-payments",
       "source": "./skills/stripe-payments",
       "description": "Stripe integration: Checkout Sessions, subscriptions, webhook verification, idempotency, and SCA/3D Secure.",
