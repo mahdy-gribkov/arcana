@@ -20,10 +20,13 @@ echo "=== Quality floor (audit score >= $MIN_SCORE) ==="
 $CLI validate --all --source skills --min-score "$MIN_SCORE"
 
 echo "=== Skill script tests (Python) ==="
+# On Windows "python3" is often the Microsoft Store stub that exits 49 without running anything.
+PYTHON=python3
+python3 -c "" 2>/dev/null || PYTHON=python
 for test_file in skills/*/scripts/test_*.py; do
   [ -f "$test_file" ] || continue
   echo "--- $test_file"
-  (cd "$(dirname "$test_file")" && python3 -B "$(basename "$test_file")" -v)
+  (cd "$(dirname "$test_file")" && "$PYTHON" -B "$(basename "$test_file")" -v)
 done
 
 echo "=== Skill script tests (Node) ==="
