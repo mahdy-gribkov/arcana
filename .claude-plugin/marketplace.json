@@ -15,10 +15,17 @@
       "source": "./skills/accessibility-wcag",
       "description": "WCAG 2.1 AA compliance, semantic HTML, ARIA patterns, keyboard navigation, screen reader testing, color contrast, focus management, and automated accessibility testing with axe-core.",
       "version": "1.0.0",
-      "tags": ["accessibility", "web", "design"],
+      "tags": [
+        "accessibility",
+        "web",
+        "design"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["frontend-design", "frontend-code-review"],
+      "companions": [
+        "frontend-design",
+        "frontend-code-review"
+      ],
       "conflicts": []
     },
     {
@@ -26,10 +33,17 @@
       "source": "./skills/api-design",
       "description": "REST API and GraphQL design best practices including resource naming, HTTP methods, status codes, pagination, error responses (RFC 7807), versioning, OpenAPI specs, authentication, rate limiting, GraphQL schema design, and subscriptions.",
       "version": "1.0.0",
-      "tags": ["api", "rest", "graphql"],
+      "tags": [
+        "api",
+        "rest",
+        "graphql"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["api-testing", "security-review"],
+      "companions": [
+        "api-testing",
+        "security-review"
+      ],
       "conflicts": []
     },
     {
@@ -37,10 +51,18 @@
       "source": "./skills/api-testing",
       "description": "API testing with contract testing (Pact), mocking (MSW), load testing (k6), OpenAPI validation, and CI integration.",
       "version": "1.0.0",
-      "tags": ["api", "testing", "rest", "graphql"],
+      "tags": [
+        "api",
+        "testing",
+        "rest",
+        "graphql"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["api-design", "testing-strategy"],
+      "companions": [
+        "api-design",
+        "testing-strategy"
+      ],
       "conflicts": []
     },
     {
@@ -48,7 +70,10 @@
       "source": "./skills/asset-optimization",
       "description": "Asset pipeline optimization, compression, streaming, and resource management for game development.",
       "version": "1.0.0",
-      "tags": ["gamedev", "performance"],
+      "tags": [
+        "gamedev",
+        "performance"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -59,7 +84,10 @@
       "source": "./skills/audio-systems",
       "description": "Game audio systems, spatial audio, FMOD/Wwise integration, adaptive music, and sound design.",
       "version": "1.1.0",
-      "tags": ["gamedev", "audio"],
+      "tags": [
+        "gamedev",
+        "audio"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -70,10 +98,17 @@
       "source": "./skills/aws-essentials",
       "description": "AWS core services: Lambda, S3, RDS, CloudFront, IAM, SQS/SNS, DynamoDB. Least-privilege policies, presigned URLs, and cost optimization.",
       "version": "1.0.0",
-      "tags": ["cloud", "aws", "devops"],
+      "tags": [
+        "cloud",
+        "aws",
+        "devops"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["terraform-iac", "cost-optimization"],
+      "companions": [
+        "terraform-iac",
+        "cost-optimization"
+      ],
       "conflicts": []
     },
     {
@@ -81,10 +116,17 @@
       "source": "./skills/ci-cd-pipelines",
       "description": "GitHub Actions and GitLab CI/CD pipeline expertise. Workflow syntax, caching, reusable workflows, deployment patterns, Docker builds, and branch protection.",
       "version": "1.1.0",
-      "tags": ["ci-cd", "github-actions", "devops"],
+      "tags": [
+        "ci-cd",
+        "github-actions",
+        "devops"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["testing-strategy", "docker-kubernetes"],
+      "companions": [
+        "testing-strategy",
+        "docker-kubernetes"
+      ],
       "conflicts": []
     },
     {
@@ -92,10 +134,15 @@
       "source": "./skills/code-reviewer",
       "description": "Code review workflow for local changes and remote PRs with severity definitions, inline comments, and review output.",
       "version": "1.0.1",
-      "tags": ["code-review"],
+      "tags": [
+        "code-review"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["testing-strategy", "security-review"],
+      "companions": [
+        "testing-strategy",
+        "security-review"
+      ],
       "conflicts": []
     },
     {
@@ -103,10 +150,16 @@
       "source": "./skills/codebase-analysis",
       "description": "Systematic codebase analysis and pre-production review. 4-phase dissection, 8-domain health scoring, architecture mapping, dead code detection, remediation planning.",
       "version": "1.0.0",
-      "tags": ["code-review", "architecture"],
+      "tags": [
+        "code-review",
+        "architecture"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["refactoring-patterns", "security-review"],
+      "companions": [
+        "refactoring-patterns",
+        "security-review"
+      ],
       "conflicts": []
     },
     {
@@ -114,10 +167,17 @@
       "source": "./skills/container-security",
       "description": "Container security with image scanning (Trivy, Grype), rootless containers, supply chain security (Cosign, SBOM), and Dockerfile hardening.",
       "version": "1.0.0",
-      "tags": ["docker", "security", "devops"],
+      "tags": [
+        "docker",
+        "security",
+        "devops"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["docker-kubernetes", "security-review"],
+      "companions": [
+        "docker-kubernetes",
+        "security-review"
+      ],
       "conflicts": []
     },
     {
@@ -125,10 +185,15 @@
       "source": "./skills/cost-optimization",
       "description": "Cloud cost optimization: container right-sizing, CDN caching, serverless cold starts, spot instances, storage tiering, and cost monitoring.",
       "version": "1.0.0",
-      "tags": ["cloud", "devops"],
+      "tags": [
+        "cloud",
+        "devops"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["aws-essentials"],
+      "companions": [
+        "aws-essentials"
+      ],
       "conflicts": []
     },
     {
@@ -136,10 +201,16 @@
       "source": "./skills/data-visualization",
       "description": "Data visualization with Recharts, Chart.js, and D3.js. Chart selection, responsive layouts, colorblind-safe palettes, and dashboard patterns.",
       "version": "1.0.0",
-      "tags": ["frontend", "react", "data"],
+      "tags": [
+        "frontend",
+        "react",
+        "data"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["frontend-design"],
+      "companions": [
+        "frontend-design"
+      ],
       "conflicts": []
     },
     {
@@ -147,10 +218,17 @@
       "source": "./skills/database-design",
       "description": "Database architecture for PostgreSQL and SQLite. Schema design, indexing, EXPLAIN ANALYZE, migrations, connection pooling, and ORM configuration.",
       "version": "1.0.0",
-      "tags": ["database", "postgresql", "sqlite"],
+      "tags": [
+        "database",
+        "postgresql",
+        "sqlite"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["security-review", "postgres-advanced"],
+      "companions": [
+        "security-review",
+        "postgres-advanced"
+      ],
       "conflicts": []
     },
     {
@@ -158,7 +236,10 @@
       "source": "./skills/doc-generation",
       "description": "Documentation generation: OpenAPI, Mermaid diagrams, README generation, changelog automation, JSDoc/GoDoc, and Storybook.",
       "version": "1.0.0",
-      "tags": ["documentation", "api"],
+      "tags": [
+        "documentation",
+        "api"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -169,10 +250,17 @@
       "source": "./skills/docker-kubernetes",
       "description": "Production Docker and Kubernetes: multi-stage builds, non-root users, K8s manifests, health checks, HPA autoscaling, security contexts, and Helm.",
       "version": "1.1.0",
-      "tags": ["docker", "kubernetes", "devops"],
+      "tags": [
+        "docker",
+        "kubernetes",
+        "devops"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["container-security", "ci-cd-pipelines"],
+      "companions": [
+        "container-security",
+        "ci-cd-pipelines"
+      ],
       "conflicts": []
     },
     {
@@ -180,7 +268,10 @@
       "source": "./skills/docx",
       "description": "Word document creation, editing, and manipulation. Tables of contents, headings, tracked changes, images, and formatting.",
       "version": "1.0.1",
-      "tags": ["documentation", "office"],
+      "tags": [
+        "documentation",
+        "office"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -191,7 +282,10 @@
       "source": "./skills/email-notifications",
       "description": "Email systems with SendGrid and AWS SES. React Email templates, deliverability (SPF/DKIM/DMARC), bounce handling, and queue-based processing.",
       "version": "1.0.0",
-      "tags": ["integration", "email"],
+      "tags": [
+        "integration",
+        "email"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -202,7 +296,10 @@
       "source": "./skills/env-config",
       "description": "Environment configuration: .env management, Zod validation, secret management, 12-factor patterns, and Docker env injection.",
       "version": "1.0.0",
-      "tags": ["devops", "configuration"],
+      "tags": [
+        "devops",
+        "configuration"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -213,10 +310,16 @@
       "source": "./skills/flutter-mobile",
       "description": "Flutter mobile development. Widget composition, Riverpod state, GoRouter navigation, platform channels, and performance optimization.",
       "version": "1.0.0",
-      "tags": ["mobile", "flutter", "dart"],
+      "tags": [
+        "mobile",
+        "flutter",
+        "dart"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["react-native"],
+      "companions": [
+        "react-native"
+      ],
       "conflicts": []
     },
     {
@@ -224,10 +327,17 @@
       "source": "./skills/framer-motion",
       "description": "Framer Motion animations for React. Variants, gestures, layout animations, AnimatePresence, scroll triggers, and spring physics.",
       "version": "1.0.0",
-      "tags": ["react", "animation", "design"],
+      "tags": [
+        "react",
+        "animation",
+        "design"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["frontend-design", "nextjs-16"],
+      "companions": [
+        "frontend-design",
+        "nextjs-16"
+      ],
       "conflicts": []
     },
     {
@@ -235,10 +345,17 @@
       "source": "./skills/frontend-code-review",
       "description": "Frontend review checklist for .tsx, .ts, .js files. cn() usage, memoization, accessibility, and inline rules.",
       "version": "1.0.1",
-      "tags": ["react", "typescript", "web"],
+      "tags": [
+        "react",
+        "typescript",
+        "web"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["frontend-design", "typescript"],
+      "companions": [
+        "frontend-design",
+        "typescript"
+      ],
       "conflicts": []
     },
     {
@@ -246,10 +363,19 @@
       "source": "./skills/frontend-design",
       "description": "Production-grade frontend interfaces with CSS architecture, component patterns, layout systems, and motion design. BAD/GOOD pairs for every pattern.",
       "version": "1.1.0",
-      "tags": ["react", "typescript", "css", "web"],
+      "tags": [
+        "react",
+        "typescript",
+        "css",
+        "web"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["frontend-code-review", "tailwind-css", "framer-motion"],
+      "companions": [
+        "frontend-code-review",
+        "tailwind-css",
+        "framer-motion"
+      ],
       "conflicts": []
     },
     {
@@ -257,10 +383,20 @@
       "source": "./skills/fullstack-developer",
       "description": "Full-stack web development with React, Node.js, databases, auth flow, and API error handling patterns.",
       "version": "1.0.0",
-      "tags": ["react", "node", "typescript", "database", "web"],
+      "tags": [
+        "react",
+        "node",
+        "typescript",
+        "database",
+        "web"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["database-design", "api-design", "nextjs-16"],
+      "companions": [
+        "database-design",
+        "api-design",
+        "nextjs-16"
+      ],
       "conflicts": []
     },
     {
@@ -268,10 +404,18 @@
       "source": "./skills/game-engines",
       "description": "Unity, Unreal Engine, and Godot. Engine-specific workflows, systems architecture, and production best practices.",
       "version": "1.0.0",
-      "tags": ["gamedev", "unity", "unreal", "godot"],
+      "tags": [
+        "gamedev",
+        "unity",
+        "unreal",
+        "godot"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["game-programming-languages", "godot-4"],
+      "companions": [
+        "game-programming-languages",
+        "godot-4"
+      ],
       "conflicts": []
     },
     {
@@ -279,10 +423,17 @@
       "source": "./skills/game-programming-languages",
       "description": "Game programming with C#, C++, GDScript. Syntax, patterns, and engine-specific idioms.",
       "version": "1.0.0",
-      "tags": ["gamedev", "csharp", "cpp", "gdscript"],
+      "tags": [
+        "gamedev",
+        "csharp",
+        "cpp",
+        "gdscript"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["game-engines"],
+      "companions": [
+        "game-engines"
+      ],
       "conflicts": []
     },
     {
@@ -290,10 +441,15 @@
       "source": "./skills/game-servers",
       "description": "Game server architecture, matchmaking, WebSocket reconnection, and scalable backend systems for online games.",
       "version": "1.0.0",
-      "tags": ["gamedev", "networking"],
+      "tags": [
+        "gamedev",
+        "networking"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["multiplayer-netcode"],
+      "companions": [
+        "multiplayer-netcode"
+      ],
       "conflicts": []
     },
     {
@@ -301,10 +457,15 @@
       "source": "./skills/gameplay-design",
       "description": "Game design theory and mechanics. MDA framework, balance formulas, combat systems, progression curves, input buffering, and feedback loops.",
       "version": "1.0.0",
-      "tags": ["gamedev"],
+      "tags": [
+        "gamedev"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["level-design", "game-engines"],
+      "companions": [
+        "level-design",
+        "game-engines"
+      ],
       "conflicts": []
     },
     {
@@ -312,7 +473,9 @@
       "source": "./skills/git-workflow",
       "description": "Git workflows: conventional commits, branch strategies, rebase, hooks (Husky), monorepo patterns, and bisect debugging.",
       "version": "1.0.0",
-      "tags": ["git"],
+      "tags": [
+        "git"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -323,10 +486,16 @@
       "source": "./skills/go-linter-configuration",
       "description": "golangci-lint setup and troubleshooting. Import resolution, .golangci.yml configs, CI optimization, and progressive linter adoption.",
       "version": "1.0.0",
-      "tags": ["go", "golang", "linting"],
+      "tags": [
+        "go",
+        "golang",
+        "linting"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["golang-pro"],
+      "companions": [
+        "golang-pro"
+      ],
       "conflicts": []
     },
     {
@@ -334,10 +503,17 @@
       "source": "./skills/godot-4",
       "description": "Godot 4 with GDScript 2.0. Typed syntax, node architecture, physics, state machines, resource management, and export templates.",
       "version": "1.0.0",
-      "tags": ["gamedev", "godot", "gdscript"],
+      "tags": [
+        "gamedev",
+        "godot",
+        "gdscript"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["game-engines", "game-programming-languages"],
+      "companions": [
+        "game-engines",
+        "game-programming-languages"
+      ],
       "conflicts": []
     },
     {
@@ -345,10 +521,16 @@
       "source": "./skills/golang-pro",
       "description": "Go 1.26+ with modern patterns, concurrency, HTTP routing, error handling, testing, and performance profiling.",
       "version": "1.0.1",
-      "tags": ["go", "golang"],
+      "tags": [
+        "go",
+        "golang"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["go-linter-configuration", "testing-strategy"],
+      "companions": [
+        "go-linter-configuration",
+        "testing-strategy"
+      ],
       "conflicts": []
     },
     {
@@ -356,10 +538,15 @@
       "source": "./skills/graphics-rendering",
       "description": "3D graphics, shaders, VFX, lighting, and rendering optimization.",
       "version": "1.0.0",
-      "tags": ["gamedev", "graphics"],
+      "tags": [
+        "gamedev",
+        "graphics"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["shader-techniques"],
+      "companions": [
+        "shader-techniques"
+      ],
       "conflicts": []
     },
     {
@@ -367,10 +554,16 @@
       "source": "./skills/i18n-localization",
       "description": "Internationalization with next-intl and react-intl. ICU message syntax, plurals, RTL layout, and dynamic locale loading.",
       "version": "1.0.0",
-      "tags": ["web", "react", "i18n"],
+      "tags": [
+        "web",
+        "react",
+        "i18n"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["nextjs-16"],
+      "companions": [
+        "nextjs-16"
+      ],
       "conflicts": []
     },
     {
@@ -378,10 +571,15 @@
       "source": "./skills/incident-response",
       "description": "Production incident response with actionable runbooks, blameless postmortems, status pages, rollback procedures, and SLO breach handling.",
       "version": "1.1.0",
-      "tags": ["devops", "monitoring"],
+      "tags": [
+        "devops",
+        "monitoring"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["monitoring-observability"],
+      "companions": [
+        "monitoring-observability"
+      ],
       "conflicts": []
     },
     {
@@ -389,10 +587,14 @@
       "source": "./skills/level-design",
       "description": "Level design fundamentals, pacing, environmental storytelling, procedural generation with GDScript and C#, and BAD/GOOD design patterns.",
       "version": "1.1.0",
-      "tags": ["gamedev"],
+      "tags": [
+        "gamedev"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["gameplay-design"],
+      "companions": [
+        "gameplay-design"
+      ],
       "conflicts": []
     },
     {
@@ -400,7 +602,11 @@
       "source": "./skills/llm-integration",
       "description": "LLM/AI API integration with OpenAI and Anthropic. Structured output, tool calling, streaming, prompt engineering, and cost optimization.",
       "version": "1.0.0",
-      "tags": ["ai", "api", "typescript"],
+      "tags": [
+        "ai",
+        "api",
+        "typescript"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -411,10 +617,14 @@
       "source": "./skills/local-security",
       "description": "Developer workstation security: SSH keys, GPG signing, credential managers, and secure environment setup.",
       "version": "1.0.0",
-      "tags": ["security"],
+      "tags": [
+        "security"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["security-review"],
+      "companions": [
+        "security-review"
+      ],
       "conflicts": []
     },
     {
@@ -422,7 +632,10 @@
       "source": "./skills/memory-management",
       "description": "Game memory optimization, object pooling, GC tuning, and resource management.",
       "version": "1.0.0",
-      "tags": ["gamedev", "performance"],
+      "tags": [
+        "gamedev",
+        "performance"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -433,7 +646,9 @@
       "source": "./skills/monetization-systems",
       "description": "Game monetization: IAP, battle passes, ads integration, and ethical player retention.",
       "version": "1.0.0",
-      "tags": ["gamedev"],
+      "tags": [
+        "gamedev"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -444,10 +659,17 @@
       "source": "./skills/monitoring-observability",
       "description": "Production observability: structured logging, Prometheus, OpenTelemetry, Grafana dashboards, and SLO/SLI alerting.",
       "version": "1.0.0",
-      "tags": ["monitoring", "devops", "go", "node"],
+      "tags": [
+        "monitoring",
+        "devops",
+        "go",
+        "node"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["incident-response"],
+      "companions": [
+        "incident-response"
+      ],
       "conflicts": []
     },
     {
@@ -455,10 +677,15 @@
       "source": "./skills/multiplayer-netcode",
       "description": "Multiplayer networking and synchronization. Client prediction, server reconciliation, rollback netcode, lag compensation, and anti-cheat.",
       "version": "1.0.0",
-      "tags": ["gamedev", "networking"],
+      "tags": [
+        "gamedev",
+        "networking"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["game-servers"],
+      "companions": [
+        "game-servers"
+      ],
       "conflicts": []
     },
     {
@@ -466,10 +693,19 @@
       "source": "./skills/nextjs-16",
       "description": "Next.js 16 with Turbopack, Cache Components, proxy.ts, Server Actions, React 19.2 View Transitions, and App Router patterns.",
       "version": "1.0.0",
-      "tags": ["react", "nextjs", "typescript", "web"],
+      "tags": [
+        "react",
+        "nextjs",
+        "typescript",
+        "web"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["tailwind-css", "vercel-deploy", "typescript"],
+      "companions": [
+        "tailwind-css",
+        "vercel-deploy",
+        "typescript"
+      ],
       "conflicts": []
     },
     {
@@ -477,10 +713,17 @@
       "source": "./skills/npm-package",
       "description": "npm/pnpm package authoring: tsup bundling, dual ESM/CJS exports, semver, changesets, and monorepo setup.",
       "version": "1.0.0",
-      "tags": ["typescript", "node", "npm"],
+      "tags": [
+        "typescript",
+        "node",
+        "npm"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["typescript", "ci-cd-pipelines"],
+      "companions": [
+        "typescript",
+        "ci-cd-pipelines"
+      ],
       "conflicts": []
     },
     {
@@ -488,10 +731,19 @@
       "source": "./skills/notebooklm-research",
       "description": "Automate Google NotebookLM via Playwright: create notebooks, add sources, query with citations, generate slides, infographics, quizzes, flashcards, reports, data tables, and mind maps.",
       "version": "1.0.0",
-      "tags": ["research", "automation", "playwright", "google", "rag"],
+      "tags": [
+        "research",
+        "automation",
+        "playwright",
+        "google",
+        "rag"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["scraping-automation", "playwright-testing"],
+      "companions": [
+        "scraping-automation",
+        "playwright-testing"
+      ],
       "conflicts": []
     },
     {
@@ -499,10 +751,17 @@
       "source": "./skills/oauth-auth",
       "description": "OAuth2 with PKCE, OIDC, JWT validation, session management, refresh token rotation, and Auth.js patterns.",
       "version": "1.0.0",
-      "tags": ["security", "auth", "web"],
+      "tags": [
+        "security",
+        "auth",
+        "web"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["security-review", "nextjs-16"],
+      "companions": [
+        "security-review",
+        "nextjs-16"
+      ],
       "conflicts": []
     },
     {
@@ -510,7 +769,10 @@
       "source": "./skills/particle-systems",
       "description": "Particle systems, physics simulation, and post-processing for dynamic game VFX.",
       "version": "1.0.0",
-      "tags": ["gamedev", "graphics"],
+      "tags": [
+        "gamedev",
+        "graphics"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -521,7 +783,11 @@
       "source": "./skills/performance-optimization",
       "description": "Web and backend performance: Core Web Vitals, bundle analysis, caching, database optimization, and memory leak detection.",
       "version": "1.0.0",
-      "tags": ["web", "node", "database"],
+      "tags": [
+        "web",
+        "node",
+        "database"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -532,10 +798,16 @@
       "source": "./skills/playwright-testing",
       "description": "Playwright E2E testing: page objects, role-based locators, network mocking, visual regression, and CI integration.",
       "version": "1.0.0",
-      "tags": ["testing", "e2e", "typescript"],
+      "tags": [
+        "testing",
+        "e2e",
+        "typescript"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["testing-strategy"],
+      "companions": [
+        "testing-strategy"
+      ],
       "conflicts": []
     },
     {
@@ -543,10 +815,15 @@
       "source": "./skills/postgres-advanced",
       "description": "Advanced PostgreSQL: window functions, CTEs, JSONB, full-text search, partial indexes, partitioning, and PgBouncer.",
       "version": "1.0.0",
-      "tags": ["database", "postgresql"],
+      "tags": [
+        "database",
+        "postgresql"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["database-design"],
+      "companions": [
+        "database-design"
+      ],
       "conflicts": []
     },
     {
@@ -554,7 +831,10 @@
       "source": "./skills/programming-architecture",
       "description": "Game code architecture: ECS, data-oriented design, state machines, and scalable system patterns.",
       "version": "1.0.0",
-      "tags": ["gamedev", "architecture"],
+      "tags": [
+        "gamedev",
+        "architecture"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -565,7 +845,9 @@
       "source": "./skills/project-migration",
       "description": "Migrate project folders preserving Claude Code session data. Path encoding, rollback patterns, and orphan cleanup.",
       "version": "1.1.0",
-      "tags": ["meta"],
+      "tags": [
+        "meta"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -576,7 +858,9 @@
       "source": "./skills/publishing-platforms",
       "description": "Platform submission for Steam, Epic, console, and mobile. Certification checklists and revenue splits.",
       "version": "1.0.0",
-      "tags": ["gamedev"],
+      "tags": [
+        "gamedev"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -587,10 +871,14 @@
       "source": "./skills/python-best-practices",
       "description": "Python 3.14+ with type hints, ruff, uv, async patterns, Pydantic v2, pytest, and pyproject.toml configuration.",
       "version": "1.0.0",
-      "tags": ["python"],
+      "tags": [
+        "python"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["testing-strategy"],
+      "companions": [
+        "testing-strategy"
+      ],
       "conflicts": []
     },
     {
@@ -598,10 +886,17 @@
       "source": "./skills/react-native",
       "description": "React Native mobile: Expo, React Navigation, Zustand, FlatList optimization, Reanimated, and native modules.",
       "version": "1.0.0",
-      "tags": ["mobile", "react", "typescript"],
+      "tags": [
+        "mobile",
+        "react",
+        "typescript"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["typescript", "flutter-mobile"],
+      "companions": [
+        "typescript",
+        "flutter-mobile"
+      ],
       "conflicts": []
     },
     {
@@ -609,10 +904,16 @@
       "source": "./skills/redis-patterns",
       "description": "Redis caching, sessions, rate limiting, pub/sub, sorted sets, streams, distributed locks, and connection pooling.",
       "version": "1.0.0",
-      "tags": ["database", "redis", "caching"],
+      "tags": [
+        "database",
+        "redis",
+        "caching"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["database-design"],
+      "companions": [
+        "database-design"
+      ],
       "conflicts": []
     },
     {
@@ -620,10 +921,16 @@
       "source": "./skills/refactoring-patterns",
       "description": "Refactoring patterns: extract method, dead code elimination, dependency injection, SOLID principles, and strangler fig.",
       "version": "1.0.0",
-      "tags": ["code-review", "architecture"],
+      "tags": [
+        "code-review",
+        "architecture"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["codebase-analysis", "testing-strategy"],
+      "companions": [
+        "codebase-analysis",
+        "testing-strategy"
+      ],
       "conflicts": []
     },
     {
@@ -631,10 +938,18 @@
       "source": "./skills/remotion-best-practices",
       "description": "Remotion video creation in React. Animations, compositions, audio sync, text effects, and rendering.",
       "version": "1.0.1",
-      "tags": ["react", "typescript", "video", "remotion"],
+      "tags": [
+        "react",
+        "typescript",
+        "video",
+        "remotion"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["typescript", "frontend-design"],
+      "companions": [
+        "typescript",
+        "frontend-design"
+      ],
       "conflicts": []
     },
     {
@@ -642,10 +957,14 @@
       "source": "./skills/rust-best-practices",
       "description": "Idiomatic Rust: ownership, lifetimes, error handling, async Tokio, traits, and production web service patterns.",
       "version": "1.0.0",
-      "tags": ["rust"],
+      "tags": [
+        "rust"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["testing-strategy"],
+      "companions": [
+        "testing-strategy"
+      ],
       "conflicts": []
     },
     {
@@ -653,7 +972,12 @@
       "source": "./skills/scraping-automation",
       "description": "Web scraping with Playwright and Puppeteer. Stealth mode, proxy rotation, structured extraction, and retry patterns.",
       "version": "1.0.0",
-      "tags": ["scraping", "automation", "typescript", "python"],
+      "tags": [
+        "scraping",
+        "automation",
+        "typescript",
+        "python"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -664,10 +988,16 @@
       "source": "./skills/security-review",
       "description": "Security review: OWASP Top 10, injection prevention, auth patterns, secrets management, dependency scanning, and security headers.",
       "version": "1.1.0",
-      "tags": ["security", "web"],
+      "tags": [
+        "security",
+        "web"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["oauth-auth", "container-security"],
+      "companions": [
+        "oauth-auth",
+        "container-security"
+      ],
       "conflicts": []
     },
     {
@@ -675,10 +1005,16 @@
       "source": "./skills/seo-meta",
       "description": "SEO and meta tags: Next.js metadata API, Open Graph, JSON-LD structured data, sitemaps, and dynamic OG images.",
       "version": "1.0.0",
-      "tags": ["web", "seo", "nextjs"],
+      "tags": [
+        "web",
+        "seo",
+        "nextjs"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["nextjs-16"],
+      "companions": [
+        "nextjs-16"
+      ],
       "conflicts": []
     },
     {
@@ -686,10 +1022,17 @@
       "source": "./skills/spec-driven-dev",
       "description": "Specification-driven development with structured requirements, planning workflows, task breakdown, and quality gates.",
       "version": "1.0.0",
-      "tags": ["planning", "architecture", "agile"],
+      "tags": [
+        "planning",
+        "architecture",
+        "agile"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["codebase-analysis", "testing-strategy"],
+      "companions": [
+        "codebase-analysis",
+        "testing-strategy"
+      ],
       "conflicts": []
     },
     {
@@ -697,10 +1040,15 @@
       "source": "./skills/shader-techniques",
       "description": "Shader programming, visual effects, custom materials, and rendering optimization.",
       "version": "1.0.0",
-      "tags": ["gamedev", "graphics"],
+      "tags": [
+        "gamedev",
+        "graphics"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["graphics-rendering"],
+      "companions": [
+        "graphics-rendering"
+      ],
       "conflicts": []
     },
     {
@@ -708,7 +1056,9 @@
       "source": "./skills/skill-creator",
       "description": "Create or update Claude skills. SKILL.md structure, frontmatter rules, references, scripts, and validation.",
       "version": "1.1.0",
-      "tags": ["meta"],
+      "tags": [
+        "meta"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -719,7 +1069,11 @@
       "source": "./skills/stripe-payments",
       "description": "Stripe integration: Checkout Sessions, subscriptions, webhook verification, idempotency, and SCA/3D Secure.",
       "version": "1.0.0",
-      "tags": ["integration", "payments", "typescript"],
+      "tags": [
+        "integration",
+        "payments",
+        "typescript"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -730,10 +1084,17 @@
       "source": "./skills/tailwind-css",
       "description": "Tailwind CSS: config, plugins, cn() utility, responsive design, dark mode, theme customization, and performance.",
       "version": "1.0.0",
-      "tags": ["css", "design", "web"],
+      "tags": [
+        "css",
+        "design",
+        "web"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["frontend-design", "nextjs-16"],
+      "companions": [
+        "frontend-design",
+        "nextjs-16"
+      ],
       "conflicts": []
     },
     {
@@ -741,10 +1102,16 @@
       "source": "./skills/terraform-iac",
       "description": "Terraform IaC: state management, modules, workspaces, lifecycle rules, CI/CD with plan artifacts, and AWS patterns.",
       "version": "1.0.0",
-      "tags": ["devops", "cloud", "terraform"],
+      "tags": [
+        "devops",
+        "cloud",
+        "terraform"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["aws-essentials"],
+      "companions": [
+        "aws-essentials"
+      ],
       "conflicts": []
     },
     {
@@ -752,10 +1119,15 @@
       "source": "./skills/testing-strategy",
       "description": "Testing across unit, integration, and e2e. pytest, Vitest, Jest, Go testing, Playwright. TDD workflow, mocking, and CI integration.",
       "version": "1.0.0",
-      "tags": ["testing"],
+      "tags": [
+        "testing"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["code-reviewer", "playwright-testing"],
+      "companions": [
+        "code-reviewer",
+        "playwright-testing"
+      ],
       "conflicts": []
     },
     {
@@ -763,10 +1135,15 @@
       "source": "./skills/typescript",
       "description": "TypeScript strict types, generics, utility types, discriminated unions, and type-safe patterns.",
       "version": "1.0.1",
-      "tags": ["typescript"],
+      "tags": [
+        "typescript"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["typescript-advanced", "testing-strategy"],
+      "companions": [
+        "typescript-advanced",
+        "testing-strategy"
+      ],
       "conflicts": []
     },
     {
@@ -774,10 +1151,14 @@
       "source": "./skills/typescript-advanced",
       "description": "Advanced TypeScript: branded types, conditional types, mapped types, template literals, satisfies, and type-level programming.",
       "version": "1.0.0",
-      "tags": ["typescript"],
+      "tags": [
+        "typescript"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["typescript"],
+      "companions": [
+        "typescript"
+      ],
       "conflicts": []
     },
     {
@@ -785,7 +1166,10 @@
       "source": "./skills/update-docs",
       "description": "Documentation update workflow for Next.js projects. MDX support and PR-based update patterns.",
       "version": "1.0.0",
-      "tags": ["documentation", "next"],
+      "tags": [
+        "documentation",
+        "next"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
@@ -796,10 +1180,16 @@
       "source": "./skills/vercel-deploy",
       "description": "Vercel deployment: Edge Functions, middleware, environment variables, preview deployments, caching, and monorepo config.",
       "version": "1.0.0",
-      "tags": ["devops", "vercel", "nextjs"],
+      "tags": [
+        "devops",
+        "vercel",
+        "nextjs"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["nextjs-16"],
+      "companions": [
+        "nextjs-16"
+      ],
       "conflicts": []
     },
     {
@@ -807,10 +1197,16 @@
       "source": "./skills/websocket-realtime",
       "description": "WebSocket and real-time: reconnection, heartbeat, SSE, Socket.io rooms, Redis pub/sub scaling, and auth on upgrade.",
       "version": "1.0.0",
-      "tags": ["networking", "websocket", "typescript"],
+      "tags": [
+        "networking",
+        "websocket",
+        "typescript"
+      ],
       "verified": true,
       "author": "arcana",
-      "companions": ["redis-patterns"],
+      "companions": [
+        "redis-patterns"
+      ],
       "conflicts": []
     },
     {
@@ -818,7 +1214,10 @@
       "source": "./skills/xlsx",
       "description": "Spreadsheet operations for .xlsx, .xlsm, .csv, .tsv. Reading, editing, creating, formatting, charting, and data cleaning.",
       "version": "1.0.1",
-      "tags": ["office", "data"],
+      "tags": [
+        "office",
+        "data"
+      ],
       "verified": true,
       "author": "arcana",
       "companions": [],
