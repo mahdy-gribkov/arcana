@@ -116,20 +116,6 @@
       "conflicts": []
     },
     {
-      "name": "env-config",
-      "source": "./skills/env-config",
-      "description": "Environment configuration: .env management, Zod validation, secret management, 12-factor patterns, and Docker env injection.",
-      "version": "1.0.0",
-      "tags": [
-        "devops",
-        "configuration"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "flutter-mobile",
       "source": "./skills/flutter-mobile",
       "description": "Flutter mobile development. Widget composition, Riverpod state, GoRouter navigation, platform channels, and performance optimization.",
