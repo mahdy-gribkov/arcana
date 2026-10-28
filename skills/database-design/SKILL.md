@@ -1,6 +1,6 @@
 ---
 name: database-design
-description: Database architecture and query optimization for PostgreSQL and SQLite. Covers schema design, normalization to 3NF, denormalization trade-offs, indexing strategy (B-tree, GIN, partial, covering indexes), EXPLAIN ANALYZE interpretation, migrations with up/down patterns, connection pooling, ORM configuration (Prisma, Drizzle, SQLAlchemy), transactions, isolation levels, and anti-patterns like N+1 queries, missing indexes, and over-normalization. Use when designing schemas, optimizing queries, writing migrations, or debugging database performance.
+description: Designs PostgreSQL and SQLite schemas and speeds up queries, covering normalization, indexing (B-tree, GIN, partial, covering), EXPLAIN ANALYZE reading, zero-downtime migrations, connection pooling, ORM setup (Prisma, Drizzle, SQLAlchemy, GORM), transactions and isolation levels. Use when designing or changing a schema, fixing a slow query, writing or reviewing a migration, choosing indexes, setting up pooling, or chasing N+1 queries and deadlocks.
 ---
 
 You are a senior database architect who designs schemas that scale and writes queries that stay fast under load.
@@ -178,7 +178,7 @@ DROP TABLE users;
 CREATE INDEX CONCURRENTLY idx_users_email ON users (email);
 -- This does NOT lock the table. Regular CREATE INDEX does.
 ```
-5. **Wrap DDL in transactions** (PostgreSQL supports transactional DDL, MySQL does NOT).
+5. **Wrap DDL in transactions** (PostgreSQL supports transactional DDL, MySQL does NOT). The exception is `CREATE INDEX CONCURRENTLY`, which cannot run inside a transaction block: put it in its own migration file with transactions turned off.
 
 Tools: golang-migrate, Prisma Migrate, Drizzle Kit, Alembic (Python).
 
@@ -198,7 +198,7 @@ type User struct {
 type Order struct {
     ID        uint      `gorm:"primaryKey"`
     UserID    uint      `gorm:"index;not null"`
-    Total     float64   `gorm:"type:decimal(10,2);not null"`
+    TotalCents int64    `gorm:"not null"` // money as integer cents, never float64
     Status    string    `gorm:"type:varchar(20);default:'pending'"`
     CreatedAt time.Time `gorm:"autoCreateTime"`
 }
@@ -241,8 +241,6 @@ err := db.Transaction(func(tx *gorm.DB) error {
 - Use `db.Raw()` for complex queries GORM can't express efficiently.
 - Add `gorm:"-"` to fields that shouldn't be persisted.
 
-Tools: golang-migrate, Prisma Migrate, Drizzle Kit, Alembic (Python).
-
 ## Connection Pooling
 
 ### Why
@@ -261,7 +259,9 @@ default_pool_size = 20     ; Only 20 actual PostgreSQL connections
 
 ### Prisma with Connection Pooling
 ```typescript
-// Use connection_limit to control pool size
+// Prisma 6 and older: connection_limit controls the pool size.
+// Prisma 7 uses driver adapters, so set the pool size on the adapter instead.
+// (Append with "&" when DATABASE_URL already has a query string.)
 const prisma = new PrismaClient({
   datasources: {
     db: { url: process.env.DATABASE_URL + "?connection_limit=5" },
@@ -313,7 +313,7 @@ from sqlalchemy.orm import joinedload
 stmt = (
     select(User)
     .options(joinedload(User.orders))
-    .where(User.is_active == True)
+    .where(User.is_active)
 )
 users = session.scalars(stmt).unique().all()
 ```
