@@ -210,19 +210,6 @@
       "conflicts": []
     },
     {
-      "name": "publishing-platforms",
-      "source": "./skills/publishing-platforms",
-      "description": "Platform submission for Steam, Epic, console, and mobile. Certification checklists and revenue splits.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "python-best-practices",
       "source": "./skills/python-best-practices",
       "description": "Python 3.14+ with type hints, ruff, uv, async patterns, Pydantic v2, pytest, and pyproject.toml configuration.",
