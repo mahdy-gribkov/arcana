@@ -1,6 +1,6 @@
 ---
 name: python-best-practices
-description: Modern Python 3.14+ development with strict type hints, ruff linting, uv package manager, async/await patterns, dataclasses vs Pydantic v2, pytest conventions, virtual environments, src layout project structure, and pyproject.toml configuration. Use when writing, reviewing, or scaffolding Python code.
+description: Writes, reviews and scaffolds modern Python 3.14+ code with strict type hints, ruff, uv, src layout and pyproject.toml, async/await with TaskGroup, dataclasses vs Pydantic v2, and pytest conventions. Use when writing or reviewing a .py file, starting a Python project, choosing dataclass or Pydantic, configuring ruff, mypy or pyright, fixing async or blocking-IO bugs, or writing pytest tests.
 ---
 You are a Python expert specializing in modern Python 3.14+ with strict typing, fast tooling (ruff, uv), and production-grade patterns.
 
@@ -46,8 +46,8 @@ dependencies = [
     "pydantic>=2.6",
 ]
 
-[project.optional-dependencies]
-dev = ["ruff", "pytest", "pytest-asyncio", "mypy", "pre-commit"]
+[dependency-groups]
+dev = ["ruff", "pytest", "pytest-asyncio", "mypy", "pyright", "pre-commit"]
 
 [project.scripts]
 myproject = "myproject.main:cli"
@@ -70,7 +70,6 @@ select = [
     "ANN",            # flake8-annotations (type hint enforcement)
     "PT",             # flake8-pytest-style
 ]
-ignore = ["ANN101"]  # don't require type annotation for `self`
 
 [tool.ruff.lint.isort]
 known-first-party = ["myproject"]
@@ -93,10 +92,11 @@ reportMissingTypeStubs = false
 
 ```bash
 # Install uv (replaces pip, pip-tools, virtualenv, pipx)
-# Install via package manager (recommended)
+# Use a package manager or the official installation page:
+# https://docs.astral.sh/uv/getting-started/installation/
 # macOS: brew install uv
 # Windows: winget install astral-sh.uv
-# Linux: snap install astral-uv --classic
+# Linux: pipx install uv
 
 # Create project with virtual environment
 uv init myproject && cd myproject
@@ -119,28 +119,23 @@ uv run pyright src/         # type check with pyright (faster, VSCode default)
 ## Type Hints (strict, everywhere)
 
 ```python
-from collections.abc import Sequence, Mapping
-from typing import TypeAlias, TypeVar, Self
+from collections.abc import Awaitable, Callable, Mapping, Sequence
 
-# Use builtin generics (3.12+), not typing.List/Dict
+# Use builtin generics (3.9+), not typing.List/Dict
 def process(items: list[str]) -> dict[str, int]: ...
 
 # Use collections.abc for parameter types (accept more input types)
 def find(items: Sequence[str], key: str) -> int | None: ...
 
-# TypeAlias for complex types
-UserId: TypeAlias = int
-Headers: TypeAlias = Mapping[str, str]
-
-# TypeVar with bounds
-T = TypeVar("T", bound="Base")
-
-def clone(obj: T) -> T:
-    return obj.model_copy()
-
-# 3.12 type statement (new syntax)
+# 3.12 type statement for aliases (replaces typing.TypeAlias)
+type UserId = int
+type Headers = Mapping[str, str]
 type Point = tuple[float, float]
 type Handler[T] = Callable[[T], Awaitable[None]]
+
+# 3.12 generic syntax with a bound (replaces TypeVar)
+def clone[T: Base](obj: T) -> T:
+    return obj.model_copy()
 ```
 
 **Rules:**
@@ -162,7 +157,7 @@ class Point:
     label: str = ""
     tags: list[str] = field(default_factory=list)
 
-# Pydantic v2: for external data (APIs, config, user input) — validates on creation
+# Pydantic v2: for external data (APIs, config, user input), validates on creation
 from pydantic import BaseModel, Field, field_validator
 
 class UserCreate(BaseModel):
@@ -205,11 +200,11 @@ async def fetch_all(urls: list[str]) -> list[str]:
 async def fetch_limited(urls: list[str], max_concurrent: int = 10) -> list[str]:
     sem = asyncio.Semaphore(max_concurrent)
     async with httpx.AsyncClient() as client:
-        async def _fetch(url: str) -> str:
+        async def _get_text(url: str) -> str:
             async with sem:
                 resp = await client.get(url)
                 return resp.text
-        return await asyncio.gather(*[_fetch(u) for u in urls])
+        return await asyncio.gather(*[_get_text(u) for u in urls])
 
 # Structured concurrency with TaskGroup (3.11+)
 async def process_batch(items: list[str]) -> None:
@@ -221,13 +216,15 @@ async def process_batch(items: list[str]) -> None:
 
 **Async rules:**
 - Use `httpx` not `requests` for async HTTP. `aiohttp` is also fine.
-- Never call blocking IO (`open()`, `time.sleep()`, `requests.get()`) in async code. Use `asyncio.to_thread()` for unavoidable blocking calls.
+- Never call blocking IO (`open()`, `time.sleep()`, `requests` calls) in async code. Use `asyncio.to_thread()` for unavoidable blocking calls.
 - Use `TaskGroup` (3.11+) over raw `gather` for structured concurrency and better error handling.
 
 ## Pytest Conventions
 
 ```python
-# tests/conftest.py — shared fixtures
+# tests/conftest.py: shared fixtures
+from collections.abc import AsyncGenerator
+
 import pytest
 from myproject.db import Database
 
@@ -244,7 +241,9 @@ def sample_user() -> dict[str, str]:
 
 # tests/test_user.py
 import pytest
-from myproject.services.user import create_user, UserError
+from myproject.db import Database
+from myproject.models import validate_email
+from myproject.services.user import UserError, create_user
 
 async def test_create_user_success(db: Database, sample_user: dict[str, str]) -> None:
     user = await create_user(db, **sample_user)
