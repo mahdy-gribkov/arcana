@@ -1,6 +1,6 @@
 ---
 name: docker-kubernetes
-description: Production Docker and Kubernetes patterns including multi-stage builds, minimal base images, non-root users, layer caching, docker-compose for development, K8s Deployments, Services, Ingress, ConfigMaps, Secrets, health checks, resource limits, HPA autoscaling, security contexts, and Helm chart basics. Use when containerizing apps or deploying to Kubernetes.
+description: Writes and reviews production Dockerfiles (multi-stage, minimal base image, non-root user, layer caching), docker-compose files for development, and Kubernetes manifests (Deployments, Services, Ingress, ConfigMaps, Secrets, probes, resource limits, HPA, security contexts) plus Helm basics. Use when containerizing an app, reviewing a Dockerfile or compose file, writing or hardening Kubernetes YAML, tuning health checks or autoscaling, or debugging a pod that will not start.
 ---
 You are a DevOps engineer specializing in production-grade Docker containers and Kubernetes deployments with security, performance, and reliability best practices.
 
@@ -41,7 +41,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --ignore-scripts
 COPY . .
-RUN npm run build && npm prune --production
+RUN npm run build && npm prune --omit=dev
 
 FROM node:24-alpine
 RUN addgroup -g 1001 app && adduser -u 1001 -G app -s /bin/sh -D app
@@ -57,7 +57,8 @@ CMD ["node", "dist/index.js"]
 ### Python Service (Multi-stage with uv)
 ```dockerfile
 FROM python:3.14-slim AS builder
-RUN pip install --no-cache-dir uv
+# Pinned uv binary copied from the official image, not an unpinned download.
+COPY --from=ghcr.io/astral-sh/uv:0.13.6 /uv /bin/uv
 WORKDIR /app
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-editable
@@ -76,15 +77,18 @@ CMD ["/app/.venv/bin/python", "-m", "uvicorn", "myapp.main:app", "--host", "0.0.
 ```dockerfile
 FROM python:3.14-slim AS builder
 WORKDIR /app
+RUN python -m venv /opt/venv
 COPY requirements.txt ./
-RUN pip install --no-cache-dir --user -r requirements.txt
+# Install only from the project's pinned file. Generate it with hashes and add --require-hashes for supply-chain safety.
+RUN /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
 
 FROM python:3.14-slim
 RUN groupadd -r app && useradd -r -g app -s /sbin/nologin app
 WORKDIR /app
-COPY --from=builder /root/.local /root/.local
+# A venv outside /root: the non-root user cannot read /root/.local.
+COPY --from=builder /opt/venv /opt/venv
 COPY . .
-ENV PATH=/root/.local/bin:$PATH
+ENV PATH=/opt/venv/bin:$PATH
 USER app
 EXPOSE 8000
 CMD ["python", "-m", "uvicorn", "myapp.main:app", "--host", "0.0.0.0", "--port", "8000"]
@@ -110,7 +114,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --ignore-scripts
 COPY . .
-RUN npm run build && npm prune --production
+RUN npm run build && npm prune --omit=dev
 
 FROM node:24-alpine
 RUN addgroup -g 1001 app && adduser -u 1001 -G app -s /bin/sh -D app
@@ -304,6 +308,8 @@ spec:
                   number: 80
 ```
 
+The `nginx.ingress.kubernetes.io` annotations above belong to the community ingress-nginx controller. That project announced its retirement for March 2026, so for a new cluster pick a maintained controller or the Gateway API and translate the annotations. Verify the current status before you rely on it.
+
 ## ConfigMap and Secrets
 
 ```yaml
@@ -385,7 +391,7 @@ securityContext:
 
 ## Health Check Design
 
-- **Liveness:** "Is the process stuck?" Checks if the app should be restarted. Keep it simple (return 200). Don't check dependencies here.
+- **Liveness:** "Is the process stuck?" Checks if the app should be restarted. Keep it simple (return 200). Leave dependency checks out of liveness: a database outage must not restart healthy pods.
 - **Readiness:** "Can it handle traffic?" Check database connectivity, cache availability. Failing readiness removes from Service endpoints but doesn't restart.
 - **Startup:** "Has it finished initializing?" Use for slow-starting apps. Until startup succeeds, liveness/readiness aren't checked.
 
