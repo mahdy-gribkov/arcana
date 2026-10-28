@@ -158,19 +158,6 @@
       "conflicts": []
     },
     {
-      "name": "monetization-systems",
-      "source": "./skills/monetization-systems",
-      "description": "Game monetization: IAP, battle passes, ads integration, and ethical player retention.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "monitoring-observability",
       "source": "./skills/monitoring-observability",
       "description": "Production observability: structured logging, Prometheus, OpenTelemetry, Grafana dashboards, and SLO/SLI alerting.",
