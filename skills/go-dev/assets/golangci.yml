@@ -1,0 +1,53 @@
+# golangci-lint v2 baseline for a new Go module (written against golangci-lint v2.15.0; check the release page for the current one).
+# Copy it to the repo root as .golangci.yml, set goimports local-prefixes to the module path, and add one depguard
+# rule that keeps the core package from importing infrastructure. Pin the same golangci-lint version locally and in CI.
+version: "2"
+
+run:
+  timeout: 5m
+
+# Every finding at "error" severity so editors render red, not yellow. CI fails on any finding anyway.
+severity:
+  default: error
+
+linters:
+  # "standard" = errcheck, govet, ineffassign, staticcheck, unused.
+  default: standard
+  enable:
+    - revive # exported doc comments and naming mechanics
+    - bodyclose # outbound HTTP: response bodies closed
+    - gosec # security findings (excluded in tests below)
+    - errorlint # %w wrapping; forbids err == and type assertions on errors
+    - sqlclosecheck # sql rows closed
+    - noctx # HTTP and SQL calls carry a context
+    - nolintlint # a //nolint names its linter and a reason
+    - misspell
+    - unconvert
+    - unparam
+    # - testifylint # enable when the module uses testify
+    # - depguard # enable together with the settings block below
+  # settings:
+  #   depguard:
+  #     rules:
+  #       domain-stays-pure:
+  #         files: ["**/internal/domain/**"]
+  #         deny:
+  #           - pkg: example.com/yourmodule/internal/infra
+  #             desc: "domain must not import infra; dependencies point inward"
+  exclusions:
+    generated: lax
+    rules:
+      # gosec is noisy in tests; noctx flags httptest.NewRequest, the idiomatic test request constructor.
+      - path: _test\.go
+        linters:
+          - gosec
+          - noctx
+
+formatters:
+  enable:
+    - gofumpt # stricter superset of gofmt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - example.com/yourmodule
