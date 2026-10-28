@@ -90,8 +90,7 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "security-review",
-        "postgres-advanced"
+        "security-review"
       ],
       "conflicts": []
     },
@@ -208,22 +207,6 @@
       "verified": true,
       "author": "arcana",
       "companions": [],
-      "conflicts": []
-    },
-    {
-      "name": "postgres-advanced",
-      "source": "./skills/postgres-advanced",
-      "description": "Advanced PostgreSQL: window functions, CTEs, JSONB, full-text search, partial indexes, partitioning, and PgBouncer.",
-      "version": "1.0.0",
-      "tags": [
-        "database",
-        "postgresql"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "database-design"
-      ],
       "conflicts": []
     },
     {
