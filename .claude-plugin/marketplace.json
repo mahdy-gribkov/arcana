@@ -116,23 +116,6 @@
       "conflicts": []
     },
     {
-      "name": "flutter-mobile",
-      "source": "./skills/flutter-mobile",
-      "description": "Flutter mobile development. Widget composition, Riverpod state, GoRouter navigation, platform channels, and performance optimization.",
-      "version": "1.0.0",
-      "tags": [
-        "mobile",
-        "flutter",
-        "dart"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "react-native"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "framer-motion",
       "source": "./skills/framer-motion",
       "description": "Framer Motion animations for React. Variants, gestures, layout animations, AnimatePresence, scroll triggers, and spring physics.",
@@ -704,8 +687,7 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "typescript",
-        "flutter-mobile"
+        "typescript"
       ],
       "conflicts": []
     },
