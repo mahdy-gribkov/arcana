@@ -8,11 +8,8 @@ sys.dont_write_bytecode = True  # a stray __pycache__ would fail the skill gate 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from annotate_focus import FOCUS_RED, INACTIVE_OPACITY, annotate  # noqa: E402
 
-try:
-    from PIL import Image, ImageDraw
-    SKIP = None
-except ImportError:
-    SKIP = "Pillow is not installed (python -m pip install pillow)"
+# Pillow is pinned in requirements.txt; a missing install fails the run instead of skipping it.
+from PIL import Image, ImageDraw  # noqa: E402
 
 BLUE = (30, 60, 200)
 FADED_BLUE = tuple(255 * (1 - INACTIVE_OPACITY) + channel * INACTIVE_OPACITY for channel in BLUE)  # Pillow truncates, so compare with a tolerance
@@ -22,7 +19,6 @@ def near(pixel, expected, tolerance=2):
     return all(abs(a - b) <= tolerance for a, b in zip(pixel, expected))
 
 
-@unittest.skipIf(SKIP is not None, SKIP)
 class AnnotateFocusTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()

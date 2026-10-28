@@ -12,16 +12,12 @@ sys.dont_write_bytecode = True  # a stray __pycache__ would fail the skill gate 
 sys.path.insert(0, str(HERE))
 import build_hld  # noqa: E402
 
-try:
-    from PIL import Image, ImageDraw
-    SKIP = None
-except ImportError:
-    SKIP = "Pillow is not installed (python -m pip install pillow)"
+# Pillow is pinned in requirements.txt; a missing install fails the run instead of skipping it.
+from PIL import Image, ImageDraw  # noqa: E402
 
 EXAMPLE = HERE.parent / "assets" / "manifest.example.json"
 
 
-@unittest.skipIf(SKIP is not None, SKIP)
 class BuildHldTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
@@ -174,10 +170,7 @@ class BuildHldTests(unittest.TestCase):
         import excalidraw_lib as lib
         from export_scene import export, font_path
         from smooth_scene import smooth
-        try:
-            font_path()
-        except ValueError as error:
-            self.skipTest(str(error))
+        font_path()  # a machine with no usable font fails here with the fix in the message
         lib.reset()
         receiver = lib.rnode(180, 280, 330, "apps/portal", "POST /hooks/provider", *lib.APP)
         sink = lib.rnode(760, 280, 330, "packages/comms", "deliverEvent()", *lib.WORKER)

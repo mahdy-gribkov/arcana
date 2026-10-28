@@ -12,21 +12,16 @@ import excalidraw_lib as lib  # noqa: E402
 from export_scene import export, font_path  # noqa: E402
 from smooth_scene import smooth  # noqa: E402
 
-try:
-    from PIL import Image
-    font_path()
-    SKIP = None
-except ImportError:
-    SKIP = "Pillow is not installed (python -m pip install pillow)"
-except ValueError as error:
-    SKIP = str(error)
+# Pillow is pinned in requirements.txt and a font is required; either missing fails the run instead of skipping it.
+from PIL import Image  # noqa: E402
+
+font_path()
 
 
 def rgb(hex_colour):
     return tuple(int(hex_colour[i:i + 2], 16) for i in (1, 3, 5))
 
 
-@unittest.skipIf(SKIP is not None, SKIP)
 class ExportSceneTests(unittest.TestCase):
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
