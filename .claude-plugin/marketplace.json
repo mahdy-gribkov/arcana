@@ -55,7 +55,6 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "testing-strategy",
         "docker-kubernetes"
       ],
       "conflicts": []
@@ -218,9 +217,7 @@
       ],
       "verified": true,
       "author": "arcana",
-      "companions": [
-        "testing-strategy"
-      ],
+      "companions": [],
       "conflicts": []
     },
     {
@@ -290,19 +287,6 @@
       "conflicts": []
     },
     {
-      "name": "testing-strategy",
-      "source": "./skills/testing-strategy",
-      "description": "Testing across unit, integration, and e2e. pytest, Vitest, Jest, Go testing, Playwright. TDD workflow, mocking, and CI integration.",
-      "version": "1.0.0",
-      "tags": [
-        "testing"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "typescript",
       "source": "./skills/typescript",
       "description": "TypeScript strict types, generics, utility types, discriminated unions, and type-safe patterns.",
@@ -313,8 +297,7 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "typescript-advanced",
-        "testing-strategy"
+        "typescript-advanced"
       ],
       "conflicts": []
     },
