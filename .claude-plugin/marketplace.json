@@ -23,8 +23,7 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "frontend-design",
-        "frontend-code-review"
+        "frontend-design"
       ],
       "conflicts": []
     },
@@ -116,24 +115,6 @@
       "conflicts": []
     },
     {
-      "name": "frontend-code-review",
-      "source": "./skills/frontend-code-review",
-      "description": "Frontend review checklist for .tsx, .ts, .js files. cn() usage, memoization, accessibility, and inline rules.",
-      "version": "1.0.1",
-      "tags": [
-        "react",
-        "typescript",
-        "web"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "frontend-design",
-        "typescript"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "frontend-design",
       "source": "./skills/frontend-design",
       "description": "Production-grade frontend interfaces with CSS architecture, component patterns, layout systems, and motion design. BAD/GOOD pairs for every pattern.",
@@ -147,7 +128,6 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "frontend-code-review",
         "tailwind-css"
       ],
       "conflicts": []
