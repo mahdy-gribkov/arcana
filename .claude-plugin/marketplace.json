@@ -210,19 +210,6 @@
       "conflicts": []
     },
     {
-      "name": "project-migration",
-      "source": "./skills/project-migration",
-      "description": "Migrate project folders preserving Claude Code session data. Path encoding, rollback patterns, and orphan cleanup.",
-      "version": "1.1.0",
-      "tags": [
-        "meta"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "publishing-platforms",
       "source": "./skills/publishing-platforms",
       "description": "Platform submission for Steam, Epic, console, and mobile. Certification checklists and revenue splits.",
