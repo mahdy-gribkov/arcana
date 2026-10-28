@@ -224,24 +224,6 @@
       "conflicts": []
     },
     {
-      "name": "remotion-best-practices",
-      "source": "./skills/remotion-best-practices",
-      "description": "Remotion video creation in React. Animations, compositions, audio sync, text effects, and rendering.",
-      "version": "1.0.1",
-      "tags": [
-        "react",
-        "typescript",
-        "video",
-        "remotion"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "typescript"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "rust-best-practices",
       "source": "./skills/rust-best-practices",
       "description": "Idiomatic Rust: ownership, lifetimes, error handling, async Tokio, traits, and production web service patterns.",
