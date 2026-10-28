@@ -116,20 +116,6 @@
       "conflicts": []
     },
     {
-      "name": "docx",
-      "source": "./skills/docx",
-      "description": "Word document creation, editing, and manipulation. Tables of contents, headings, tracked changes, images, and formatting.",
-      "version": "1.0.1",
-      "tags": [
-        "documentation",
-        "office"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "email-notifications",
       "source": "./skills/email-notifications",
       "description": "Email systems with SendGrid and AWS SES. React Email templates, deliverability (SPF/DKIM/DMARC), bounce handling, and queue-based processing.",
