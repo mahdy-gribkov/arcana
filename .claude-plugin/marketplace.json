@@ -126,21 +126,6 @@
       "conflicts": []
     },
     {
-      "name": "godot-4",
-      "source": "./skills/godot-4",
-      "description": "Godot 4 with GDScript 2.0. Typed syntax, node architecture, physics, state machines, resource management, and export templates.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev",
-        "godot",
-        "gdscript"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "golang-pro",
       "source": "./skills/golang-pro",
       "description": "Go 1.26+ with modern patterns, concurrency, HTTP routing, error handling, testing, and performance profiling.",
