@@ -158,20 +158,6 @@
       "conflicts": []
     },
     {
-      "name": "memory-management",
-      "source": "./skills/memory-management",
-      "description": "Game memory optimization, object pooling, GC tuning, and resource management.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev",
-        "performance"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "monetization-systems",
       "source": "./skills/monetization-systems",
       "description": "Game monetization: IAP, battle passes, ads integration, and ethical player retention.",
