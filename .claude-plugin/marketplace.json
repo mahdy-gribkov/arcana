@@ -46,20 +46,6 @@
       "conflicts": []
     },
     {
-      "name": "audio-systems",
-      "source": "./skills/audio-systems",
-      "description": "Game audio systems, spatial audio, FMOD/Wwise integration, adaptive music, and sound design.",
-      "version": "1.1.0",
-      "tags": [
-        "gamedev",
-        "audio"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "aws-essentials",
       "source": "./skills/aws-essentials",
       "description": "AWS core services: Lambda, S3, RDS, CloudFront, IAM, SQS/SNS, DynamoDB. Least-privilege policies, presigned URLs, and cost optimization.",
