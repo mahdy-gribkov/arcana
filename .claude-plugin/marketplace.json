@@ -1,288 +1,513 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "arcana",
   "owner": {
     "name": "Mahdy Lorens Gribkov",
-    "github": "medy-gribkov"
+    "url": "https://github.com/mahdy-gribkov"
   },
   "metadata": {
-    "description": "Agent skills that work across AI coding tools",
-    "version": "3.0.0",
-    "homepage": "https://sporesec.com"
+    "description": "Focused, tested agent skills for TypeScript, Go, testing, security and web work",
+    "version": "5.0.0"
   },
   "plugins": [
     {
       "name": "accessibility-wcag",
       "source": "./skills/accessibility-wcag",
       "description": "WCAG 2.1 AA compliance, semantic HTML, ARIA patterns, keyboard navigation, screen reader testing, color contrast, focus management, and automated accessibility testing with axe-core.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "accessibility",
         "web",
         "design"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "api-design",
       "source": "./skills/api-design",
       "description": "REST API and GraphQL design best practices including resource naming, HTTP methods, status codes, pagination, error responses (RFC 7807), versioning, OpenAPI specs, authentication, rate limiting, GraphQL schema design, and subscriptions.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "api",
         "rest",
         "graphql"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "security-review"
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "security-review"
+          ],
+          "conflicts": []
+        }
+      }
+    },
+    {
+      "name": "bugbounty-report",
+      "source": "./skills/bugbounty-report",
+      "description": "Builds and verifies a bug bounty or vulnerability report before submission (HackerOne and similar) with kill-or-keep checks on the finding, the report body and PoC package in platform format, and a compliance check against the program's public policy. Use when writing, formatting or pre-submit auditing a security finding, its PoC zip or its report text, or when someone says bug bounty report, HackerOne report, vulnerability report, security disclosure, PoC package or pre-submit review. For reviewing your own code for vulnerabilities use security-review instead.",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
+      "tags": [
+        "security",
+        "bug-bounty",
+        "hackerone"
       ],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "security-review"
+          ],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "ci-cd-pipelines",
       "source": "./skills/ci-cd-pipelines",
       "description": "GitHub Actions and GitLab CI/CD pipeline expertise. Workflow syntax, caching, reusable workflows, deployment patterns, Docker builds, and branch protection.",
-      "version": "1.1.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "ci-cd",
         "github-actions",
         "devops"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "docker-kubernetes"
-      ],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "docker-kubernetes"
+          ],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "codebase-analysis",
       "source": "./skills/codebase-analysis",
       "description": "Systematic codebase analysis and pre-production review. 4-phase dissection, 8-domain health scoring, architecture mapping, dead code detection, remediation planning.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "code-review",
         "architecture"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "security-review"
-      ],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "security-review"
+          ],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "database-design",
       "source": "./skills/database-design",
       "description": "Database architecture for PostgreSQL and SQLite. Schema design, indexing, EXPLAIN ANALYZE, migrations, connection pooling, and ORM configuration.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "database",
         "postgresql",
         "sqlite"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "security-review"
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "security-review"
+          ],
+          "conflicts": []
+        }
+      }
+    },
+    {
+      "name": "design-doc",
+      "source": "./skills/design-doc",
+      "description": "Writes the design note a non-trivial change needs before code (problem, evidence, options weighed, decision and why, invariants, failure modes, observability, rollback) and, when the change spans apps, packages or services, builds a high-level design diagram or a step-by-step HLD with a defect-checked Excalidraw builder. Use when asked for a design note, design doc, technical spec, HLD, high-level design, architecture diagram, component diagram, flow diagram or \"how should we build this\", or before adding a new table, route, package, seam, third-party service, or a payment, auth or data-boundary change.",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
+      "tags": [
+        "architecture",
+        "design",
+        "diagrams",
+        "specs"
       ],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "api-design",
+            "database-design"
+          ],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "docker-kubernetes",
       "source": "./skills/docker-kubernetes",
       "description": "Production Docker and Kubernetes: multi-stage builds, non-root users, K8s manifests, health checks, HPA autoscaling, security contexts, and Helm.",
-      "version": "1.1.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "docker",
         "kubernetes",
         "devops"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "ci-cd-pipelines"
-      ],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "ci-cd-pipelines"
+          ],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "git-workflow",
       "source": "./skills/git-workflow",
       "description": "Git workflows: conventional commits, branch strategies, rebase, hooks (Husky), monorepo patterns, and bisect debugging.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "git"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [],
+          "conflicts": []
+        }
+      }
+    },
+    {
+      "name": "go-dev",
+      "source": "./skills/go-dev",
+      "description": "Writes, reviews and lints Go code, with idiomatic error handling, table-driven tests, golangci-lint v2 configuration, and a one-command run of format, lint, vet, tidy, govulncheck and race tests. Use when working on a .go file or go.mod, reviewing a Go PR or function, asking \"is this idiomatic Go\", setting up or fixing golangci-lint, writing Go tests, or chasing a Go lint, vet or race failure. Not for other languages.",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
+      "tags": [
+        "go",
+        "golang",
+        "golangci-lint",
+        "review"
+      ],
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "testing",
+            "security-review"
+          ],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "i18n-localization",
       "source": "./skills/i18n-localization",
       "description": "Internationalization with next-intl and react-intl. ICU message syntax, plurals, RTL layout, and dynamic locale loading.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "web",
         "react",
         "i18n"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "nextjs-16"
-      ],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "nextjs-16"
+          ],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "llm-integration",
       "source": "./skills/llm-integration",
       "description": "LLM/AI API integration with OpenAI and Anthropic. Structured output, tool calling, streaming, prompt engineering, and cost optimization.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "ai",
         "api",
         "typescript"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "nextjs-16",
       "source": "./skills/nextjs-16",
       "description": "Next.js 16 with Turbopack, Cache Components, proxy.ts, Server Actions, React 19.2 View Transitions, and App Router patterns.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "react",
         "nextjs",
         "typescript",
         "web"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "tailwind-css"
-      ],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "tailwind-css"
+          ],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "oauth-auth",
       "source": "./skills/oauth-auth",
       "description": "OAuth2 with PKCE, OIDC, JWT validation, session management, refresh token rotation, and Auth.js patterns.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "security",
         "auth",
         "web"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "security-review",
-        "nextjs-16"
-      ],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "security-review",
+            "nextjs-16"
+          ],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "performance-optimization",
       "source": "./skills/performance-optimization",
       "description": "Web and backend performance: Core Web Vitals, bundle analysis, caching, database optimization, and memory leak detection.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "web",
         "node",
         "database"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "python-best-practices",
       "source": "./skills/python-best-practices",
       "description": "Python 3.14+ with type hints, ruff, uv, async patterns, Pydantic v2, pytest, and pyproject.toml configuration.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "python"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "scraping-automation",
       "source": "./skills/scraping-automation",
       "description": "Web scraping with Playwright and Puppeteer. Stealth mode, proxy rotation, structured extraction, and retry patterns.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "scraping",
         "automation",
         "typescript",
         "python"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "security-review",
       "source": "./skills/security-review",
       "description": "Security review: OWASP Top 10, injection prevention, auth patterns, secrets management, dependency scanning, and security headers.",
-      "version": "1.1.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "security",
         "web"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "oauth-auth"
-      ],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "oauth-auth"
+          ],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "seo-meta",
       "source": "./skills/seo-meta",
       "description": "SEO and meta tags: Next.js metadata API, Open Graph, JSON-LD structured data, sitemaps, and dynamic OG images.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "web",
         "seo",
         "nextjs"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "nextjs-16"
-      ],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "nextjs-16"
+          ],
+          "conflicts": []
+        }
+      }
     },
     {
       "name": "tailwind-css",
       "source": "./skills/tailwind-css",
       "description": "Tailwind CSS: config, plugins, cn() utility, responsive design, dark mode, theme customization, and performance.",
-      "version": "1.0.0",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
       "tags": [
         "css",
         "design",
         "web"
       ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "nextjs-16"
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "nextjs-16"
+          ],
+          "conflicts": []
+        }
+      }
+    },
+    {
+      "name": "testing",
+      "source": "./skills/testing",
+      "description": "Writes, fixes and reviews tests for TypeScript and JavaScript projects, which means vitest unit and DOM tests, Playwright end-to-end specs, coverage thresholds, regression tests that reproduce the bug state, and tests of Cloudflare Workers code on real bindings. Use when adding or fixing a test, a coverage gate is red, a spec is flaky or fails in CI, a bug fix needs its regression test, a test passes but you doubt it can fail, or asked \"how do we test this\". Not for Go tests (go-dev), Lighthouse audits or manual QA scripts.",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
+      "tags": [
+        "testing",
+        "vitest",
+        "playwright",
+        "e2e"
       ],
-      "conflicts": []
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "ts-dev",
+            "ci-cd-pipelines"
+          ],
+          "conflicts": []
+        }
+      }
+    },
+    {
+      "name": "ts-dev",
+      "source": "./skills/ts-dev",
+      "description": "Writes and reviews TypeScript, React and Next.js code against one senior checklist (outcome, what becomes dead, reuse, names, types parsed once, one error model, boundaries, required config values, comments) and one findings format. Use when reviewing a TypeScript or TSX diff or a PR, asked \"is this idiomatic TypeScript\" or \"review my code\", designing a type, an error shape or a function signature, replacing any, a non-null assertion or a type cast, fixing a tsc or typescript-eslint complaint, or deciding whether to extract a helper or add a layer. Not for building a page, route or migration (nextjs-16, api-design, database-design), writing tests (testing), Go (go-dev) or design notes (design-doc).",
+      "version": "5.0.0",
+      "author": {
+        "name": "Mahdy Lorens Gribkov",
+        "url": "https://sporesec.com"
+      },
+      "tags": [
+        "typescript",
+        "react",
+        "nextjs",
+        "review"
+      ],
+      "metadata": {
+        "arcana": {
+          "companions": [
+            "testing",
+            "nextjs-16"
+          ],
+          "conflicts": []
+        }
+      }
     }
   ]
 }
