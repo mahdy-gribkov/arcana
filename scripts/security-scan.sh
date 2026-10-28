@@ -21,9 +21,17 @@ PATH_PATTERNS='(/Users/[A-Za-z]|/home/[A-Za-z]|C:\\Users\\[A-Za-z]|/c/Users/[A-Z
 EXCLUDE_DIRS='(node_modules|dist|\.git/|package-lock\.json|\.claude/)'
 # Test fixtures hold deliberate fake paths, keys and emails for the scanners they test.
 TEST_FILES='(\.test\.[cm]?[jt]s:|/test_[^/]*\.py:)'
+TEXT_FILES=('*.ts' '*.js' '*.json' '*.md' '*.yml' '*.yaml' '*.sh' '*.mjs' '*.py' '*.cff' '*.txt')
 
-path_hits=$(grep -rEn "$PATH_PATTERNS" "$REPO_ROOT" \
-  --include="*.ts" --include="*.js" --include="*.json" --include="*.md" --include="*.yml" --include="*.yaml" --include="*.sh" --include="*.mjs" --include="*.py" --include="*.cff" --include="*.txt" \
+# Scan what git tracks, never the working tree: generated output (coverage reports, builds) holds
+# runner paths and is not part of the repo. Usage: grep_tracked <grep flags> <pattern> <pathspec...>
+grep_tracked() {
+  local flags=$1 pattern=$2
+  shift 2
+  (cd "$REPO_ROOT" && git ls-files -z -- "$@" | xargs -0 -r grep "$flags" "$pattern" --) || true
+}
+
+path_hits=$(grep_tracked -EnH "$PATH_PATTERNS" "${TEXT_FILES[@]}" \
   | grep -Ev "$EXCLUDE_DIRS" \
   | grep -Ev '(CHANGELOG\.md|CLAUDE\.md|\.claude/|rules/|memory/|project-migration/)' \
   | grep -Ev 'Users.Dev|/home/product/' \
@@ -42,8 +50,7 @@ fi
 echo "Checking for secrets..."
 SECRET_PATTERNS='(PRIVATE KEY|sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}|gho_[a-zA-Z0-9]{36}|npm_[a-zA-Z0-9]{36}|glpat-[a-zA-Z0-9-]{20,}|xox[bpoas]-[a-zA-Z0-9-]+|:[^@\s]+@[a-zA-Z0-9.-]+\.[a-z]{2,})'
 
-secret_hits=$(grep -rEn "$SECRET_PATTERNS" "$REPO_ROOT" \
-  --include="*.ts" --include="*.js" --include="*.json" --include="*.md" --include="*.yml" --include="*.yaml" --include="*.sh" --include="*.mjs" --include="*.py" --include="*.cff" --include="*.txt" --include="*.env*" \
+secret_hits=$(grep_tracked -EnH "$SECRET_PATTERNS" "${TEXT_FILES[@]}" '*.env*' \
   | grep -Ev "$EXCLUDE_DIRS" \
   | grep -Ev '(security-scan\.sh|scan-secrets\.sh|scan-package\.mjs|security\.yml|CHANGELOG\.md|SECURITY\.md|README\.md|\.example|@example\.com|@b\.com|package\.json|NOTICE|CITATION\.cff|RELEASING\.md)' \
   | grep -Ev "$TEST_FILES" \
@@ -59,9 +66,8 @@ fi
 
 # 3. .env files committed (should never be in repo)
 echo "Checking for .env files..."
-env_files=$(find "$REPO_ROOT" -name ".env" -o -name ".env.local" -o -name ".env.production" 2>/dev/null \
-  | grep -v node_modules \
-  | grep -v '.env.example' \
+env_files=$( (cd "$REPO_ROOT" && git ls-files -- '.env' '*/.env' '.env.*' '*/.env.*') \
+  | grep -v '\.env\.example$' \
   || true)
 
 if [ -n "$env_files" ]; then
@@ -76,8 +82,7 @@ fi
 echo "Checking skills for personal data..."
 PERSONAL_PATTERNS='([a-zA-Z0-9._%+-]+@(gmail|hotmail|yahoo|outlook)\.[a-z]{2,}|mahdy|gribkov|sporesec)'
 
-personal_hits=$(grep -rEin "$PERSONAL_PATTERNS" "$REPO_ROOT/skills/" \
-  --include="*.md" --include="*.py" --include="*.mjs" --include="*.json" --include="*.yml" \
+personal_hits=$(grep_tracked -EinH "$PERSONAL_PATTERNS" 'skills/*.md' 'skills/*.py' 'skills/*.mjs' 'skills/*.json' 'skills/*.yml' \
   | grep -Ev "$TEST_FILES" \
   || true)
 
@@ -94,9 +99,7 @@ echo "Checking skills for machine-specific references..."
 # Only flag machine-specific patterns that suggest real config, not code examples
 MACHINE_PATTERNS='(%APPDATA%|%USERPROFILE%|%LOCALAPPDATA%)'
 
-machine_hits=$(grep -rEn "$MACHINE_PATTERNS" "$REPO_ROOT/skills/" \
-  --include="*.md" \
-  || true)
+machine_hits=$(grep_tracked -EnH "$MACHINE_PATTERNS" 'skills/*.md')
 
 if [ -n "$machine_hits" ]; then
   # Filter out legitimate references (like documentation about localhost)
