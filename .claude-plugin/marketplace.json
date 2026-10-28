@@ -13,7 +13,7 @@
     {
       "name": "accessibility-wcag",
       "source": "./skills/accessibility-wcag",
-      "description": "WCAG 2.1 AA compliance, semantic HTML, ARIA patterns, keyboard navigation, screen reader testing, color contrast, focus management, and automated accessibility testing with axe-core.",
+      "description": "Audit and fix web accessibility issues against WCAG 2.1/2.2 AA: semantic HTML, ARIA patterns, keyboard navigation, focus management, color contrast, and screen reader support. Use when reviewing or writing React/HTML/CSS for accessibility, fixing axe or Lighthouse findings, adding ARIA labels, building accessible modals, forms, menus, or tabs, or when the user mentions a11y, WCAG, screen readers, or keyboard access.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -34,7 +34,7 @@
     {
       "name": "api-design",
       "source": "./skills/api-design",
-      "description": "REST API and GraphQL design best practices including resource naming, HTTP methods, status codes, pagination, error responses (RFC 7807), versioning, OpenAPI specs, authentication, rate limiting, GraphQL schema design, and subscriptions.",
+      "description": "Designs and reviews REST and GraphQL APIs, covering resource naming, HTTP methods and status codes, cursor vs offset pagination, filtering, RFC 9457 error responses, versioning, OpenAPI specs, API authentication, rate limiting, and GraphQL schema, N+1 and subscription design. Use when designing a new endpoint or schema, reviewing an API for consistency, choosing pagination or error formats, writing an OpenAPI spec, or fixing GraphQL resolver performance.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -80,7 +80,7 @@
     {
       "name": "ci-cd-pipelines",
       "source": "./skills/ci-cd-pipelines",
-      "description": "GitHub Actions and GitLab CI/CD pipeline expertise. Workflow syntax, caching, reusable workflows, deployment patterns, Docker builds, and branch protection.",
+      "description": "GitHub Actions and GitLab CI/CD pipeline expertise. Workflow syntax, job matrix, dependency caching (npm, pip, go, docker layers), artifact management, reusable workflows, composite actions, environment secrets, deployment patterns (blue-green, canary, rolling), Docker builds in CI, version bumping, branch protection, status checks. Use when creating CI/CD pipelines, optimizing build times, setting up deployment automation, or configuring GitHub Actions workflows.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -103,7 +103,7 @@
     {
       "name": "codebase-analysis",
       "source": "./skills/codebase-analysis",
-      "description": "Systematic codebase analysis and pre-production review. 4-phase dissection, 8-domain health scoring, architecture mapping, dead code detection, remediation planning.",
+      "description": "Systematic codebase analysis and pre-production review. 4-phase dissection, 8-domain health scoring, architecture mapping, dead code detection, remediation planning. Use when auditing or onboarding to any codebase.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -125,7 +125,7 @@
     {
       "name": "database-design",
       "source": "./skills/database-design",
-      "description": "Database architecture for PostgreSQL and SQLite. Schema design, indexing, EXPLAIN ANALYZE, migrations, connection pooling, and ORM configuration.",
+      "description": "Designs PostgreSQL and SQLite schemas and speeds up queries, covering normalization, indexing (B-tree, GIN, partial, covering), EXPLAIN ANALYZE reading, zero-downtime migrations, connection pooling, ORM setup (Prisma, Drizzle, SQLAlchemy, GORM), transactions and isolation levels. Use when designing or changing a schema, fixing a slow query, writing or reviewing a migration, choosing indexes, setting up pooling, or chasing N+1 queries and deadlocks.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -173,7 +173,7 @@
     {
       "name": "docker-kubernetes",
       "source": "./skills/docker-kubernetes",
-      "description": "Production Docker and Kubernetes: multi-stage builds, non-root users, K8s manifests, health checks, HPA autoscaling, security contexts, and Helm.",
+      "description": "Writes and reviews production Dockerfiles (multi-stage, minimal base image, non-root user, layer caching), docker-compose files for development, and Kubernetes manifests (Deployments, Services, Ingress, ConfigMaps, Secrets, probes, resource limits, HPA, security contexts) plus Helm basics. Use when containerizing an app, reviewing a Dockerfile or compose file, writing or hardening Kubernetes YAML, tuning health checks or autoscaling, or debugging a pod that will not start.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -196,7 +196,7 @@
     {
       "name": "git-workflow",
       "source": "./skills/git-workflow",
-      "description": "Git workflows: conventional commits, branch strategies, rebase, hooks (Husky), monorepo patterns, and bisect debugging.",
+      "description": "Git workflow practices: conventional commits, merge vs rebase decisions, worktrees, SSH commit signing, and monorepo sparse checkout. Use when writing commit messages, choosing between merge and rebase, resolving conflicts, setting up branches or worktrees, configuring commit signing, or working with large monorepos in git.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -240,7 +240,7 @@
     {
       "name": "i18n-localization",
       "source": "./skills/i18n-localization",
-      "description": "Internationalization with next-intl and react-intl. ICU message syntax, plurals, RTL layout, and dynamic locale loading.",
+      "description": "Internationalize and localize web applications with next-intl, react-intl, ICU MessageFormat, RTL layouts, locale routing, and dynamic locale loading. Use when adding translations or a new language, writing plural or select messages, supporting Hebrew or Arabic RTL, formatting dates, numbers, or currency per locale, or when the user mentions i18n, l10n, next-intl, or locale files.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -263,7 +263,7 @@
     {
       "name": "llm-integration",
       "source": "./skills/llm-integration",
-      "description": "LLM/AI API integration with OpenAI and Anthropic. Structured output, tool calling, streaming, prompt engineering, and cost optimization.",
+      "description": "Integrate OpenAI and Anthropic APIs into applications: client setup, streaming, schema-validated responses, tool calling, token budgets, retries, and cost control. Use when writing code that calls an LLM API, adding streaming responses or function calling, validating model replies against a schema, handling rate limits, or when the user mentions the OpenAI or Anthropic SDK.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -284,7 +284,7 @@
     {
       "name": "nextjs-16",
       "source": "./skills/nextjs-16",
-      "description": "Next.js 16 with Turbopack, Cache Components, proxy.ts, Server Actions, React 19.2 View Transitions, and App Router patterns.",
+      "description": "Build and review Next.js 16 apps: Turbopack, Cache Components, proxy.ts (renamed from middleware.ts), Server Actions, React 19.2 View Transitions, streaming SSR, ISR, error boundaries, and App Router patterns. Use when writing or migrating Next.js 16 code, working in an app/ directory, editing next.config, page.tsx, layout.tsx, route.ts or proxy.ts, or when the user asks about caching, server components, or server actions in Next.js.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -308,7 +308,7 @@
     {
       "name": "oauth-auth",
       "source": "./skills/oauth-auth",
-      "description": "OAuth2 with PKCE, OIDC, JWT validation, session management, refresh token rotation, and Auth.js patterns.",
+      "description": "Implements secure sign-in with OAuth2 authorization code flow with PKCE, OIDC ID token checks, JWT signing and validation, httpOnly cookie sessions with CSRF protection, refresh token rotation with reuse detection, password hashing, and auth middleware. Use when adding login or SSO, reviewing token or session handling, choosing where to store tokens, or debugging an OAuth callback, JWT or refresh failure.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -332,7 +332,7 @@
     {
       "name": "performance-optimization",
       "source": "./skills/performance-optimization",
-      "description": "Web and backend performance: Core Web Vitals, bundle analysis, caching, database optimization, and memory leak detection.",
+      "description": "Finds and fixes web and backend performance problems, covering Core Web Vitals (LCP, INP, CLS), bundle analysis and code splitting, image formats, caching (Cache-Control, CDN, Redis), slow queries and N+1, memory leaks with Chrome DevTools and Node --inspect, connection pooling, and moving work off the request path. Use when a page is slow, a Lighthouse or Web Vitals score is poor, a bundle is too big, an API endpoint is slow, or a Node process leaks memory.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -353,7 +353,7 @@
     {
       "name": "python-best-practices",
       "source": "./skills/python-best-practices",
-      "description": "Python 3.14+ with type hints, ruff, uv, async patterns, Pydantic v2, pytest, and pyproject.toml configuration.",
+      "description": "Writes, reviews and scaffolds modern Python 3.14+ code with strict type hints, ruff, uv, src layout and pyproject.toml, async/await with TaskGroup, dataclasses vs Pydantic v2, and pytest conventions. Use when writing or reviewing a .py file, starting a Python project, choosing dataclass or Pydantic, configuring ruff, mypy or pyright, fixing async or blocking-IO bugs, or writing pytest tests.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -372,7 +372,7 @@
     {
       "name": "scraping-automation",
       "source": "./skills/scraping-automation",
-      "description": "Web scraping with Playwright and Puppeteer. Stealth mode, proxy rotation, structured extraction, and retry patterns.",
+      "description": "Build resilient web scrapers with Playwright and Puppeteer: browser contexts, rate limiting, proxy rotation, retries, structured data extraction, and respectful crawling. Use when writing or debugging a scraper, crawler, or browser automation script, extracting data from pages or APIs, handling dynamic content, selectors that break, blocked requests, or when the user mentions Playwright, Puppeteer, scraping, or crawling.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -394,7 +394,7 @@
     {
       "name": "security-review",
       "source": "./skills/security-review",
-      "description": "Security review: OWASP Top 10, injection prevention, auth patterns, secrets management, dependency scanning, and security headers.",
+      "description": "Reviews code for security flaws and hardens applications, covering OWASP Top 10 risks, injection (SQL, XSS, command), authentication and authorization, secrets handling and rotation, dependency scanning, input validation, CORS, CSRF, rate limiting and security headers, with examples in JavaScript, Python and Go. Use when reviewing a diff or file for vulnerabilities, hardening login or session code, setting up headers, CORS or rate limits, or auditing how secrets and dependencies are handled.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -416,7 +416,7 @@
     {
       "name": "seo-meta",
       "source": "./skills/seo-meta",
-      "description": "SEO and meta tags: Next.js metadata API, Open Graph, JSON-LD structured data, sitemaps, and dynamic OG images.",
+      "description": "Implement SEO metadata for Next.js applications: Metadata API, Open Graph and Twitter tags, JSON-LD structured data, sitemaps, robots, canonical URLs, and dynamic OG images. Use when adding or fixing page titles, descriptions, canonical tags, social cards, schema.org markup, sitemap.ts or robots.ts, or when the user mentions SEO, meta tags, or rich results.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
@@ -439,7 +439,7 @@
     {
       "name": "tailwind-css",
       "source": "./skills/tailwind-css",
-      "description": "Tailwind CSS: config, plugins, cn() utility, responsive design, dark mode, theme customization, and performance.",
+      "description": "Writes and reviews Tailwind CSS v4 code with the CSS-first setup (@import, @theme, @utility, @plugin, @source), the cn() class merge helper, mobile-first responsive design, class-based dark mode, built-in container queries, and variant-driven components. Also migrates v3 projects to v4. Use when styling with Tailwind, fixing classes that do not apply or conflict, setting up or upgrading Tailwind, adding design tokens or dark mode, or building reusable Tailwind components.",
       "version": "5.0.0",
       "author": {
         "name": "Mahdy Lorens Gribkov",
