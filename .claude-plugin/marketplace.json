@@ -168,8 +168,7 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "tailwind-css",
-        "vercel-deploy"
+        "tailwind-css"
       ],
       "conflicts": []
     },
@@ -277,23 +276,6 @@
         "css",
         "design",
         "web"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "nextjs-16"
-      ],
-      "conflicts": []
-    },
-    {
-      "name": "vercel-deploy",
-      "source": "./skills/vercel-deploy",
-      "description": "Vercel deployment: Edge Functions, middleware, environment variables, preview deployments, caching, and monorepo config.",
-      "version": "1.0.0",
-      "tags": [
-        "devops",
-        "vercel",
-        "nextjs"
       ],
       "verified": true,
       "author": "arcana",
