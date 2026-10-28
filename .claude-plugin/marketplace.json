@@ -81,20 +81,6 @@
       "conflicts": []
     },
     {
-      "name": "cost-optimization",
-      "source": "./skills/cost-optimization",
-      "description": "Cloud cost optimization: container right-sizing, CDN caching, serverless cold starts, spot instances, storage tiering, and cost monitoring.",
-      "version": "1.0.0",
-      "tags": [
-        "cloud",
-        "devops"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "data-visualization",
       "source": "./skills/data-visualization",
       "description": "Data visualization with Recharts, Chart.js, and D3.js. Chart selection, responsive layouts, colorblind-safe palettes, and dashboard patterns.",
