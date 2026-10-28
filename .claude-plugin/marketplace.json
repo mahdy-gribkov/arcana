@@ -143,22 +143,6 @@
       "conflicts": []
     },
     {
-      "name": "incident-response",
-      "source": "./skills/incident-response",
-      "description": "Production incident response with actionable runbooks, blameless postmortems, status pages, rollback procedures, and SLO breach handling.",
-      "version": "1.1.0",
-      "tags": [
-        "devops",
-        "monitoring"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "monitoring-observability"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "level-design",
       "source": "./skills/level-design",
       "description": "Level design fundamentals, pacing, environmental storytelling, procedural generation with GDScript and C#, and BAD/GOOD design patterns.",
@@ -241,9 +225,7 @@
       ],
       "verified": true,
       "author": "arcana",
-      "companions": [
-        "incident-response"
-      ],
+      "companions": [],
       "conflicts": []
     },
     {
