@@ -158,20 +158,6 @@
       "conflicts": []
     },
     {
-      "name": "multiplayer-netcode",
-      "source": "./skills/multiplayer-netcode",
-      "description": "Multiplayer networking and synchronization. Client prediction, server reconciliation, rollback netcode, lag compensation, and anti-cheat.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev",
-        "networking"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "nextjs-16",
       "source": "./skills/nextjs-16",
       "description": "Next.js 16 with Turbopack, Cache Components, proxy.ts, Server Actions, React 19.2 View Transitions, and App Router patterns.",
