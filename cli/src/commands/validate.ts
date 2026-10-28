@@ -137,12 +137,17 @@ export async function validateCommand(
       : [resolve(baseDir, "..", ".claude-plugin", "marketplace.json")];
 
     const marketplacePath = marketplacePaths.find((p) => existsSync(p));
-    if (marketplacePath) {
-      crossIssues = crossValidate(baseDir, marketplacePath);
-    } else if (!opts.json) {
-      /* v8 ignore next */
-      console.log(ui.warn("  Could not find marketplace.json for cross-validation"));
-    }
+    // --cross asked for the check; a missing manifest must fail it, not skip it silently.
+    crossIssues = marketplacePath
+      ? crossValidate(baseDir, marketplacePath)
+      : [
+          {
+            level: "error",
+            category: "orphan",
+            skill: "marketplace.json",
+            detail: `Not found for --cross (looked in ${marketplacePaths.join(", ")})`,
+          },
+        ];
   }
 
   const hasErrors = results.some((r) => !r.valid);

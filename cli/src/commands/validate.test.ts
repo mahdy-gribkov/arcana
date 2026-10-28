@@ -258,6 +258,38 @@ describe("validateCommand", () => {
     expect(output.crossValidation[0]).toMatchObject({ skill: "x", level: "error", detail: "Missing" });
   });
 
+  // Regression: --cross with no marketplace.json only warned (and said nothing in --json mode), so
+  // the cross check could be skipped and the gate still passed.
+  it("--cross fails when marketplace.json is missing", async () => {
+    vi.doMock("node:fs", () => ({
+      existsSync: vi.fn((p: string) => !p.includes("marketplace.json")),
+      readdirSync: vi.fn(() => ["skill-x"]),
+      readFileSync: vi.fn(() => "content"),
+      statSync: vi.fn(() => ({ isDirectory: () => true })),
+    }));
+    const frontmatter = await import("../utils/frontmatter.js");
+    vi.mocked(frontmatter.validateSkillDir).mockReturnValue({
+      skill: "skill-x",
+      valid: true,
+      errors: [],
+      warnings: [],
+      infos: [],
+    });
+    const scanner = await import("../utils/scanner.js");
+    vi.mocked(scanner.scanSkillContent).mockReturnValue([]);
+    const crossValidate = vi.fn();
+    vi.doMock("../utils/quality.js", () => ({ crossValidate }));
+
+    const { validateCommand } = await import("./validate.js");
+    await expect(validateCommand(undefined, { json: true, cross: true, all: true })).rejects.toThrow("process.exit");
+
+    const output = JSON.parse(consoleLogSpy.mock.calls[0][0]);
+    expect(crossValidate).toHaveBeenCalledTimes(0);
+    expect(output.crossValidation).toHaveLength(1);
+    expect(output.crossValidation[0]).toMatchObject({ skill: "marketplace.json", level: "error" });
+    expect(processExitSpy).toHaveBeenCalledWith(1);
+  });
+
   it("--all mode lists directories from baseDir", async () => {
     const installDir = "/fake/install";
     vi.doMock("node:fs", () => ({

@@ -10,14 +10,8 @@ MIN_SCORE=80
 
 cd "$REPO_ROOT"
 
-echo "=== Validate skills (structure, strict YAML, security patterns) ==="
-$CLI validate --all --source skills
-
-echo "=== Cross-validate marketplace (orphans, drift, licences, versions) ==="
-$CLI validate --all --source skills --cross
-
-echo "=== Quality floor (audit score >= $MIN_SCORE) ==="
-$CLI validate --all --source skills --min-score "$MIN_SCORE"
+echo "=== Validate skills: structure, strict YAML, security patterns, audit floor $MIN_SCORE, marketplace cross-check ==="
+$CLI validate --all --source skills --cross --min-score "$MIN_SCORE"
 
 echo "=== Skill script tests (Python) ==="
 # On Windows "python3" is often the Microsoft Store stub that exits 49 without running anything.
