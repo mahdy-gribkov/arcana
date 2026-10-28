@@ -1,7 +1,7 @@
 ---
 name: nextjs-16
-description: Build Next.js 16 apps with Turbopack, Cache Components, proxy.ts, Server Actions, React 19.2 View Transitions, and App Router patterns. Covers streaming SSR, ISR, error boundaries, and advanced routing.
-user-invokable: true
+description: "Build and review Next.js 16 apps: Turbopack, Cache Components, proxy.ts (renamed from middleware.ts), Server Actions, React 19.2 View Transitions, streaming SSR, ISR, error boundaries, and App Router patterns. Use when writing or migrating Next.js 16 code, working in an app/ directory, editing next.config, page.tsx, layout.tsx, route.ts or proxy.ts, or when the user asks about caching, server components, or server actions in Next.js."
+user-invocable: true
 argument-hint: "[component-name or feature]"
 ---
 
@@ -19,10 +19,10 @@ You are a Next.js 16 expert. Build modern web applications using Turbopack, Cach
 
 ## App Router Structure
 
-**BAD** - Pages Router patterns:
+**BAD** - Pages Router patterns in new code (legacy; still supported, but App Router is where Next.js 16 features live):
 
 ```typescript
-// pages/api/users.ts - REMOVED IN 16
+// pages/api/users.ts - legacy Pages Router API route
 export default function handler(req, res) {
   res.json({ users: [] })
 }
@@ -49,7 +49,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
 ## Cache Components (New in 16)
 
-**BAD** - Relying on implicit caching (removed in 16):
+**BAD** - Old caching model (`experimental.ppr` is removed in 16; `cacheComponents` replaces it):
 
 ```typescript
 // experimental.ppr flag - REMOVED
@@ -57,7 +57,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
 export default async function PostsPage() {
   const res = await fetch('https://api.example.com/posts', {
-    cache: 'force-cache' // Old implicit caching
+    cache: 'force-cache' // Per-fetch caching flags; Cache Components uses "use cache" instead
   })
   const posts = await res.json()
   return <PostList posts={posts} />
@@ -438,7 +438,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ post }, { status: 201 })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return Response.json({ error: error.errors }, { status: 400 })
+      return Response.json({ error: error.issues }, { status: 400 })
     }
     return Response.json({ error: 'Internal error' }, { status: 500 })
   }
@@ -475,8 +475,7 @@ export async function GET(
 // next.config.ts
 const nextConfig = {
   // Turbopack is default in 16, no config needed
-  // To use webpack instead:
-  // webpack: true, // or run: next dev --webpack
+  // To use webpack instead, pass the flag: next dev --webpack, next build --webpack
 
   // Enable filesystem caching (beta) for faster restarts
   experimental: {
