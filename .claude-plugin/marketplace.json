@@ -158,21 +158,6 @@
       "conflicts": []
     },
     {
-      "name": "local-security",
-      "source": "./skills/local-security",
-      "description": "Developer workstation security: SSH keys, GPG signing, credential managers, and secure environment setup.",
-      "version": "1.0.0",
-      "tags": [
-        "security"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "security-review"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "memory-management",
       "source": "./skills/memory-management",
       "description": "Game memory optimization, object pooling, GC tuning, and resource management.",
