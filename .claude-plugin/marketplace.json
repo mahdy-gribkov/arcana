@@ -99,20 +99,6 @@
       "conflicts": []
     },
     {
-      "name": "doc-generation",
-      "source": "./skills/doc-generation",
-      "description": "Documentation generation: OpenAPI, Mermaid diagrams, README generation, changelog automation, JSDoc/GoDoc, and Storybook.",
-      "version": "1.0.0",
-      "tags": [
-        "documentation",
-        "api"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "docker-kubernetes",
       "source": "./skills/docker-kubernetes",
       "description": "Production Docker and Kubernetes: multi-stage builds, non-root users, K8s manifests, health checks, HPA autoscaling, security contexts, and Helm.",
