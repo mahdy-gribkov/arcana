@@ -225,23 +225,6 @@
       "conflicts": []
     },
     {
-      "name": "redis-patterns",
-      "source": "./skills/redis-patterns",
-      "description": "Redis caching, sessions, rate limiting, pub/sub, sorted sets, streams, distributed locks, and connection pooling.",
-      "version": "1.0.0",
-      "tags": [
-        "database",
-        "redis",
-        "caching"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "database-design"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "refactoring-patterns",
       "source": "./skills/refactoring-patterns",
       "description": "Refactoring patterns: extract method, dead code elimination, dependency injection, SOLID principles, and strangler fig.",
@@ -519,9 +502,7 @@
       ],
       "verified": true,
       "author": "arcana",
-      "companions": [
-        "redis-patterns"
-      ],
+      "companions": [],
       "conflicts": []
     },
     {
