@@ -126,23 +126,6 @@
       "conflicts": []
     },
     {
-      "name": "go-linter-configuration",
-      "source": "./skills/go-linter-configuration",
-      "description": "golangci-lint setup and troubleshooting. Import resolution, .golangci.yml configs, CI optimization, and progressive linter adoption.",
-      "version": "1.0.0",
-      "tags": [
-        "go",
-        "golang",
-        "linting"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "golang-pro"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "godot-4",
       "source": "./skills/godot-4",
       "description": "Godot 4 with GDScript 2.0. Typed syntax, node architecture, physics, state machines, resource management, and export templates.",
@@ -169,7 +152,6 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "go-linter-configuration",
         "testing-strategy"
       ],
       "conflicts": []
