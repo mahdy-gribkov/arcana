@@ -210,20 +210,6 @@
       "conflicts": []
     },
     {
-      "name": "programming-architecture",
-      "source": "./skills/programming-architecture",
-      "description": "Game code architecture: ECS, data-oriented design, state machines, and scalable system patterns.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev",
-        "architecture"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "project-migration",
       "source": "./skills/project-migration",
       "description": "Migrate project folders preserving Claude Code session data. Path encoding, rollback patterns, and orphan cleanup.",
