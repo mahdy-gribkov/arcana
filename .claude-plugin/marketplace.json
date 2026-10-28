@@ -113,22 +113,6 @@
       "conflicts": []
     },
     {
-      "name": "game-servers",
-      "source": "./skills/game-servers",
-      "description": "Game server architecture, matchmaking, WebSocket reconnection, and scalable backend systems for online games.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev",
-        "networking"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "multiplayer-netcode"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "gameplay-design",
       "source": "./skills/gameplay-design",
       "description": "Game design theory and mechanics. MDA framework, balance formulas, combat systems, progression curves, input buffering, and feedback loops.",
@@ -355,9 +339,7 @@
       ],
       "verified": true,
       "author": "arcana",
-      "companions": [
-        "game-servers"
-      ],
+      "companions": [],
       "conflicts": []
     },
     {
