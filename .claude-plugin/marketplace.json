@@ -81,23 +81,6 @@
       "conflicts": []
     },
     {
-      "name": "data-visualization",
-      "source": "./skills/data-visualization",
-      "description": "Data visualization with Recharts, Chart.js, and D3.js. Chart selection, responsive layouts, colorblind-safe palettes, and dashboard patterns.",
-      "version": "1.0.0",
-      "tags": [
-        "frontend",
-        "react",
-        "data"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "frontend-design"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "database-design",
       "source": "./skills/database-design",
       "description": "Database architecture for PostgreSQL and SQLite. Schema design, indexing, EXPLAIN ANALYZE, migrations, connection pooling, and ORM configuration.",
