@@ -1,7 +1,7 @@
 ---
 name: llm-integration
-description: Integrate OpenAI and Anthropic APIs with streaming, structured output, tool calling, token management, and cost optimization
-user-invokable: true
+description: "Integrate OpenAI and Anthropic APIs into applications: client setup, streaming, schema-validated responses, tool calling, token budgets, retries, and cost control. Use when writing code that calls an LLM API, adding streaming responses or function calling, validating model replies against a schema, handling rate limits, or when the user mentions the OpenAI or Anthropic SDK."
+user-invocable: true
 ---
 
 # LLM Integration Skill
@@ -53,6 +53,9 @@ const config: LLMConfig = {
 
 validateConfig(config);
 
+// Model IDs in the examples below are placeholders. Providers retire models on a schedule:
+// read the ID from config and check the provider's current model list before shipping.
+
 const openai = config.openaiKey ? new OpenAI({
   apiKey: config.openaiKey,
   maxRetries: config.maxRetries,
@@ -73,7 +76,7 @@ const anthropic = config.anthropicKey ? new Anthropic({
 ```typescript
 async function chat(prompt: string) {
   const response = await openai.chat.completions.create({
-    model: 'gpt-4',
+    model: 'gpt-4o',
     messages: [{ role: 'user', content: prompt }]
   });
   return response.choices[0].message.content;
@@ -89,7 +92,7 @@ async function* streamChat(
 ): AsyncGenerator<string, void, unknown> {
   try {
     const stream = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-4o',
       messages: [{ role: 'user', content: prompt }],
       stream: true,
       stream_options: { include_usage: true }
@@ -131,7 +134,7 @@ for await (const token of streamChat('Explain streaming', console.log)) {
 async function* streamAnthropicWithTools(
   prompt: string,
   tools: Anthropic.Tool[]
-): AsyncGenerator<string, any, unknown> {
+): AsyncGenerator<string, Anthropic.ToolUseBlock[], unknown> {
   const stream = await anthropic.messages.stream({
     model: 'claude-opus-4-6',
     max_tokens: 4096,
@@ -139,19 +142,17 @@ async function* streamAnthropicWithTools(
     tools
   });
 
-  let toolUseBlocks: any[] = [];
-
   for await (const event of stream) {
     if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
       yield event.delta.text;
     }
-
-    if (event.type === 'content_block_stop' && event.content_block.type === 'tool_use') {
-      toolUseBlocks.push(event.content_block);
-    }
   }
 
-  return toolUseBlocks;
+  // Tool input arrives as partial JSON deltas. The final message has it fully assembled.
+  const finalMessage = await stream.finalMessage();
+  return finalMessage.content.filter(
+    (block): block is Anthropic.ToolUseBlock => block.type === 'tool_use'
+  );
 }
 ```
 
@@ -162,7 +163,7 @@ async function* streamAnthropicWithTools(
 ```typescript
 async function extractData(text: string) {
   const response = await openai.chat.completions.create({
-    model: 'gpt-4',
+    model: 'gpt-4o',
     messages: [{
       role: 'user',
       content: `Extract name and email from: ${text}. Return as JSON.`
@@ -205,6 +206,8 @@ async function extractContactOpenAI(text: string): Promise<Contact> {
 }
 ```
 
+For new code prefer OpenAI Structured Outputs (`response_format: { type: 'json_schema', json_schema: { strict: true, ... } }`, or `zodResponseFormat` with `openai.chat.completions.parse` in the SDK). JSON mode only guarantees syntactically valid JSON, not your shape, so keep the Zod parse either way.
+
 ### GOOD: Anthropic tool use for structured output
 
 ```typescript
@@ -237,4 +240,4 @@ async function extractContactAnthropic(text: string): Promise<Contact> {
 }
 ```
 
-<!-- See references/advanced.md for extended examples -->
+See [references/advanced.md](references/advanced.md) for extended examples.
