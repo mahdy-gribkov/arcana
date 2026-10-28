@@ -4,9 +4,9 @@
 
 | Version | Supported |
 |---------|-----------|
-| 3.1.x   | Yes       |
-| 3.0.x   | Security fixes only |
-| < 3.0   | No        |
+| 5.x     | Yes       |
+| 4.x     | Security fixes only |
+| < 4.0   | No        |
 
 ## Reporting a Vulnerability
 
@@ -14,7 +14,7 @@ If you find a security issue in Arcana, please report it responsibly.
 
 **Do not open a public issue.** Instead:
 
-1. Use [GitHub Security Advisories](https://github.com/medy-gribkov/arcana/security/advisories/new) to report privately.
+1. Use [GitHub Security Advisories](https://github.com/mahdy-gribkov/arcana/security/advisories/new) to report privately.
 2. Or email: security@sporesec.com
 
 Include:

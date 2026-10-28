@@ -1,18 +1,18 @@
-cff-version: 1.2.0
+cff-version: 5.0.0
 message: "If you use Arcana in your project, please cite it."
 type: software
 title: "Arcana"
-abstract: "Universal AI skill platform. 74 structured skill packages for Claude Code, Cursor, Codex, Gemini, Windsurf, Antigravity, and Aider."
+abstract: "Context intelligence for AI coding agents: 22 focused, tested skills and a CLI for budget-aware curation, output compression and cross-session memory across Claude Code, Cursor, Codex, Gemini, Windsurf, Antigravity and Aider."
 authors:
   - given-names: Mahdy Lorens
     family-names: Gribkov
     email: mahdy@sporesec.com
     affiliation: SporeSec
-repository-code: "https://github.com/medy-gribkov/arcana"
+repository-code: "https://github.com/mahdy-gribkov/arcana"
 url: "https://sporesec.com"
 license: Apache-2.0
 version: 3.1.0
-date-released: "2026-03-03"
+date-released: "2026-10-28"
 keywords:
   - ai-skills
   - developer-tools
