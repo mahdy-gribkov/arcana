@@ -65,3 +65,9 @@ htmlcov/
 
 # Claude Code
 .claude/
+
+# Private skills live in the private plugin repo, never here
+sporesec-skills/
+
+# claude plugin eval run output
+skills/*/evals/results/

@@ -19,13 +19,15 @@ echo "---"
 echo "Checking for hardcoded paths..."
 PATH_PATTERNS='(/Users/[A-Za-z]|/home/[A-Za-z]|C:\\Users\\[A-Za-z]|/c/Users/[A-Za-z])'
 EXCLUDE_DIRS='(node_modules|dist|\.git/|package-lock\.json|\.claude/)'
+# Test fixtures hold deliberate fake paths, keys and emails for the scanners they test.
+TEST_FILES='(\.test\.[cm]?[jt]s:|/test_[^/]*\.py:)'
 
 path_hits=$(grep -rEn "$PATH_PATTERNS" "$REPO_ROOT" \
-  --include="*.ts" --include="*.js" --include="*.json" --include="*.md" --include="*.yml" --include="*.yaml" --include="*.sh" \
+  --include="*.ts" --include="*.js" --include="*.json" --include="*.md" --include="*.yml" --include="*.yaml" --include="*.sh" --include="*.mjs" --include="*.py" --include="*.cff" --include="*.txt" \
   | grep -Ev "$EXCLUDE_DIRS" \
   | grep -Ev '(CHANGELOG\.md|CLAUDE\.md|\.claude/|rules/|memory/|project-migration/)' \
   | grep -Ev 'Users.Dev|/home/product/' \
-  | grep -Ev '\.test\.ts:' \
+  | grep -Ev "$TEST_FILES" \
   || true)
 
 if [ -n "$path_hits" ]; then
@@ -41,10 +43,10 @@ echo "Checking for secrets..."
 SECRET_PATTERNS='(PRIVATE KEY|sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36}|gho_[a-zA-Z0-9]{36}|npm_[a-zA-Z0-9]{36}|glpat-[a-zA-Z0-9-]{20,}|xox[bpoas]-[a-zA-Z0-9-]+|:[^@\s]+@[a-zA-Z0-9.-]+\.[a-z]{2,})'
 
 secret_hits=$(grep -rEn "$SECRET_PATTERNS" "$REPO_ROOT" \
-  --include="*.ts" --include="*.js" --include="*.json" --include="*.md" --include="*.yml" --include="*.yaml" --include="*.sh" --include="*.env*" \
+  --include="*.ts" --include="*.js" --include="*.json" --include="*.md" --include="*.yml" --include="*.yaml" --include="*.sh" --include="*.mjs" --include="*.py" --include="*.cff" --include="*.txt" --include="*.env*" \
   | grep -Ev "$EXCLUDE_DIRS" \
-  | grep -Ev '(security-scan\.sh|scan-secrets\.sh|security\.yml|CHANGELOG\.md|SECURITY\.md|README\.md|\.example|@example\.com|@b\.com|package\.json|NOTICE|CITATION\.cff|RELEASING\.md)' \
-  | grep -Ev '\.test\.ts:' \
+  | grep -Ev '(security-scan\.sh|scan-secrets\.sh|scan-package\.mjs|security\.yml|CHANGELOG\.md|SECURITY\.md|README\.md|\.example|@example\.com|@b\.com|package\.json|NOTICE|CITATION\.cff|RELEASING\.md)' \
+  | grep -Ev "$TEST_FILES" \
   || true)
 
 if [ -n "$secret_hits" ]; then
@@ -72,10 +74,11 @@ fi
 
 # 4. Personal identifiers in skill files
 echo "Checking skills for personal data..."
-PERSONAL_PATTERNS='([a-zA-Z0-9._%+-]+@(gmail|hotmail|yahoo|outlook)\.[a-z]{2,}|mahdy|gribkov)'
+PERSONAL_PATTERNS='([a-zA-Z0-9._%+-]+@(gmail|hotmail|yahoo|outlook)\.[a-z]{2,}|mahdy|gribkov|sporesec)'
 
 personal_hits=$(grep -rEin "$PERSONAL_PATTERNS" "$REPO_ROOT/skills/" \
-  --include="*.md" \
+  --include="*.md" --include="*.py" --include="*.mjs" --include="*.json" --include="*.yml" \
+  | grep -Ev "$TEST_FILES" \
   || true)
 
 if [ -n "$personal_hits" ]; then

@@ -16,7 +16,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 10
+          package_json_file: cli/package.json
 
       - uses: actions/setup-node@v6
         with:
@@ -30,30 +30,8 @@ jobs:
       - run: pnpm run build
         working-directory: cli
 
-      - name: Validate all skills (structure + security)
-        run: node dist/index.js validate --all --source ../skills --json
-        working-directory: cli
-
-      - name: Cross-validate marketplace
-        run: node dist/index.js validate --all --source ../skills --cross --json
-        working-directory: cli
-
-      - name: Quality gate (min score 40)
-        run: node dist/index.js validate --all --source ../skills --min-score 40 --json
-        working-directory: cli
-
-      - name: Run skill tests
-        run: |
-          has_tests=false
-          for test_file in skills/*/scripts/test_*.py; do
-            [ -f "$test_file" ] || continue
-            has_tests=true
-            echo "=== Running $(basename $test_file) ==="
-            python3 "$test_file" -v
-          done
-          if [ "$has_tests" = false ]; then
-            echo "No skill tests found."
-          fi
+      - name: Skill gates (validate, cross-validate, quality floor, script tests)
+        run: bash scripts/check-skills.sh
 
   secret-scan:
     runs-on: ubuntu-latest
@@ -69,7 +47,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 10
+          package_json_file: cli/package.json
 
       - uses: actions/setup-node@v6
         with:
@@ -91,7 +69,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
         with:
-          version: 10
+          package_json_file: cli/package.json
 
       - uses: actions/setup-node@v6
         with:
