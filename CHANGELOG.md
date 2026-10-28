@@ -1,5 +1,43 @@
 # Changelog
 
+## 5.0.0 (2026-10-28)
+
+Fewer, deeper, tested skills, and a CLI whose gates can actually fail.
+
+### Breaking
+- **74 skills cut to 22.** Removed the game development, mobile, cloud-vendor and other long-tail skills, and every
+  skill with third-party or unclear licence terms (docx, xlsx, frontend-design, skill-creator, frontend-code-review,
+  remotion-best-practices, code-reviewer, update-docs, fullstack-developer, notebooklm-research). They remain at tag
+  `v4.0.0`.
+- **Renamed by replacement:** `ts-dev` replaces `typescript` and `typescript-advanced`; `go-dev` replaces `golang-pro`
+  and `go-linter-configuration` (golangci-lint v2); `testing` replaces `testing-strategy` and `playwright-testing`;
+  `design-doc` replaces `doc-generation` and `spec-driven-dev`.
+- **marketplace.json** follows the documented Claude Code schema: skill relations live in each entry's
+  `metadata.arcana`, `author` is an object, and the self-assigned `verified` flag is gone (trust now follows the
+  serving repo). Every entry version follows the release version.
+
+### Added
+- New skills: `ts-dev`, `go-dev`, `testing`, `bugbounty-report`, `design-doc`, each with references, tested scripts
+  where a step is mechanical, and eval cases.
+- Eval cases (`claude plugin eval` format) for every skill: should-fire and should-not-fire.
+- `validate --cross` blocks skill-level licence files, `license:` fields, "All rights reserved" notices and entry
+  versions that differ from `metadata.version`.
+- `pnpm run ci` runs the exact CI gate set locally; `scripts/check-skills.sh` is the one skill-gate script.
+
+### Fixed
+- Frontmatter is parsed as strict YAML (agents use real YAML loaders); `--fix` no longer writes unquoted colons; CRLF
+  files parse.
+- The audit score credits `scripts/` and `references/` only when SKILL.md references the files.
+- The official repo slug has one home and configs that name the retired `medy-gribkov/arcana` are migrated.
+- Category and suggestion lists name only existing skills, with a test.
+- `install` no longer copies a skill's `evals/` folder.
+- Every kept skill reviewed for stale facts (Tailwind v4, WCAG 2.2, Next.js 16, zod v4, Husky v9, RFC 9457 and more),
+  with "Use when" triggers and a 500-line cap.
+- README lists only real commands and the real skill count, with a test.
+
+### Removed
+- `promo/` and the demo GIF, `cli/package-lock.json` (pnpm only), `scripts/test-local.sh`, funding links.
+
 ## 3.1.0 (2026-03-03)
 
 Official package hardening: license, security, attribution, discoverability, and release infrastructure.

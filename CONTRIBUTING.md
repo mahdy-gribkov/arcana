@@ -16,7 +16,6 @@ Thanks for considering a contribution. Here is how to add a skill or improve an 
 ---
 name: your-skill-name
 description: What it does. When to use it. Trigger phrases. (80-1024 characters)
-license: MIT
 ---
 ```
 
@@ -42,7 +41,7 @@ The description is the most important part. It controls when the skill gets load
 - WHEN to use it (concrete scenarios)
 - Trigger phrases (words that should activate it)
 
-After the frontmatter, write the skill instructions in markdown. Keep it under 150 lines. If you need more detail, put it in `references/` files.
+After the frontmatter, write the skill instructions in markdown. Keep it under 500 lines (validate fails above that). If you need more detail, put it in `references/` files.
 
 ## Skill Quality Checklist
 
@@ -51,7 +50,10 @@ Before submitting a PR, make sure:
 - [ ] SKILL.md has YAML frontmatter with `name` and `description`
 - [ ] Description is 80-1024 characters
 - [ ] Description includes what, when, and trigger phrases
-- [ ] SKILL.md is under 150 lines
+- [ ] SKILL.md is under 500 lines
+- [ ] Description has a "Use when" clause and is valid YAML (quote it if it contains ": ")
+- [ ] `evals/` has at least two should-fire cases and one should-not-fire case (see `skills/go-dev/evals/`)
+- [ ] No licence file of its own: every skill ships under the repository licence
 - [ ] No hardcoded personal paths or machine-specific configs
 - [ ] Scripts work cross-platform (Windows + macOS + Linux) where applicable
 - [ ] Tests exist for any Python scripts (test_*.py files)
