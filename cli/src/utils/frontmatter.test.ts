@@ -38,6 +38,16 @@ describe("extractFrontmatter", () => {
     expect(result!.body).toBe("# Body");
   });
 
+  // Regression: a CRLF SKILL.md kept "\r" on the last frontmatter line, so a quoted value there
+  // failed strict YAML with "Unexpected scalar at node end" on every Windows checkout.
+  it("parses CRLF frontmatter with a quoted last value", () => {
+    const content =
+      '---\r\nname: test\r\ndescription: "Does a thing. Use when: needed"\r\nargument-hint: "<file>"\r\n---\r\n# Body';
+    const extracted = extractFrontmatter(content);
+    expect(extracted!.body).toBe("# Body");
+    expect(parseFrontmatter(extracted!.raw)).toEqual({ name: "test", description: "Does a thing. Use when: needed" });
+  });
+
   it("returns null for missing opening delimiter", () => {
     expect(extractFrontmatter("name: test\n---\n# Body")).toBeNull();
   });

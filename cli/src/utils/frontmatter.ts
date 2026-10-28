@@ -24,7 +24,8 @@ const OPTIONAL_FIELDS = [
 const MISSPELLED_FIELDS: Record<string, string> = { "user-invokable": "user-invocable" };
 
 export function extractFrontmatter(content: string): { raw: string; body: string } | null {
-  const lines = content.split("\n");
+  // CRLF files (any Windows checkout) would leave a "\r" on each line that strict YAML rejects.
+  const lines = content.split(/\r?\n/);
   if (lines[0]?.trim() !== FM_DELIMITER) return null;
 
   let endIdx = -1;
