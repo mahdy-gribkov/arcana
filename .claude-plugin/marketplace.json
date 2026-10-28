@@ -22,9 +22,7 @@
       ],
       "verified": true,
       "author": "arcana",
-      "companions": [
-        "frontend-design"
-      ],
+      "companions": [],
       "conflicts": []
     },
     {
@@ -111,24 +109,6 @@
       "author": "arcana",
       "companions": [
         "ci-cd-pipelines"
-      ],
-      "conflicts": []
-    },
-    {
-      "name": "frontend-design",
-      "source": "./skills/frontend-design",
-      "description": "Production-grade frontend interfaces with CSS architecture, component patterns, layout systems, and motion design. BAD/GOOD pairs for every pattern.",
-      "version": "1.1.0",
-      "tags": [
-        "react",
-        "typescript",
-        "css",
-        "web"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "tailwind-css"
       ],
       "conflicts": []
     },
@@ -700,8 +680,7 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "typescript",
-        "frontend-design"
+        "typescript"
       ],
       "conflicts": []
     },
@@ -844,7 +823,6 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "frontend-design",
         "nextjs-16"
       ],
       "conflicts": []
