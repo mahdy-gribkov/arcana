@@ -283,20 +283,6 @@
         "nextjs-16"
       ],
       "conflicts": []
-    },
-    {
-      "name": "xlsx",
-      "source": "./skills/xlsx",
-      "description": "Spreadsheet operations for .xlsx, .xlsm, .csv, .tsv. Reading, editing, creating, formatting, charting, and data cleaning.",
-      "version": "1.0.1",
-      "tags": [
-        "office",
-        "data"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
     }
   ]
 }
