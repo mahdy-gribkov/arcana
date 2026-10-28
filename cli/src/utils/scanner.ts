@@ -25,6 +25,15 @@ interface Pattern {
 // Based on real attack techniques documented in Snyk ToxicSkills Feb 2026
 // ---------------------------------------------------------------------------
 
+/** `npm i -g name` or `npm install --global name` where name carries no `@<version>`. */
+const UNPINNED_NPM_GLOBAL = /\bnpm\s+(?:install|i)\s+(?:-g|--global)\s+(?![^\s@]*@?[^\s@]*@\d)[@\w][\w./@-]*/;
+/** `pip install [options] name` with no `==`; options may not be -r/--requirement/-e/--editable (project files). */
+const UNPINNED_PIP_PACKAGE =
+  /\bpip3?\s+install\s+(?:--?(?!r\b|requirement\b|e\b|editable\b)[\w-]+(?:[=\s][^\s-]\S*)?\s+)*(?![-.\s])(?![^\s]*==)[A-Za-z][\w.[\]-]*(?=\s|$)/;
+/** fetch/axios/requests/http/urllib call on an absolute URL whose host is not a reserved example domain or localhost. */
+const OUTSIDE_HTTP_REQUEST =
+  /(?:fetch|axios\.\w+|axios|requests\.\w+|http\.get|urlopen)\(\s*['"`]https?:\/\/(?!(?:[\w-]+\.)*example\.(?:com|org|net)\b|localhost\b|127\.0\.0\.1\b)/;
+
 const PATTERNS: Pattern[] = [
   // CRITICAL: Malicious code execution
   {
@@ -254,11 +263,25 @@ const PATTERNS: Pattern[] = [
   },
 
   // MEDIUM: Extended system and dependency patterns
+  // A named package installed with no pinned version. Installing from the project's own pinned file
+  // (pip install -r requirements.txt) or a pinned version is not flagged.
   {
     level: "medium",
     category: "Unverifiable dependency",
-    detail: "Global package installation from unknown source",
-    regex: /(?:npm\s+install\s+-g|pip\s+install|go\s+install)\s+\S+/i,
+    detail: "Global npm install without a pinned version",
+    regex: UNPINNED_NPM_GLOBAL,
+  },
+  {
+    level: "medium",
+    category: "Unverifiable dependency",
+    detail: "pip install of a named package without a pinned version",
+    regex: UNPINNED_PIP_PACKAGE,
+  },
+  {
+    level: "medium",
+    category: "Unverifiable dependency",
+    detail: "go install of @latest instead of a pinned version",
+    regex: /\bgo\s+install\s+\S+@latest\b/,
   },
   {
     level: "medium",
@@ -293,8 +316,8 @@ const PATTERNS: Pattern[] = [
   {
     level: "medium",
     category: "Suspicious activity",
-    detail: "Third-party HTTP request in instructions",
-    regex: /(?:fetch\(|axios\.|requests\.get|http\.get|urllib)/,
+    detail: "HTTP request to an outside host (examples should use example.com or localhost)",
+    regex: OUTSIDE_HTTP_REQUEST,
   },
 ];
 

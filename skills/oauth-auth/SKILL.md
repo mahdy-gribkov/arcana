@@ -15,7 +15,7 @@ For Auth.js (NextAuth) with Google and refresh handling, see [references/authjs.
 **BAD: No PKCE, state stored in localStorage**
 ```typescript
 // Client initiates OAuth without PKCE
-const authUrl = `https://provider.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+const authUrl = `https://auth.example.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
 localStorage.setItem('oauth_state', Math.random().toString());
 window.location.href = authUrl;
 ```
@@ -55,7 +55,7 @@ export async function initiateOAuth(res: Response) {
     code_challenge_method: 'S256'
   });
 
-  return `https://provider.com/oauth/authorize?${params}`;
+  return `https://auth.example.com/oauth/authorize?${params}`;
 }
 ```
 
@@ -64,7 +64,7 @@ export async function initiateOAuth(res: Response) {
 **BAD: No validation, symmetric JWT with weak secret**
 ```typescript
 // Exchange code without validating state
-const response = await fetch('https://provider.com/oauth/token', {
+const response = await fetch('https://auth.example.com/oauth/token', {
   method: 'POST',
   body: JSON.stringify({ code, client_id: clientId, client_secret: secret })
 });
@@ -90,7 +90,7 @@ export async function handleOAuthCallback(
   }
 
   // Exchange code with PKCE verifier
-  const response = await fetch('https://provider.com/oauth/token', {
+  const response = await fetch('https://auth.example.com/oauth/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
