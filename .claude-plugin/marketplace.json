@@ -113,25 +113,6 @@
       "conflicts": []
     },
     {
-      "name": "game-engines",
-      "source": "./skills/game-engines",
-      "description": "Unity, Unreal Engine, and Godot. Engine-specific workflows, systems architecture, and production best practices.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev",
-        "unity",
-        "unreal",
-        "godot"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "game-programming-languages",
-        "godot-4"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "game-programming-languages",
       "source": "./skills/game-programming-languages",
       "description": "Game programming with C#, C++, GDScript. Syntax, patterns, and engine-specific idioms.",
@@ -144,9 +125,7 @@
       ],
       "verified": true,
       "author": "arcana",
-      "companions": [
-        "game-engines"
-      ],
+      "companions": [],
       "conflicts": []
     },
     {
@@ -176,8 +155,7 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "level-design",
-        "game-engines"
+        "level-design"
       ],
       "conflicts": []
     },
@@ -224,7 +202,6 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "game-engines",
         "game-programming-languages"
       ],
       "conflicts": []
