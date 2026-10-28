@@ -1,0 +1,22 @@
+/* constraint: standalone preview file with no access to a project's CSS tokens. Neutral default palette (dark ink, light gray
+   surfaces, one blue accent); edit the values to match your brand and keep them in step with scripts/excalidraw_lib.py.
+   Light theme only. */
+:root { color-scheme: light; font-family: Inter, system-ui, "Segoe UI", Arial, sans-serif; color: #1F2328; }
+body { margin: 0; background: #FFFFFF; font-size: 15px; line-height: 1.65; }
+main { max-width: 1100px; padding: 40px 52px 80px; margin: auto; }
+h1 { font-size: 28px; line-height: 1.25; font-weight: 600; margin: 0 0 24px; }
+h2 { font-size: 22px; line-height: 1.35; font-weight: 600; margin: 40px 0 20px; }
+h3 { font-size: 18px; line-height: 1.4; font-weight: 600; margin: 30px 0 16px; }
+p { margin: 12px 0; }
+figure { margin: 20px 0; }
+img { display: block; width: 900px; max-width: 100%; height: auto; border: 1px solid #D0D7DE; }
+pre { background: #F6F8FA; border: 1px solid #D0D7DE; border-radius: 4px; padding: 16px; overflow-x: auto; line-height: 1.5; font-size: 13px; }
+code { font-family: "JetBrains Mono", ui-monospace, Consolas, monospace; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+th, td { border: 1px solid #D0D7DE; padding: 8px 10px; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+th { background: #F6F8FA; font-weight: 600; }
+a { color: #2F6FEB; text-decoration: underline; }
+.sources { font-size: 12px; color: #57606A; }
+td .sources { margin: 0; }
+.status { color: #57606A; font-size: 12px; }
+@media (max-width: 720px) { main { padding: 24px 20px 60px; } table { display: block; overflow-x: auto; } }

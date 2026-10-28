@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "title": "Example: provider webhook intake",
+  "summary": "A synthetic example of a proposed webhook flow that keeps an existing normalization contract. Replace every field with your own design.",
+  "status": "proposed",
+  "sources": [
+    {"id": "contract", "label": "Reviewed intake contract", "url": "research/contract.md"}
+  ],
+  "diagrams": [
+    {
+      "id": "main",
+      "label": "Webhook intake architecture",
+      "base_png": "diagrams/source/overview.png",
+      "source": "diagrams/source/overview.excalidraw",
+      "source_ids": ["contract"],
+      "targets": [
+        {"id": "receiver", "rect": [180, 280, 330, 170]},
+        {"id": "sink", "rect": [760, 280, 330, 170]}
+      ]
+    }
+  ],
+  "overview_diagram": "main",
+  "flow_groups": [
+    {
+      "id": "webhook",
+      "title": "Webhook arrival",
+      "entrypoint": "A provider submits a notification to the intake route.",
+      "steps": [
+        {
+          "id": "receive",
+          "title": "Accept the notification",
+          "diagram": "main",
+          "image": "diagrams/steps/receive.png",
+          "focus": ["receiver"],
+          "status": "proposed",
+          "explanation": "The route verifies the signature, acknowledges delivery, and queues normalization. Duplicate notifications reuse the event identity.",
+          "pseudocode": "POST /hooks/provider\n  verifySignature(request)\n  enqueueNotification(request.eventId)\n  return 202",
+          "api_ids": ["provider-hook"],
+          "source_ids": ["contract"]
+        },
+        {
+          "id": "deliver",
+          "title": "Deliver the normalized event",
+          "diagram": "main",
+          "image": "diagrams/steps/deliver.png",
+          "focus": ["sink"],
+          "status": "untested",
+          "explanation": "The worker normalizes the payload and submits the reviewed shape to the pipeline. A retry never creates a second logical event.",
+          "pseudocode": "event = normalizeNotification(notification)\nPOST /ingest/message { eventId, message: event }\nrecordDelivery(eventId)",
+          "api_ids": ["message-ingest"],
+          "source_ids": ["contract"]
+        }
+      ]
+    }
+  ],
+  "apis": [
+    {"id": "provider-hook", "method": "POST", "path": "/hooks/provider", "kind": "internal", "caller": "Provider", "purpose": "Accept notifications", "status": "proposed", "source_ids": ["contract"]},
+    {"id": "message-ingest", "method": "POST", "path": "/ingest/message", "kind": "internal", "caller": "Normalization worker", "purpose": "Deliver normalized messages", "status": "untested", "source_ids": ["contract"]}
+  ],
+  "setup": [
+    {"resource": "Webhook signing secret", "requirement": "Store as a deployment secret, never in the repo", "responsible": "Operator", "status": "proposed", "source_ids": ["contract"]}
+  ],
+  "open_items": ["Prove duplicate handling and delivery retries against the pipeline runtime."],
+  "side_diagrams": []
+}
