@@ -64,22 +64,6 @@
       "conflicts": []
     },
     {
-      "name": "code-reviewer",
-      "source": "./skills/code-reviewer",
-      "description": "Code review workflow for local changes and remote PRs with severity definitions, inline comments, and review output.",
-      "version": "1.0.1",
-      "tags": [
-        "code-review"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "testing-strategy",
-        "security-review"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "codebase-analysis",
       "source": "./skills/codebase-analysis",
       "description": "Systematic codebase analysis and pre-production review. 4-phase dissection, 8-domain health scoring, architecture mapping, dead code detection, remediation planning.",
@@ -1055,7 +1039,6 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "code-reviewer",
         "playwright-testing"
       ],
       "conflicts": []
