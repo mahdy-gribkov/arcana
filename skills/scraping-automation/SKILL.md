@@ -1,7 +1,7 @@
 ---
 name: scraping-automation
-description: Build resilient web scrapers with Playwright and Puppeteer, handle anti-detection, proxy rotation, and structured data extraction
-user-invokable: true
+description: "Build resilient web scrapers with Playwright and Puppeteer: browser contexts, rate limiting, proxy rotation, retries, structured data extraction, and respectful crawling. Use when writing or debugging a scraper, crawler, or browser automation script, extracting data from pages or APIs, handling dynamic content, selectors that break, blocked requests, or when the user mentions Playwright, Puppeteer, scraping, or crawling."
+user-invocable: true
 argument-hint: "[url] [--headless] [--proxy] [--stealth]"
 ---
 
@@ -32,8 +32,7 @@ const browser = await chromium.launch({
   headless: true,
   args: [
     '--disable-blink-features=AutomationControlled',
-    '--disable-dev-shm-usage',
-    '--no-sandbox'
+    '--disable-dev-shm-usage' // only needed in small containers; never add --no-sandbox on a machine you also browse with
   ]
 });
 
@@ -48,7 +47,9 @@ const context = await browser.newContext({
 });
 
 const page = await context.newPage();
-await page.goto('https://example.com', { waitUntil: 'networkidle' });
+// Playwright discourages 'networkidle'. Wait for the element you need instead.
+await page.goto('https://example.com', { waitUntil: 'domcontentloaded' });
+await page.locator('h1').waitFor();
 ```
 
 ## Proxy Rotation and IP Management
@@ -70,11 +71,12 @@ async with async_playwright() as p:
 import random
 from playwright.async_api import async_playwright
 
-proxies = [
-    {'server': 'http://proxy1.example.com:8080', 'username': 'user1', 'password': 'pass1'},
-    {'server': 'http://proxy2.example.com:8080', 'username': 'user2', 'password': 'pass2'},
-    {'server': 'http://proxy3.example.com:8080', 'username': 'user3', 'password': 'pass3'}
-]
+import json
+import os
+
+# Proxy credentials come from the environment (a JSON list), never from source code.
+# PROXY_LIST='[{"server": "http://proxy1.example.com:8080", "username": "...", "password": "..."}]'
+proxies = json.loads(os.environ['PROXY_LIST'])
 
 async def scrape_with_rotation(urls):
     async with async_playwright() as p:
@@ -247,7 +249,7 @@ async function scrapeAllPages(page, initialUrl, options = {}) {
     const nextButton = page.locator('a:has-text("Next"), button:has-text("Next"), [aria-label="Next"]');
     if (await nextButton.count() > 0 && await nextButton.first().isEnabled()) {
       await nextButton.first().click();
-      await page.waitForLoadState('networkidle');
+      await page.waitForLoadState('domcontentloaded');
       navigated = true;
     }
 
@@ -256,7 +258,7 @@ async function scrapeAllPages(page, initialUrl, options = {}) {
       const nextPageLink = page.locator(`a:has-text("${currentPage + 1}")`);
       if (await nextPageLink.count() > 0) {
         await nextPageLink.first().click();
-        await page.waitForLoadState('networkidle');
+        await page.waitForLoadState('domcontentloaded');
         navigated = true;
       }
     }
@@ -278,4 +280,17 @@ async function scrapeAllPages(page, initialUrl, options = {}) {
 }
 ```
 
-<!-- See references/advanced.md for extended examples -->
+## Respectful Crawling
+
+**BAD:** Parallel requests at full speed, no identification, ignoring the site's rules.
+
+**GOOD:** Rules before code.
+
+- Prefer an official API, feed, sitemap, or data export over scraping HTML.
+- Read `robots.txt` and the site's terms. Do not crawl disallowed paths.
+- Rate limit per host (for example one request per second or slower) and back off on 429 and 503 responses. Honor `Retry-After`.
+- Do not bypass logins, paywalls, or CAPTCHAs.
+- Collect only the fields you need. Personal data needs a legal basis; check the privacy law that applies to you.
+- Cache responses so a retry does not hit the site again.
+
+See references/advanced.md for extended examples.
