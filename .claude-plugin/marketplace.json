@@ -211,23 +211,6 @@
       "conflicts": []
     },
     {
-      "name": "playwright-testing",
-      "source": "./skills/playwright-testing",
-      "description": "Playwright E2E testing: page objects, role-based locators, network mocking, visual regression, and CI integration.",
-      "version": "1.0.0",
-      "tags": [
-        "testing",
-        "e2e",
-        "typescript"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "testing-strategy"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "postgres-advanced",
       "source": "./skills/postgres-advanced",
       "description": "Advanced PostgreSQL: window functions, CTEs, JSONB, full-text search, partial indexes, partitioning, and PgBouncer.",
@@ -533,9 +516,7 @@
       ],
       "verified": true,
       "author": "arcana",
-      "companions": [
-        "playwright-testing"
-      ],
+      "companions": [],
       "conflicts": []
     },
     {
