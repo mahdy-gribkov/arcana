@@ -116,20 +116,6 @@
       "conflicts": []
     },
     {
-      "name": "email-notifications",
-      "source": "./skills/email-notifications",
-      "description": "Email systems with SendGrid and AWS SES. React Email templates, deliverability (SPF/DKIM/DMARC), bounce handling, and queue-based processing.",
-      "version": "1.0.0",
-      "tags": [
-        "integration",
-        "email"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "env-config",
       "source": "./skills/env-config",
       "description": "Environment configuration: .env management, Zod validation, secret management, 12-factor patterns, and Docker env injection.",
