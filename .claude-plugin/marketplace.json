@@ -72,7 +72,6 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "refactoring-patterns",
         "security-review"
       ],
       "conflicts": []
@@ -220,23 +219,6 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "testing-strategy"
-      ],
-      "conflicts": []
-    },
-    {
-      "name": "refactoring-patterns",
-      "source": "./skills/refactoring-patterns",
-      "description": "Refactoring patterns: extract method, dead code elimination, dependency injection, SOLID principles, and strangler fig.",
-      "version": "1.0.0",
-      "tags": [
-        "code-review",
-        "architecture"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "codebase-analysis",
         "testing-strategy"
       ],
       "conflicts": []
