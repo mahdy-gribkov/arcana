@@ -296,24 +296,7 @@
       ],
       "verified": true,
       "author": "arcana",
-      "companions": [
-        "typescript-advanced"
-      ],
-      "conflicts": []
-    },
-    {
-      "name": "typescript-advanced",
-      "source": "./skills/typescript-advanced",
-      "description": "Advanced TypeScript: branded types, conditional types, mapped types, template literals, satisfies, and type-level programming.",
-      "version": "1.0.0",
-      "tags": [
-        "typescript"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "typescript"
-      ],
+      "companions": [],
       "conflicts": []
     },
     {
