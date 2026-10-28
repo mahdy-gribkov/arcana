@@ -1,7 +1,7 @@
 ---
 name: accessibility-wcag
-description: Audit and fix web accessibility issues. Enforce WCAG 2.1 AA compliance, semantic HTML, ARIA patterns, keyboard navigation, screen reader compatibility.
-user-invokable: true
+description: "Audit and fix web accessibility issues against WCAG 2.1/2.2 AA: semantic HTML, ARIA patterns, keyboard navigation, focus management, color contrast, and screen reader support. Use when reviewing or writing React/HTML/CSS for accessibility, fixing axe or Lighthouse findings, adding ARIA labels, building accessible modals, forms, menus, or tabs, or when the user mentions a11y, WCAG, screen readers, or keyboard access."
+user-invocable: true
 argument-hint: "[file-path|url] [--level=AA|AAA] [--fix]"
 ---
 
@@ -75,7 +75,8 @@ Audit web applications for WCAG 2.1/2.2 compliance, fix accessibility barriers, 
 // GOOD: Redundant aria-label removed
 <button>Click me</button>
 
-// GOOD: Managed focus with trap
+// GOOD: Managed focus (move focus in, restore on close).
+// For a real focus trap prefer native <dialog> with showModal(), or set `inert` on the page behind.
 function Modal({ open, onClose, children }) {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -345,18 +346,18 @@ function DataTable({ loading, data }) {
 ```css
 /* GOOD: WCAG AA contrast ratios */
 .text-normal {
-  color: #1a1a1a; /* 4.5:1 on white */
+  color: #1a1a1a; /* about 17:1 on white, passes 4.5:1 */
   background: #ffffff;
 }
 
 .text-large {
   font-size: 18px;
   font-weight: 700;
-  color: #4a4a4a; /* 3:1 on white (large text) */
+  color: #4a4a4a; /* about 9:1 on white, passes 3:1 for large text */
 }
 
 .button-primary {
-  background: #0066cc; /* 4.5:1 with white text */
+  background: #0066cc; /* about 5.6:1 with white text, passes 4.5:1 */
   color: #ffffff;
 }
 
@@ -451,13 +452,15 @@ When auditing accessibility:
 5. **Validate ARIA**: Ensure roles/states match component behavior
 6. **Test dynamic content**: Live regions announce properly
 7. **Check form accessibility**: Labels, errors, validation messages
-8. **Verify responsive behavior**: Touch targets >= 44x44px on mobile
+8. **Verify responsive behavior**: Touch targets at least 24x24 CSS px (WCAG 2.2 AA, 2.5.8); 44x44 is the AAA target (2.5.5) and a good default on mobile
 
 Common WCAG 2.1 Level AA failures:
 - Missing alt text (1.1.1)
 - Insufficient contrast (1.4.3)
 - No keyboard access (2.1.1)
 - Missing form labels (3.3.2)
-- Invalid HTML/ARIA (4.1.1, 4.1.2)
+- Invalid or missing ARIA name, role, value (4.1.2). Criterion 4.1.1 Parsing was removed in WCAG 2.2
+
+New in WCAG 2.2 AA: focus not obscured by sticky headers (2.4.11), target size minimum (2.5.8), consistent help (3.2.6), redundant entry (3.3.7), accessible authentication without cognitive tests (3.3.8), dragging alternatives (2.5.7).
 
 Fix priority: Critical (blocks screen readers) > High (keyboard issues) > Medium (contrast) > Low (enhancements).
