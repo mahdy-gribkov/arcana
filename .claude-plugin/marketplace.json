@@ -113,21 +113,6 @@
       "conflicts": []
     },
     {
-      "name": "gameplay-design",
-      "source": "./skills/gameplay-design",
-      "description": "Game design theory and mechanics. MDA framework, balance formulas, combat systems, progression curves, input buffering, and feedback loops.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "level-design"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "git-workflow",
       "source": "./skills/git-workflow",
       "description": "Git workflows: conventional commits, branch strategies, rebase, hooks (Husky), monorepo patterns, and bisect debugging.",
@@ -248,9 +233,7 @@
       ],
       "verified": true,
       "author": "arcana",
-      "companions": [
-        "gameplay-design"
-      ],
+      "companions": [],
       "conflicts": []
     },
     {
