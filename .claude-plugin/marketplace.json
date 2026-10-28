@@ -126,22 +126,6 @@
       "conflicts": []
     },
     {
-      "name": "golang-pro",
-      "source": "./skills/golang-pro",
-      "description": "Go 1.26+ with modern patterns, concurrency, HTTP routing, error handling, testing, and performance profiling.",
-      "version": "1.0.1",
-      "tags": [
-        "go",
-        "golang"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "testing-strategy"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "graphics-rendering",
       "source": "./skills/graphics-rendering",
       "description": "3D graphics, shaders, VFX, lighting, and rendering optimization.",
