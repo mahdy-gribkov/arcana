@@ -1,6 +1,6 @@
 ---
 name: api-design
-description: REST API and GraphQL design best practices including resource naming, HTTP methods, status codes, pagination (cursor vs offset), filtering, error responses (RFC 7807), versioning strategies, OpenAPI specs, authentication (JWT, API keys, OAuth2), rate limiting, HATEOAS, GraphQL schema design, resolvers, N+1 problem, and subscriptions. Use when designing, reviewing, or documenting APIs.
+description: Designs and reviews REST and GraphQL APIs, covering resource naming, HTTP methods and status codes, cursor vs offset pagination, filtering, RFC 9457 error responses, versioning, OpenAPI specs, API authentication, rate limiting, and GraphQL schema, N+1 and subscription design. Use when designing a new endpoint or schema, reviewing an API for consistency, choosing pagination or error formats, writing an OpenAPI spec, or fixing GraphQL resolver performance.
 ---
 You are an API architect specializing in RESTful API design, GraphQL schema design, and production-grade API patterns for scalability and developer experience.
 
@@ -46,8 +46,10 @@ POST   /api/v1/reports/generate
 | GET | Yes | Yes | Read resource(s) |
 | POST | No | No | Create resource, trigger action |
 | PUT | Yes | No | Full replace (client sends complete resource) |
-| PATCH | No* | No | Partial update (send only changed fields) |
+| PATCH | No (see note) | No | Partial update (send only changed fields) |
 | DELETE | Yes | No | Remove resource |
+
+PATCH is idempotent only when the patch sets absolute values (JSON Merge Patch). A patch that appends or increments is not.
 
 **Status codes to actually use:**
 
@@ -67,7 +69,7 @@ POST   /api/v1/reports/generate
 
 **Don't use:** 200 for everything, 403 when 404 is safer, custom 4xx codes, 500 for validation errors.
 
-## Error Response (RFC 7807)
+## Error Response (RFC 9457)
 
 ```json
 {
@@ -91,7 +93,7 @@ POST   /api/v1/reports/generate
 }
 ```
 
-**Content-Type:** `application/problem+json`. Every error response uses the same shape. Include `type` as a stable URI for documentation. The `errors` array for field-level validation details is an extension.
+**Content-Type:** `application/problem+json` (RFC 9457 obsoletes RFC 7807; the format is the same). Every error response uses the same shape. Include `type` as a stable URI for documentation. The `errors` array for field-level validation details is an extension.
 
 ## Pagination
 
@@ -111,7 +113,7 @@ Response:
 }
 ```
 
-Cursor is an opaque base64-encoded token (typically the last item's sort key). **Advantages:** consistent results when data changes, O(1) seek performance. **Use for:** social feeds, activity logs, any dataset that mutates frequently.
+Cursor is an opaque base64-encoded token (typically the last item's sort key). **Advantages:** consistent results when data changes, and an index seek instead of skipping rows. **Use for:** social feeds, activity logs, any dataset that mutates frequently.
 
 ### Offset-Based (for admin dashboards, search results)
 ```
@@ -157,7 +159,7 @@ GET /api/v1/products?q=wireless+keyboard
 | Header | `Accept: application/vnd.api.v1+json` | Clean URLs | Hidden, hard to test in browser |
 | Query param | `/api/users?version=1` | Easy to switch | Pollutes query string |
 
-**Recommended: URL path versioning.** It's the most explicit and tooling-friendly. Only bump major version for breaking changes. Keep at most 2 versions alive. Deprecate with `Sunset` header and 6-month timeline.
+**Recommended: URL path versioning.** It's the most explicit and tooling-friendly. Only bump major version for breaking changes. Keep at most 2 versions alive. Deprecate with the `Deprecation` header (RFC 9745), the `Sunset` header (RFC 8594) and a 6-month timeline.
 
 ## Authentication Patterns
 
@@ -202,7 +204,7 @@ Retry-After: 30                    # seconds (on 429 response)
 
 **Tiered limits:** Different limits per plan (free: 100/hr, pro: 10,000/hr). Different limits per endpoint (auth: 5/min, reads: 1000/min, writes: 100/min).
 
-**BAD/GOOD rate limiting patterns:**
+**BAD/GOOD rate limiting patterns** (the GOOD example is a fixed window counter; use a Lua script or `SET key 1 EX 3600 NX` so the count and expiry are atomic):
 ```javascript
 // BAD: Client-side only enforcement (easily bypassed)
 if (requestCount > 100) {
@@ -210,7 +212,7 @@ if (requestCount > 100) {
   return;
 }
 
-// GOOD: Server-side with Redis sliding window
+// GOOD: Server-side counter in Redis
 const key = `rate:${userId}:${endpoint}`;
 const count = await redis.incr(key);
 if (count === 1) await redis.expire(key, 3600); // 1 hour window
@@ -385,7 +387,7 @@ type Subscription {
 ```javascript
 // Server (graphql-ws protocol, NOT the deprecated subscriptions-transport-ws)
 import { WebSocketServer } from "ws";
-import { useServer } from "graphql-ws/lib/use/ws";
+import { useServer } from "graphql-ws/use/ws"; // graphql-ws v5 and older: "graphql-ws/lib/use/ws"
 
 const wsServer = new WebSocketServer({ server: httpServer, path: "/graphql" });
 useServer(
