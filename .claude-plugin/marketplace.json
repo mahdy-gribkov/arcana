@@ -116,24 +116,6 @@
       "conflicts": []
     },
     {
-      "name": "framer-motion",
-      "source": "./skills/framer-motion",
-      "description": "Framer Motion animations for React. Variants, gestures, layout animations, AnimatePresence, scroll triggers, and spring physics.",
-      "version": "1.0.0",
-      "tags": [
-        "react",
-        "animation",
-        "design"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "frontend-design",
-        "nextjs-16"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "frontend-code-review",
       "source": "./skills/frontend-code-review",
       "description": "Frontend review checklist for .tsx, .ts, .js files. cn() usage, memoization, accessibility, and inline rules.",
@@ -166,8 +148,7 @@
       "author": "arcana",
       "companions": [
         "frontend-code-review",
-        "tailwind-css",
-        "framer-motion"
+        "tailwind-css"
       ],
       "conflicts": []
     },
