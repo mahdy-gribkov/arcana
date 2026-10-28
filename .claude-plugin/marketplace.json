@@ -285,21 +285,6 @@
       "conflicts": []
     },
     {
-      "name": "websocket-realtime",
-      "source": "./skills/websocket-realtime",
-      "description": "WebSocket and real-time: reconnection, heartbeat, SSE, Socket.io rooms, Redis pub/sub scaling, and auth on upgrade.",
-      "version": "1.0.0",
-      "tags": [
-        "networking",
-        "websocket",
-        "typescript"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "xlsx",
       "source": "./skills/xlsx",
       "description": "Spreadsheet operations for .xlsx, .xlsm, .csv, .tsv. Reading, editing, creating, formatting, charting, and data cleaning.",
