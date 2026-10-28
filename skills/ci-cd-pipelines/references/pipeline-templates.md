@@ -25,7 +25,7 @@ jobs:
           version: 9
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
@@ -41,7 +41,7 @@ jobs:
           version: 9
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       - run: pnpm test -- --coverage
@@ -61,7 +61,7 @@ jobs:
           version: 9
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
@@ -194,8 +194,8 @@ build:
   script:
     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 deploy-staging:
   stage: deploy
@@ -204,8 +204,8 @@ deploy-staging:
     - echo "Deploy to staging"
   environment:
     name: staging
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 deploy-production:
   stage: deploy
@@ -214,9 +214,9 @@ deploy-production:
     - echo "Deploy to production"
   environment:
     name: production
-  when: manual
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
 ```
 
 ## GitHub Actions: Python Pipeline
