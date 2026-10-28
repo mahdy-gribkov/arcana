@@ -158,22 +158,6 @@
       "conflicts": []
     },
     {
-      "name": "monitoring-observability",
-      "source": "./skills/monitoring-observability",
-      "description": "Production observability: structured logging, Prometheus, OpenTelemetry, Grafana dashboards, and SLO/SLI alerting.",
-      "version": "1.0.0",
-      "tags": [
-        "monitoring",
-        "devops",
-        "go",
-        "node"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "multiplayer-netcode",
       "source": "./skills/multiplayer-netcode",
       "description": "Multiplayer networking and synchronization. Client prediction, server reconciliation, rollback netcode, lag compensation, and anti-cheat.",
