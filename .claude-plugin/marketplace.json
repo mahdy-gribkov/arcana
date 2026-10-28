@@ -46,20 +46,6 @@
       "conflicts": []
     },
     {
-      "name": "asset-optimization",
-      "source": "./skills/asset-optimization",
-      "description": "Asset pipeline optimization, compression, streaming, and resource management for game development.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev",
-        "performance"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "audio-systems",
       "source": "./skills/audio-systems",
       "description": "Game audio systems, spatial audio, FMOD/Wwise integration, adaptive music, and sound design.",
