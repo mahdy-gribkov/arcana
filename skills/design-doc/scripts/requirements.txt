@@ -1,0 +1,2 @@
+# Pillow renders and annotates the diagram PNGs (export_scene.py, annotate_focus.py, build_hld.py).
+pillow==12.1.1
