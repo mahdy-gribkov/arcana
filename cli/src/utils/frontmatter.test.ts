@@ -7,9 +7,9 @@ import {
   parseFrontmatter,
   fixSkillFrontmatter,
   validateSkillDir,
-  NAME_REGEX,
   MIN_DESC_LENGTH,
 } from "./frontmatter.js";
+import { SKILL_MAX_LINES, SKILL_NAME_REGEX } from "../constants.js";
 
 function makeTempSkill(name: string, content: string): string {
   const base = mkdtempSync(join(tmpdir(), "arcana-test-"));
@@ -19,21 +19,13 @@ function makeTempSkill(name: string, content: string): string {
   return skillDir;
 }
 
-describe("NAME_REGEX", () => {
-  it("accepts valid names", () => {
-    expect(NAME_REGEX.test("a")).toBe(true);
-    expect(NAME_REGEX.test("foo-bar")).toBe(true);
-    expect(NAME_REGEX.test("a1-b2")).toBe(true);
-    expect(NAME_REGEX.test("my-skill-123")).toBe(true);
+describe("SKILL_NAME_REGEX (Agent Skills spec name rule)", () => {
+  it.each(["a", "foo-bar", "a1-b2", "my-skill-123", "1abc", "a".repeat(64)])("accepts %s", (name) => {
+    expect(SKILL_NAME_REGEX.test(name)).toBe(true);
   });
 
-  it("rejects invalid names", () => {
-    expect(NAME_REGEX.test("Foo")).toBe(false);
-    expect(NAME_REGEX.test("-bar")).toBe(false);
-    expect(NAME_REGEX.test("foo_bar")).toBe(false);
-    expect(NAME_REGEX.test("1abc")).toBe(false);
-    expect(NAME_REGEX.test("")).toBe(false);
-    expect(NAME_REGEX.test("FOO")).toBe(false);
+  it.each(["Foo", "-bar", "bar-", "a--b", "foo_bar", "", "FOO", "a".repeat(65)])("rejects %s", (name) => {
+    expect(SKILL_NAME_REGEX.test(name)).toBe(false);
   });
 });
 
@@ -120,8 +112,7 @@ describe("parseFrontmatter", () => {
     const raw = "name: test\ndescription: |-\n  Line one\n  Line two";
     const result = parseFrontmatter(raw);
     expect(result).not.toBeNull();
-    // |- is not "|", so multiline lines join with space
-    expect(result!.description).toBe("Line one Line two");
+    expect(result!.description).toBe("Line one\nLine two");
   });
 
   it("handles YAML >- chomp indicator", () => {
@@ -142,7 +133,7 @@ describe("parseFrontmatter", () => {
     const raw = "name: test\ndescription: |+\n  Line one\n  Line two";
     const result = parseFrontmatter(raw);
     expect(result).not.toBeNull();
-    expect(result!.description).toBe("Line one Line two");
+    expect(result!.description).toBe("Line one\nLine two");
   });
 
   it("handles empty continuation lines in multiline", () => {
@@ -182,6 +173,15 @@ describe("fixSkillFrontmatter", () => {
     expect(fixSkillFrontmatter(content)).toBe(content);
   });
 
+  // Regression: the old rebuild wrote "description: ${value}" unquoted, so a description with ": "
+  // produced frontmatter that strict YAML loaders reject.
+  it("quotes a description that contains a colon so the result is valid YAML", () => {
+    const content = '---\nname: test\ndescription: "Web work. Use when: building apps"\n---\n# Body';
+    const fixed = fixSkillFrontmatter(content);
+    const reparsed = parseFrontmatter(extractFrontmatter(fixed)!.raw);
+    expect(reparsed).toEqual({ name: "test", description: "Web work. Use when: building apps" });
+  });
+
   it("returns original when name cannot be parsed", () => {
     const content = "---\ndescription: no name\n---\nBody";
     expect(fixSkillFrontmatter(content)).toBe(content);
@@ -189,7 +189,9 @@ describe("fixSkillFrontmatter", () => {
 });
 
 describe("validateSkillDir", () => {
-  const longDesc = "A".repeat(MIN_DESC_LENGTH);
+  const longDesc = "Reviews widgets for correctness and style. Use when a widget changes or before a release.";
+  const okBody =
+    "## Heading\nBody content goes here, needs at least 50 chars in the body section\n\n```js\nconst x = 1;\n```";
 
   it("returns error for missing SKILL.md", () => {
     const dir = mkdtempSync(join(tmpdir(), "arcana-test-"));
@@ -235,13 +237,51 @@ describe("validateSkillDir", () => {
     expect(result.errors.some((e) => e.includes("frontmatter"))).toBe(true);
   });
 
-  it("warns about metadata field", () => {
+  it("accepts metadata as a spec field", () => {
     const dir = makeTempSkill(
       "meta-skill",
-      `---\nname: meta-skill\ndescription: ${longDesc}\nmetadata: some-value\n---\n## Heading\nBody content goes here, needs at least 50 chars in the body section\n\n\`\`\`js\nconst x = 1;\n\`\`\``,
+      `---\nname: meta-skill\ndescription: ${longDesc}\nmetadata:\n  tags: [a]\n---\n${okBody}`,
     );
     const result = validateSkillDir(dir, "meta-skill");
-    expect(result.warnings.some((w) => w.includes("metadata"))).toBe(true);
+    expect(result.warnings).toEqual([]);
+    expect(result.infos).toContain("Optional field: metadata");
+  });
+
+  it("warns about the misspelled user-invokable field", () => {
+    const dir = makeTempSkill(
+      "typo-skill",
+      `---\nname: typo-skill\ndescription: ${longDesc}\nuser-invokable: true\n---\n${okBody}`,
+    );
+    const result = validateSkillDir(dir, "typo-skill");
+    expect(result.warnings).toContain("Misspelled field: user-invokable (use user-invocable)");
+  });
+
+  // Regression: skills/fullstack-developer had an unquoted "Use when:" that the old line parser
+  // accepted, while strict YAML loaders (the agents) load that frontmatter with no fields.
+  it("rejects an unquoted colon in the description as invalid YAML", () => {
+    const dir = makeTempSkill(
+      "colon-skill",
+      `---\nname: colon-skill\ndescription: Modern web work. Use when: building React apps with Node backends\n---\n${okBody}`,
+    );
+    const result = validateSkillDir(dir, "colon-skill");
+    expect(result.valid).toBe(false);
+    expect(result.errors[0]).toMatch(/^Frontmatter is not valid YAML/);
+  });
+
+  it("rejects a description without a Use when clause", () => {
+    const desc = "Reviews widgets for correctness and style across the whole codebase and all of its parts.";
+    const dir = makeTempSkill("no-trigger", `---\nname: no-trigger\ndescription: ${desc}\n---\n${okBody}`);
+    const result = validateSkillDir(dir, "no-trigger");
+    expect(result.valid).toBe(false);
+    expect(result.errors).toContain('Description has no "Use when" clause (agents pick skills by it)');
+  });
+
+  it("rejects a SKILL.md over the line cap", () => {
+    const body = okBody + "\nline".repeat(SKILL_MAX_LINES);
+    const dir = makeTempSkill("huge-skill", `---\nname: huge-skill\ndescription: ${longDesc}\n---\n${body}`);
+    const result = validateSkillDir(dir, "huge-skill");
+    expect(result.valid).toBe(false);
+    expect(result.errors.some((e) => e.startsWith("SKILL.md has ") && e.includes(`max ${SKILL_MAX_LINES}`))).toBe(true);
   });
 
   it("reports non-standard field as info", () => {

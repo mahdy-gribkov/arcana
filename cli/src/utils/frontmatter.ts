@@ -1,11 +1,27 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { parseDocument, stringify } from "yaml";
+import { SKILL_MAX_LINES, SKILL_NAME_REGEX } from "../constants.js";
 import type { SkillFrontmatter, ValidationResult } from "../types.js";
 
 const FM_DELIMITER = "---";
 export const MIN_DESC_LENGTH = 80;
 export const MAX_DESC_LENGTH = 1024;
-export const NAME_REGEX = /^[a-z][a-z0-9-]*$/;
+const USE_WHEN_REGEX = /\buse (?:this skill )?when\b/i;
+
+/** Agent Skills spec fields plus the Claude Code extensions. */
+const OPTIONAL_FIELDS = [
+  "license",
+  "compatibility",
+  "metadata",
+  "allowed-tools",
+  "argument-hint",
+  "disable-model-invocation",
+  "user-invocable",
+  "model",
+  "context",
+];
+const MISSPELLED_FIELDS: Record<string, string> = { "user-invokable": "user-invocable" };
 
 export function extractFrontmatter(content: string): { raw: string; body: string } | null {
   const lines = content.split("\n");
@@ -26,72 +42,31 @@ export function extractFrontmatter(content: string): { raw: string; body: string
   return { raw, body };
 }
 
+export type FrontmatterParse = { ok: true; fields: Record<string, unknown> } | { ok: false; error: string };
+
+/**
+ * Parses frontmatter as strict YAML. Agents load SKILL.md with a real YAML parser, so anything a
+ * lenient line-matcher accepts but YAML rejects (an unquoted "Use when: ...") loads with no fields.
+ */
+export function parseFrontmatterYaml(raw: string): FrontmatterParse {
+  const doc = parseDocument(raw, { prettyErrors: false, uniqueKeys: true });
+  const firstError = doc.errors[0];
+  if (firstError) return { ok: false, error: firstError.message.split("\n")[0] ?? firstError.message };
+  const fields: unknown = doc.toJS();
+  if (!isMapping(fields)) return { ok: false, error: "Frontmatter is not a YAML mapping" };
+  return { ok: true, fields };
+}
+
+function isMapping(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
 export function parseFrontmatter(raw: string): SkillFrontmatter | null {
-  let name = "";
-  let description = "";
-
-  const lines = raw.split("\n");
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-    if (!line) continue;
-    const trimmed = line.trim();
-    const nameMatch = trimmed.match(/^name:\s*["']?(.+?)["']?\s*$/);
-    if (nameMatch?.[1]) {
-      name = nameMatch[1];
-      name = name.replace(/^["']|["']$/g, "");
-      continue;
-    }
-    const descMatch = trimmed.match(/^description:\s*(.*)$/);
-    if (descMatch?.[1] !== undefined) {
-      let value = descMatch[1].trim();
-      // Handle YAML multiline: |, >, or bare indented continuation
-      if (
-        value === "|" ||
-        value === ">" ||
-        value === "|-" ||
-        value === "|+" ||
-        value === ">-" ||
-        value === ">+" ||
-        value === ""
-      ) {
-        const multilineLines: string[] = [];
-        for (let j = i + 1; j < lines.length; j++) {
-          const next = lines[j];
-          if (next === undefined) break;
-          // Empty lines: check if a subsequent indented line follows
-          if (next === "") {
-            let hasMore = false;
-            for (let k = j + 1; k < lines.length; k++) {
-              const peek = lines[k];
-              if (peek === undefined || peek === "") continue;
-              if (peek[0] === " " || peek[0] === "\t") hasMore = true;
-              break;
-            }
-            if (hasMore) {
-              multilineLines.push("");
-              continue;
-            }
-            break;
-          }
-          // Continuation lines must be indented
-          if (next[0] === " " || next[0] === "\t") {
-            multilineLines.push(next.trim());
-          } else {
-            break;
-          }
-        }
-        if (multilineLines.length > 0) {
-          description = multilineLines.join(value === "|" ? "\n" : " ");
-        }
-      } else {
-        value = value.replace(/^["']|["']$/g, "");
-        description = value;
-      }
-    }
-  }
-
-  if (!name || !NAME_REGEX.test(name)) return null;
-  return { name, description };
+  const parsed = parseFrontmatterYaml(raw);
+  if (!parsed.ok) return null;
+  const { name, description } = parsed.fields;
+  if (typeof name !== "string" || !SKILL_NAME_REGEX.test(name)) return null;
+  return { name, description: typeof description === "string" ? description.trim() : "" };
 }
 
 export function fixSkillFrontmatter(content: string): string {
@@ -101,10 +76,9 @@ export function fixSkillFrontmatter(content: string): string {
   const parsed = parseFrontmatter(extracted.raw);
   if (!parsed) return content;
 
-  // Rebuild clean frontmatter with only name and description
-  const cleanFm = [FM_DELIMITER, `name: ${parsed.name}`, `description: ${parsed.description}`, FM_DELIMITER].join("\n");
-
-  return cleanFm + "\n" + extracted.body.replace(/^\n+/, "\n");
+  // Rebuild clean frontmatter with only name and description; the serializer quotes when YAML needs it.
+  const yamlText = stringify({ name: parsed.name, description: parsed.description }, { lineWidth: 0 });
+  return `${FM_DELIMITER}\n${yamlText}${FM_DELIMITER}\n` + extracted.body.replace(/^\n+/, "\n");
 }
 
 export function validateSkillDir(skillDir: string, skillName: string): ValidationResult {
@@ -139,10 +113,17 @@ export function validateSkillDir(skillDir: string, skillName: string): Validatio
     return result;
   }
 
+  const yamlParse = parseFrontmatterYaml(extracted.raw);
+  if (!yamlParse.ok) {
+    result.valid = false;
+    result.errors.push(`Frontmatter is not valid YAML: ${yamlParse.error}. Quote values that contain ": ".`);
+    return result;
+  }
+
   const parsed = parseFrontmatter(extracted.raw);
   if (!parsed) {
     result.valid = false;
-    result.errors.push("Cannot parse name from frontmatter");
+    result.errors.push("Cannot parse name from frontmatter (lowercase letters, digits and hyphens)");
     return result;
   }
 
@@ -155,30 +136,26 @@ export function validateSkillDir(skillDir: string, skillName: string): Validatio
   } else if (parsed.description.length > MAX_DESC_LENGTH) {
     result.valid = false;
     result.errors.push(`Description too long (${parsed.description.length} chars, max ${MAX_DESC_LENGTH})`);
+  } else if (!USE_WHEN_REGEX.test(parsed.description)) {
+    result.valid = false;
+    result.errors.push('Description has no "Use when" clause (agents pick skills by it)');
   }
 
-  // Check for non-standard fields (metadata is invalid per spec)
-  const standardFields = ["name", "description"];
-  const VALID_FIELDS = [
-    "name",
-    "description",
-    "argument-hint",
-    "compatibility",
-    "disable-model-invocation",
-    "license",
-    "user-invokable",
-  ];
-  for (const line of extracted.raw.split("\n")) {
-    const keyMatch = line.match(/^(\w[\w-]*):/);
-    if (keyMatch?.[1] && !standardFields.includes(keyMatch[1])) {
-      if (keyMatch[1] === "metadata") {
-        result.warnings.push("Invalid field: metadata (not allowed in frontmatter)");
-      } else if (!VALID_FIELDS.includes(keyMatch[1])) {
-        result.infos.push(`Non-standard field: ${keyMatch[1]}`);
-      } else {
-        result.infos.push(`Optional field: ${keyMatch[1]}`);
-      }
+  for (const key of Object.keys(yamlParse.fields)) {
+    if (key === "name" || key === "description") continue;
+    if (MISSPELLED_FIELDS[key]) {
+      result.warnings.push(`Misspelled field: ${key} (use ${MISSPELLED_FIELDS[key]})`);
+    } else if (OPTIONAL_FIELDS.includes(key)) {
+      result.infos.push(`Optional field: ${key}`);
+    } else {
+      result.infos.push(`Non-standard field: ${key}`);
     }
+  }
+
+  const lineCount = content.split("\n").length;
+  if (lineCount > SKILL_MAX_LINES) {
+    result.valid = false;
+    result.errors.push(`SKILL.md has ${lineCount} lines (max ${SKILL_MAX_LINES}); move detail into references/`);
   }
 
   if (parsed.name !== skillName) {

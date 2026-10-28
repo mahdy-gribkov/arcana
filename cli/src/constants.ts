@@ -33,8 +33,10 @@ export const MODEL_CONTEXTS: Record<string, number> = {
 };
 
 // Validation
-export const SKILL_NAME_REGEX = /^[a-z0-9][a-z0-9-]{0,63}$/;
-export const SKILL_MAX_LINES = 300;
+/** Agent Skills spec: 1-64 chars, lowercase letters and digits, single hyphens, no hyphen at either end. */
+export const SKILL_NAME_REGEX = /^(?=.{1,64}$)[a-z0-9]+(?:-[a-z0-9]+)*$/;
+/** Agent Skills spec limit for SKILL.md; detail beyond it belongs in references/. */
+export const SKILL_MAX_LINES = 500;
 export const JACCARD_THRESHOLD = 0.5;
 
 // Cache

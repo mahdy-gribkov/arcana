@@ -5,7 +5,7 @@ import chalk from "chalk";
 import { getSkillDir } from "../utils/fs.js";
 import { atomicWriteSync } from "../utils/atomic.js";
 import { renderBanner } from "../utils/help.js";
-import { NAME_REGEX } from "../utils/frontmatter.js";
+import { SKILL_NAME_REGEX } from "../constants.js";
 
 function generateSkillMd(name: string, description: string): string {
   return `---
@@ -51,7 +51,7 @@ export async function createCommand(name: string): Promise<void> {
   console.log();
   p.intro(chalk.bold("Create a new skill"));
 
-  if (!NAME_REGEX.test(name)) {
+  if (!SKILL_NAME_REGEX.test(name)) {
     p.cancel("Invalid skill name. Use lowercase letters, numbers, and hyphens. Must start with a letter.");
     process.exit(1);
   }
