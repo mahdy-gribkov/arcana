@@ -1,12 +1,14 @@
 ---
 name: oauth-auth
-description: OAuth2, OIDC, JWT validation, session management, PKCE flows, refresh token rotation, and auth middleware
-user-invokable: true
+description: Implements secure sign-in with OAuth2 authorization code flow with PKCE, OIDC ID token checks, JWT signing and validation, httpOnly cookie sessions with CSRF protection, refresh token rotation with reuse detection, password hashing, and auth middleware. Use when adding login or SSO, reviewing token or session handling, choosing where to store tokens, or debugging an OAuth callback, JWT or refresh failure.
+user-invocable: true
 ---
 
 # OAuth and Authentication
 
 Implement secure OAuth2 flows, JWT validation, session management, and authentication patterns.
+
+For Auth.js (NextAuth) with Google and refresh handling, see [references/authjs.md](references/authjs.md).
 
 ## OAuth2 Authorization Code Flow with PKCE
 
@@ -274,93 +276,6 @@ export function validateCSRF(req: Request) {
 }
 ```
 
-## NextAuth.js/Auth.js Pattern
-
-```typescript
-import NextAuth from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import { JWT } from 'next-auth/jwt';
-
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      authorization: {
-        params: {
-          prompt: 'consent',
-          access_type: 'offline',
-          response_type: 'code'
-        }
-      }
-    })
-  ],
-  session: {
-    strategy: 'jwt',
-    maxAge: 7 * 24 * 60 * 60 // 7 days
-  },
-  callbacks: {
-    async jwt({ token, account, user }) {
-      if (account && user) {
-        return {
-          ...token,
-          accessToken: account.access_token,
-          refreshToken: account.refresh_token,
-          accessTokenExpires: account.expires_at! * 1000,
-          userId: user.id
-        };
-      }
-
-      // Return previous token if access token not expired
-      if (Date.now() < (token.accessTokenExpires as number)) {
-        return token;
-      }
-
-      // Refresh access token
-      return await refreshAccessToken(token);
-    },
-    async session({ session, token }) {
-      session.user.id = token.userId as string;
-      session.accessToken = token.accessToken as string;
-      return session;
-    }
-  }
-});
-
-async function refreshAccessToken(token: JWT) {
-  try {
-    const response = await fetch('https://oauth2.googleapis.com/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        client_id: process.env.GOOGLE_CLIENT_ID!,
-        client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-        grant_type: 'refresh_token',
-        refresh_token: token.refreshToken as string
-      })
-    });
-
-    const refreshed = await response.json();
-
-    if (!response.ok) {
-      throw refreshed;
-    }
-
-    return {
-      ...token,
-      accessToken: refreshed.access_token,
-      accessTokenExpires: Date.now() + refreshed.expires_in * 1000,
-      refreshToken: refreshed.refresh_token ?? token.refreshToken
-    };
-  } catch (error) {
-    return {
-      ...token,
-      error: 'RefreshAccessTokenError'
-    };
-  }
-}
-```
-
 ## Password Hashing with bcrypt
 
 **BAD: Plain text or weak hashing**
@@ -425,28 +340,16 @@ export async function authMiddleware(req: NextRequest) {
       request: { headers: requestHeaders }
     });
   } catch (error) {
-    // Token invalid or expired, try refresh
-    const refreshToken = req.cookies.get('refresh_token')?.value;
-
-    if (!refreshToken) {
-      return NextResponse.redirect(new URL('/login', req.url));
-    }
-
-    try {
-      const { accessToken, refreshToken: newRefreshToken } =
-        await rotateRefreshToken(refreshToken);
-
-      const response = NextResponse.next();
-      setAuthCookies(response, accessToken, newRefreshToken);
-
-      return response;
-    } catch (refreshError) {
-      return NextResponse.redirect(new URL('/login', req.url));
-    }
+    // Token invalid or expired. The refresh cookie is scoped to
+    // /api/auth/refresh, so the browser does not send it here. Hand off to
+    // that route: it rotates the token, sets the cookies, and redirects back.
+    const refreshUrl = new URL('/api/auth/refresh', req.url);
+    refreshUrl.searchParams.set('next', req.nextUrl.pathname);
+    return NextResponse.redirect(refreshUrl);
   }
 }
 
-// middleware.ts
+// middleware.ts (named proxy.ts, exporting proxy, from Next.js 16)
 export { authMiddleware as middleware };
 
 export const config = {
@@ -491,8 +394,11 @@ import { jwtVerify, createRemoteJWKSet } from 'jose';
 export async function validateIDToken(
   idToken: string,
   clientId: string,
-  issuer: string
+  issuer: string,
+  expectedNonce: string
 ) {
+  // Read jwks_uri from `${issuer}/.well-known/openid-configuration` when the
+  // provider does not publish /.well-known/jwks.json.
   const JWKS = createRemoteJWKSet(
     new URL(`${issuer}/.well-known/jwks.json`)
   );
@@ -503,9 +409,10 @@ export async function validateIDToken(
     maxTokenAge: '10m'
   });
 
-  // Validate nonce if using implicit flow
-  if (payload.nonce) {
-    // Compare with stored nonce from initial request
+  // Compare the nonce with the one stored when the login started.
+  // Reject the token if it is missing or different.
+  if (payload.nonce !== expectedNonce) {
+    throw new Error('Invalid nonce');
   }
 
   return {
