@@ -290,21 +290,6 @@
       "conflicts": []
     },
     {
-      "name": "terraform-iac",
-      "source": "./skills/terraform-iac",
-      "description": "Terraform IaC: state management, modules, workspaces, lifecycle rules, CI/CD with plan artifacts, and AWS patterns.",
-      "version": "1.0.0",
-      "tags": [
-        "devops",
-        "cloud",
-        "terraform"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "testing-strategy",
       "source": "./skills/testing-strategy",
       "description": "Testing across unit, integration, and e2e. pytest, Vitest, Jest, Go testing, Playwright. TDD workflow, mocking, and CI integration.",
