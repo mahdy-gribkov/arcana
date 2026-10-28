@@ -273,21 +273,6 @@
       "conflicts": []
     },
     {
-      "name": "stripe-payments",
-      "source": "./skills/stripe-payments",
-      "description": "Stripe integration: Checkout Sessions, subscriptions, webhook verification, idempotency, and SCA/3D Secure.",
-      "version": "1.0.0",
-      "tags": [
-        "integration",
-        "payments",
-        "typescript"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "tailwind-css",
       "source": "./skills/tailwind-css",
       "description": "Tailwind CSS: config, plugins, cn() utility, responsive design, dark mode, theme customization, and performance.",
