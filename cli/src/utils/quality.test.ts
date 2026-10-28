@@ -28,6 +28,7 @@ function makeTestSetup(
     marketplacePath,
     JSON.stringify({
       name: "test",
+      metadata: { version: "1.0.0" },
       plugins: plugins.map((p) => ({
         name: p.name || "unknown",
         source: `./skills/${p.name || "unknown"}`,
@@ -144,6 +145,65 @@ describe("crossValidate", () => {
     const issues = crossValidate(skillsDir, marketplacePath);
     const errors = issues.filter((i) => i.level === "error");
     expect(errors).toHaveLength(0);
+  });
+
+  // Regression: skills/docx and skills/xlsx shipped Anthropic "All rights reserved" LICENSE files
+  // inside this Apache-2.0 repo and no gate noticed.
+  it("flags a skill-level licence file and a proprietary notice", () => {
+    const desc = "A valid description that is long enough to pass the minimum length requirement for skills";
+    const { skillsDir, marketplacePath } = makeTestSetup(
+      [{ name: "skill-a", description: desc }],
+      [{ name: "skill-a", description: desc }],
+    );
+    writeFileSync(join(skillsDir, "skill-a", "LICENSE.txt"), "Copyright 2025 Vendor. All rights reserved.\n");
+    mkdirSync(join(skillsDir, "skill-a", "scripts"));
+    writeFileSync(join(skillsDir, "skill-a", "scripts", "tool.py"), "# (c) Vendor. All Rights Reserved.\n");
+
+    const licence = crossValidate(skillsDir, marketplacePath).filter((i) => i.category === "licence");
+
+    expect(licence.map((i) => i.detail)).toEqual([
+      "Skill-level licence file LICENSE.txt: skills ship under the repository licence only",
+      'Proprietary notice ("All rights reserved") in scripts/tool.py',
+    ]);
+  });
+
+  it("flags a license field in SKILL.md frontmatter", () => {
+    const { skillsDir, marketplacePath } = makeTestSetup([], [{ name: "skill-a" }]);
+    mkdirSync(join(skillsDir, "skill-a"));
+    writeFileSync(
+      join(skillsDir, "skill-a", "SKILL.md"),
+      "---\nname: skill-a\ndescription: d\nlicense: Proprietary\n---\n",
+    );
+
+    const licence = crossValidate(skillsDir, marketplacePath).filter((i) => i.category === "licence");
+
+    expect(licence).toHaveLength(1);
+    expect(licence[0]!.detail).toContain("license: field");
+  });
+
+  it("flags an entry whose version differs from metadata.version", () => {
+    const desc = "A valid description that is long enough to pass the minimum length requirement for skills";
+    const { skillsDir, marketplacePath } = makeTestSetup(
+      [
+        { name: "skill-a", description: desc },
+        { name: "skill-b", description: desc + " b" },
+      ],
+      [
+        { name: "skill-a", description: desc, version: "1.0.0" },
+        { name: "skill-b", description: desc + " b", version: "0.9.0" },
+      ],
+    );
+
+    const versions = crossValidate(skillsDir, marketplacePath).filter((i) => i.category === "version");
+
+    expect(versions).toEqual([
+      {
+        level: "error",
+        category: "version",
+        skill: "skill-b",
+        detail: "Entry version 0.9.0 differs from metadata.version 1.0.0",
+      },
+    ]);
   });
 
   it("detects orphan skill directory (no marketplace entry)", () => {
