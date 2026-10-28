@@ -41,27 +41,7 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "api-testing",
         "security-review"
-      ],
-      "conflicts": []
-    },
-    {
-      "name": "api-testing",
-      "source": "./skills/api-testing",
-      "description": "API testing with contract testing (Pact), mocking (MSW), load testing (k6), OpenAPI validation, and CI integration.",
-      "version": "1.0.0",
-      "tags": [
-        "api",
-        "testing",
-        "rest",
-        "graphql"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "api-design",
-        "testing-strategy"
       ],
       "conflicts": []
     },
