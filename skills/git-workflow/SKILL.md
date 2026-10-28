@@ -1,6 +1,6 @@
 ---
 name: git-workflow
-description: Git workflow automation with conventional commits, merge vs rebase decision trees, worktrees, SSH signing, and monorepo sparse checkout patterns.
+description: "Git workflow practices: conventional commits, merge vs rebase decisions, worktrees, SSH commit signing, and monorepo sparse checkout. Use when writing commit messages, choosing between merge and rebase, resolving conflicts, setting up branches or worktrees, configuring commit signing, or working with large monorepos in git."
 ---
 
 ## Conventional Commit Format
@@ -39,8 +39,9 @@ cat > commitlint.config.js <<'EOF'
 module.exports = { extends: ['@commitlint/config-conventional'] };
 EOF
 
-# Hook with Husky
-npx husky add .husky/commit-msg 'npx --no -- commitlint --edit $1'
+# Hook with Husky v9 (the old `husky add` command was removed in v9)
+npx husky init
+echo 'npx --no -- commitlint --edit $1' > .husky/commit-msg
 ```
 
 ## Merge vs Rebase Decision Tree
@@ -133,7 +134,8 @@ git worktree remove ../myproject-hotfix
 **Use case: review PR while keeping main branch clean:**
 
 ```bash
-git worktree add ../myproject-pr-review pr/123
+git fetch origin pull/123/head:pr-123   # GitHub exposes PRs as pull/<number>/head
+git worktree add ../myproject-pr-review pr-123
 cd ../myproject-pr-review
 npm install
 npm test
@@ -156,6 +158,10 @@ git config --global gpg.format ssh
 git config --global user.signingkey ~/.ssh/git_signing.pub
 git config --global commit.gpgsign true
 git config --global tag.gpgsign true
+
+# Let git verify signatures locally. ~/.ssh/allowed_signers holds one line per signer:
+#   your.email@example.com ssh-ed25519 AAAA...   (email, then the public key line from git_signing.pub)
+git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
 
 # Test it
 git commit --allow-empty -m "test: verify SSH signing"
@@ -233,7 +239,8 @@ git diff --name-only --diff-filter=U
 vim conflicted.js  # Hope for the best
 
 # GOOD: use strategy for simple conflicts
-git checkout --theirs package-lock.json  # Take their version
+# Note: during a rebase, "ours" is the branch you rebase onto and "theirs" is your own commit.
+git checkout --theirs package-lock.json  # Take their version (then re-run npm install to regenerate)
 git checkout --ours config/local.json    # Keep our version
 git add package-lock.json config/local.json
 
@@ -245,15 +252,15 @@ git mergetool --tool=vimdiff  # or meld, kdiff3, vscode
 
 ```bash
 git rebase --continue
-npm test || (git rebase --abort && echo "Tests failed, fix conflicts")
+npm test  # If tests fail, fix them in a new commit; use `git rebase --abort` only before --continue
 ```
 
 ## Git Hooks with Lefthook
 
 ```bash
 # Install lefthook (faster, polyglot alternative to Husky)
-go install github.com/evilmartians/lefthook@latest
-# Or: npm install lefthook --save-dev
+npm install --save-dev lefthook
+# Or use your package manager: brew install lefthook
 
 # Create lefthook.yml
 cat > lefthook.yml <<'EOF'
@@ -359,7 +366,8 @@ git reset --hard HEAD~1  # Remove from wrong branch
 
 # Remove file from history (leaked secret)
 git filter-repo --path secrets.env --invert-paths
-# Note: force push required, coordinate with team
+# Note: force push required, coordinate with team.
+# The secret is already exposed: rotate it first, rewriting history does not un-leak it.
 
 # Undo last commit (keep changes staged)
 git reset --soft HEAD~1
