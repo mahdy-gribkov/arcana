@@ -291,20 +291,6 @@
       "conflicts": []
     },
     {
-      "name": "shader-techniques",
-      "source": "./skills/shader-techniques",
-      "description": "Shader programming, visual effects, custom materials, and rendering optimization.",
-      "version": "1.0.0",
-      "tags": [
-        "gamedev",
-        "graphics"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [],
-      "conflicts": []
-    },
-    {
       "name": "skill-creator",
       "source": "./skills/skill-creator",
       "description": "Create or update Claude skills. SKILL.md structure, frontmatter rules, references, scripts, and validation.",
