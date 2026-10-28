@@ -439,6 +439,23 @@ describe("GitHubProvider", () => {
     expect(files.some((f) => f.path === "rules/rule.md")).toBe(true);
   });
 
+  // Regression: skills ship evals/ test cases for claude plugin eval; installs copied them into
+  // every user's skill folder although no agent reads them.
+  it("does not download a skill's evals/ folder", async () => {
+    const treeItems = [
+      { path: "skills/my-skill/SKILL.md", type: "blob", url: "" },
+      { path: "skills/my-skill/evals/case/prompt.md", type: "blob", url: "" },
+    ];
+    httpGetMock
+      .mockResolvedValueOnce({ body: JSON.stringify({ tree: treeItems }), statusCode: 200 })
+      .mockResolvedValueOnce({ body: "# My Skill", statusCode: 200 });
+
+    const files = await new GitHubProvider("owner", "repo").fetch("my-skill");
+
+    expect(files.map((f) => f.path)).toEqual(["SKILL.md"]);
+    expect(httpGetMock).toHaveBeenCalledTimes(2);
+  });
+
   it("throws when skill has no files in tree", async () => {
     httpGetMock.mockResolvedValueOnce({
       body: JSON.stringify({

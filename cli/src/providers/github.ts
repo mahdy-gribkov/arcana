@@ -134,7 +134,11 @@ export class GitHubProvider extends Provider {
     const tree = await this.getTree();
 
     const prefix = `skills/${skillName}/`;
-    const files = tree.filter((item) => item.path.startsWith(prefix) && item.type === "blob");
+    // evals/ holds the skill's test cases for claude plugin eval; agents never read them.
+    const devOnly = `${prefix}evals/`;
+    const files = tree.filter(
+      (item) => item.path.startsWith(prefix) && !item.path.startsWith(devOnly) && item.type === "blob",
+    );
 
     if (files.length === 0) {
       throw new Error(`Skill "${skillName}" not found in ${this.name}`);

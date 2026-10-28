@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseDocument, stringify } from "yaml";
 import { SKILL_MAX_LINES, SKILL_NAME_REGEX } from "../constants.js";
@@ -79,6 +79,14 @@ export function fixSkillFrontmatter(content: string): string {
   // Rebuild clean frontmatter with only name and description; the serializer quotes when YAML needs it.
   const yamlText = stringify({ name: parsed.name, description: parsed.description }, { lineWidth: 0 });
   return `${FM_DELIMITER}\n${yamlText}${FM_DELIMITER}\n` + extracted.body.replace(/^\n+/, "\n");
+}
+
+function referencesHaveCode(skillDir: string): boolean {
+  const refs = join(skillDir, "references");
+  if (!existsSync(refs)) return false;
+  return readdirSync(refs)
+    .filter((file) => file.endsWith(".md"))
+    .some((file) => readFileSync(join(refs, file), "utf-8").includes("```"));
 }
 
 export function validateSkillDir(skillDir: string, skillName: string): ValidationResult {
@@ -174,9 +182,9 @@ export function validateSkillDir(skillDir: string, skillName: string): Validatio
     result.warnings.push("Body has no ## headings (required for structure)");
   }
 
-  // Check for code blocks (quality signal)
-  if (extracted.body.trim().length >= 50 && !extracted.body.includes("```")) {
-    result.warnings.push("No code blocks found (skills must include code examples)");
+  // Check for code blocks (quality signal); a router SKILL.md may keep its examples in references/
+  if (extracted.body.trim().length >= 50 && !extracted.body.includes("```") && !referencesHaveCode(skillDir)) {
+    result.warnings.push("No code blocks found in SKILL.md or references/ (skills must include code examples)");
   }
 
   // Check for BAD/GOOD pattern examples

@@ -346,6 +346,18 @@ describe("validateSkillDir", () => {
     expect(result.warnings.some((w) => w.includes("No code blocks"))).toBe(true);
   });
 
+  it("accepts a router SKILL.md whose code examples live in references/", () => {
+    const bodyContent =
+      "## Heading\nThis router body has a heading and points at references/guide.md for every worked example.";
+    const dir = makeTempSkill("router", `---\nname: router\ndescription: ${longDesc}\n---\n${bodyContent}`);
+    mkdirSync(join(dir, "references"));
+    writeFileSync(join(dir, "references", "guide.md"), "# Guide\n\n```ts\nconst x = 1;\n```\n");
+
+    const result = validateSkillDir(dir, "router");
+
+    expect(result.warnings.some((w) => w.includes("No code blocks"))).toBe(false);
+  });
+
   it("reports missing BAD/GOOD patterns as info", () => {
     const bodyContent =
       "## Heading\nThis is a long body that has a heading and code blocks but no contrast patterns anywhere at all in the entire content.\n\n```js\nconst x = 1;\n```";
