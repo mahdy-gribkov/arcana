@@ -81,24 +81,6 @@
       "conflicts": []
     },
     {
-      "name": "container-security",
-      "source": "./skills/container-security",
-      "description": "Container security with image scanning (Trivy, Grype), rootless containers, supply chain security (Cosign, SBOM), and Dockerfile hardening.",
-      "version": "1.0.0",
-      "tags": [
-        "docker",
-        "security",
-        "devops"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "docker-kubernetes",
-        "security-review"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "cost-optimization",
       "source": "./skills/cost-optimization",
       "description": "Cloud cost optimization: container right-sizing, CDN caching, serverless cold starts, spot instances, storage tiering, and cost monitoring.",
@@ -174,7 +156,6 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "container-security",
         "ci-cd-pipelines"
       ],
       "conflicts": []
@@ -911,8 +892,7 @@
       "verified": true,
       "author": "arcana",
       "companions": [
-        "oauth-auth",
-        "container-security"
+        "oauth-auth"
       ],
       "conflicts": []
     },
