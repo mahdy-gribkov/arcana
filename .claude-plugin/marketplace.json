@@ -224,21 +224,6 @@
       "conflicts": []
     },
     {
-      "name": "rust-best-practices",
-      "source": "./skills/rust-best-practices",
-      "description": "Idiomatic Rust: ownership, lifetimes, error handling, async Tokio, traits, and production web service patterns.",
-      "version": "1.0.0",
-      "tags": [
-        "rust"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "testing-strategy"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "scraping-automation",
       "source": "./skills/scraping-automation",
       "description": "Web scraping with Playwright and Puppeteer. Stealth mode, proxy rotation, structured extraction, and retry patterns.",
