@@ -1,7 +1,7 @@
 ---
 name: seo-meta
-description: Generate SEO metadata, Open Graph tags, JSON-LD structured data, sitemaps, and dynamic OG images for Next.js applications
-user-invokable: true
+description: "Implement SEO metadata for Next.js applications: Metadata API, Open Graph and Twitter tags, JSON-LD structured data, sitemaps, robots, canonical URLs, and dynamic OG images. Use when adding or fixing page titles, descriptions, canonical tags, social cards, schema.org markup, sitemap.ts or robots.ts, or when the user mentions SEO, meta tags, or rich results."
+user-invocable: true
 ---
 
 # SEO Meta Skill
@@ -31,9 +31,13 @@ GOOD: Use `generateMetadata` with complete meta tags.
 ```tsx
 import { Metadata } from 'next';
 
+// In Next.js 15 and 16, params and searchParams are Promises.
+type Props = { params: Promise<{ slug: string }> };
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await getPost(params.slug);
-  const url = `https://example.com/blog/${params.slug}`;
+  const { slug } = await params;
+  const post = await getPost(slug);
+  const url = `https://example.com/blog/${slug}`;
   const ogImage = `/api/og?title=${encodeURIComponent(post.title)}`;
 
   return {
@@ -112,7 +116,8 @@ export default function BlogPost({ article }: Props) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        // Escape "<" so a title like "</script>" cannot break out of the tag.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, '\\u003c') }}
       />
       <article>{/* content */}</article>
     </>
@@ -130,7 +135,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 ```
 
-GOOD: Generate dynamic OG images using @vercel/og.
+GOOD: Generate dynamic OG images with `next/og` (a route handler, or the `opengraph-image.tsx` file convention next to the page).
 
 ```tsx
 // app/api/og/route.tsx
@@ -174,20 +179,19 @@ GOOD: Dynamic sitemap and robots.txt.
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Google ignores changeFrequency and priority, so they are left out.
   const base = 'https://example.com';
+  const STATIC_PAGES_UPDATED_AT = '2026-01-15'; // set this when the static pages last changed
   const routes = ['', '/about'].map((route) => ({
     url: `${base}${route}`,
-    lastModified: new Date().toISOString(),
-    changeFrequency: 'monthly' as const,
-    priority: route === '' ? 1 : 0.8,
+    // Use a real change date. Search engines ignore lastmod when it always equals "now".
+    lastModified: STATIC_PAGES_UPDATED_AT,
   }));
 
   const posts = await getAllPosts();
   const postRoutes = posts.map((post) => ({
     url: `${base}/blog/${post.slug}`,
     lastModified: post.updatedAt,
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
   }));
 
   return [...routes, ...postRoutes];
@@ -198,7 +202,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       { userAgent: '*', allow: '/', disallow: ['/api/', '/admin/'] },
-      { userAgent: 'GPTBot', disallow: ['/'] },
+      { userAgent: 'GPTBot', disallow: ['/'] }, // example: opt out of one AI crawler. Remove to allow it.
     ],
     sitemap: 'https://example.com/sitemap.xml',
   };
@@ -220,9 +224,10 @@ Canonical URL workflow:
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }): Promise<Metadata> {
-  const page = Number(searchParams.page) || 1;
+  const { page: pageParam } = await searchParams;
+  const page = Number(pageParam) || 1;
   const base = 'https://example.com/blog';
   return {
     alternates: { canonical: page === 1 ? base : `${base}?page=${page}` },
@@ -231,8 +236,9 @@ export async function generateMetadata({
 
 // app/blog/[slug]/print/page.tsx (duplicate)
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
   return {
-    alternates: { canonical: `https://example.com/blog/${params.slug}` },
+    alternates: { canonical: `https://example.com/blog/${slug}` },
     robots: { index: false },
   };
 }
@@ -243,12 +249,14 @@ Meta tag priority (highest first): Page `generateMetadata` > Parent layout > Roo
 ```tsx
 // app/layout.tsx
 export const metadata: Metadata = {
+  metadataBase: new URL('https://example.com'), // resolves relative OG image and canonical URLs
   title: { default: 'My Site', template: '%s | My Site' },
 };
 
 // app/blog/[slug]/page.tsx
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await getPost(params.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
   return { title: post.title }; // becomes "Post Title | My Site"
 }
 ```
@@ -273,24 +281,21 @@ GOOD: Preload critical resources, optimize images.
 ```tsx
 import Image from 'next/image';
 import Script from 'next/script';
+import { preconnect, prefetchDNS } from 'react-dom';
 
 export default function Page() {
+  // React 19 emits these as <link> tags in <head>.
+  preconnect('https://fonts.googleapis.com');
+  prefetchDNS('https://analytics.example.com');
+
   return (
     <>
-      <link rel="preload" href="/fonts/main.woff2" as="font" crossOrigin="" />
+      {/* Load fonts with next/font: it self-hosts and preloads them for you. */}
       <Script src="https://example.com/analytics.js" strategy="afterInteractive" />
       <Image src="/hero.jpg" width={1200} height={800} alt="Hero" priority />
     </>
   );
 }
-
-// Preconnect in layout
-export const metadata: Metadata = {
-  other: {
-    'link-preconnect': 'https://fonts.googleapis.com',
-    'link-dns-prefetch': 'https://analytics.example.com',
-  },
-};
 ```
 
 ## Implementation Workflow
