@@ -1,6 +1,6 @@
 ---
 name: security-review
-description: Code security review covering OWASP Top 10, injection prevention (SQL, XSS, command injection), authentication and authorization patterns, secrets management, dependency vulnerability scanning, input validation, CORS, CSRF, rate limiting, and security headers. Language-agnostic with examples in JavaScript, Python, and Go. Use when reviewing code for security or hardening an application.
+description: Reviews code for security flaws and hardens applications, covering OWASP Top 10 risks, injection (SQL, XSS, command), authentication and authorization, secrets handling and rotation, dependency scanning, input validation, CORS, CSRF, rate limiting and security headers, with examples in JavaScript, Python and Go. Use when reviewing a diff or file for vulnerabilities, hardening login or session code, setting up headers, CORS or rate limits, or auditing how secrets and dependencies are handled.
 ---
 You are a security engineer specializing in application security, code review, and vulnerability prevention across web, API, and systems code.
 
@@ -12,7 +12,9 @@ You are a security engineer specializing in application security, code review, a
 - Configuring dependency scanning or secrets management
 - Designing rate limiting or abuse prevention
 
-## OWASP Top 10 Quick Reference
+## OWASP Top 10 Quick Reference (2021 edition)
+
+The 2025 edition reorders this list: it adds software supply chain failures and mishandling of exceptional conditions, and folds SSRF into broken access control. The defenses below still apply. Check owasp.org/Top10 for the current numbering before you cite an A-number in a report.
 
 | # | Vulnerability | Primary Defense |
 |---|--------------|-----------------|
@@ -173,7 +175,7 @@ credentials.json
 # .pre-commit-config.yaml
 repos:
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.18.0
+    rev: v8.30.1
     hooks:
       - id: gitleaks
 ```
@@ -197,20 +199,25 @@ repos:
 5. Remove old secret after grace period (24-48 hours)
 
 ```bash
-# Example: Rotate database password with zero downtime
-# 1. Generate new password
+# Example: rotate a database password with zero downtime.
+# Keep two roles with identical grants (myapp_a, myapp_b). Only one is live.
+# Changing the live role's password would break running instances at once.
+
+# 1. Generate the new password and set it on the idle role (myapp_b).
+#    Pipe the SQL through stdin so the password never shows in the process list.
 NEW_PASS=$(openssl rand -base64 32)
+printf "ALTER ROLE myapp_b PASSWORD '%s';\n" "$NEW_PASS" | psql "$ADMIN_DATABASE_URL"
 
-# 2. Update DB user with new password
-psql -c "ALTER USER myapp PASSWORD '$NEW_PASS';"
+# 2. Store it encrypted (SecureString), not as a plain String parameter
+aws ssm put-parameter --name /prod/db/password --type SecureString --value "$NEW_PASS" --overwrite
+unset NEW_PASS
 
-# 3. Update secrets manager
-aws ssm put-parameter --name /prod/db/password --value "$NEW_PASS" --overwrite
-
-# 4. Rolling restart app servers to pick up new secret
+# 3. Rolling restart so instances pick up the new role and password
 kubectl rollout restart deployment/myapp
+kubectl rollout status deployment/myapp
 
-# 5. Verify all instances use new password before removing old one
+# 4. After every instance is on myapp_b and the grace period has passed,
+#    disable login for the old role (myapp_a). Next rotation swaps the roles.
 ```
 
 ```python
@@ -293,7 +300,7 @@ import rateLimit from "express-rate-limit";
 // General API rate limit
 app.use("/api/", rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
+  limit: 100,
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: (req) => req.ip, // or req.user?.id for authenticated
@@ -302,7 +309,7 @@ app.use("/api/", rateLimit({
 // Strict limit on auth endpoints
 app.use("/api/auth/", rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,                      // 5 login attempts per 15 min
+  limit: 5,                     // 5 login attempts per 15 min
   skipSuccessfulRequests: true, // don't count successful logins
 }));
 ```
@@ -311,12 +318,11 @@ app.use("/api/auth/", rateLimit({
 
 ```bash
 # JavaScript: npm audit + Snyk
-npm audit --production
+npm audit --omit=dev
 npx snyk test
 
-# Python: pip-audit or safety
+# Python: pip-audit
 pip-audit
-safety check
 
 # Go: govulncheck (official)
 govulncheck ./...
