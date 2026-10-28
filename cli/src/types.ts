@@ -16,10 +16,11 @@ export interface SkillFile {
   content: string;
 }
 
+/** Claude Code marketplace.json (code.claude.com/docs/en/plugins/marketplace-reference). */
 export interface MarketplaceData {
   name: string;
-  owner?: { name: string; github: string };
-  metadata?: { description: string; version: string };
+  owner?: { name: string; email?: string; url?: string };
+  metadata?: { description?: string; version?: string };
   plugins: MarketplacePlugin[];
 }
 
@@ -29,10 +30,9 @@ export interface MarketplacePlugin {
   description: string;
   version: string;
   tags?: string[];
-  conflicts?: string[];
-  companions?: string[];
-  verified?: boolean;
-  author?: string;
+  author?: { name: string; email?: string; url?: string };
+  /** Free-form per-entry object that Claude Code ignores; Arcana keeps its relations here. */
+  metadata?: { arcana?: { companions?: string[]; conflicts?: string[] } };
 }
 
 export interface ProviderConfig {

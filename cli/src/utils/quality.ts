@@ -39,8 +39,7 @@ export function validateCompanions(plugins: MarketplacePlugin[]): CrossValidatio
   const names = new Set(plugins.map((p) => p.name));
 
   for (const plugin of plugins) {
-    if (!plugin.companions) continue;
-    for (const companion of plugin.companions) {
+    for (const companion of plugin.metadata?.arcana?.companions ?? []) {
       if (!names.has(companion)) {
         issues.push({
           level: "error",

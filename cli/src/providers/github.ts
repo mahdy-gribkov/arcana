@@ -5,6 +5,7 @@ import { httpGet } from "../utils/http.js";
 import { validateSlug } from "../utils/validate.js";
 import { parallelMap } from "../utils/parallel.js";
 import { readCache, writeCache, clearCacheFile } from "../utils/cache.js";
+import { OFFICIAL_REPO_SLUG } from "../constants.js";
 
 function levenshtein(a: string, b: string): number {
   const m = a.length;
@@ -81,6 +82,7 @@ export class GitHubProvider extends Provider {
       throw new Error(`Invalid marketplace.json in ${this.name}: missing plugins array`);
     }
 
+    const isOfficial = `${this.owner}/${this.repo}` === OFFICIAL_REPO_SLUG;
     this.cache = data.plugins
       .filter((p) => {
         if (typeof p.name !== "string" || typeof p.description !== "string" || typeof p.version !== "string") {
@@ -95,10 +97,11 @@ export class GitHubProvider extends Provider {
         source: this.name,
         repo: `https://github.com/${this.owner}/${this.repo}`,
         tags: p.tags,
-        conflicts: p.conflicts,
-        companions: p.companions,
-        verified: p.verified,
-        author: p.author,
+        conflicts: p.metadata?.arcana?.conflicts,
+        companions: p.metadata?.arcana?.companions,
+        // Trust comes from where the skill is served, never from a flag the manifest sets on itself.
+        verified: isOfficial,
+        author: p.author?.name,
       }));
 
     // Warn about malformed entries

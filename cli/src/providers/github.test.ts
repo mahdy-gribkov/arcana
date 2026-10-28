@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { OFFICIAL_REPO_SLUG } from "../constants.js";
 
 describe("GitHubProvider", () => {
   let GitHubProvider: typeof import("./github.js").GitHubProvider;
@@ -113,6 +114,7 @@ describe("GitHubProvider", () => {
         version: "1.0.0",
         source: "owner/repo",
         repo: "https://github.com/owner/repo",
+        verified: false,
       },
       {
         name: "skill-two",
@@ -120,6 +122,7 @@ describe("GitHubProvider", () => {
         version: "2.0.0",
         source: "owner/repo",
         repo: "https://github.com/owner/repo",
+        verified: false,
       },
     ]);
   });
@@ -177,6 +180,7 @@ describe("GitHubProvider", () => {
         version: "1.0.0",
         source: "owner/repo",
         repo: "https://github.com/owner/repo",
+        verified: false,
       },
     ]);
   });
@@ -247,7 +251,7 @@ describe("GitHubProvider", () => {
     consoleSpy.mockRestore();
   });
 
-  it("maps tags, conflicts, companions, verified, and author fields", async () => {
+  it("maps tags, author and the metadata.arcana relations", async () => {
     httpGetMock.mockResolvedValueOnce({
       body: JSON.stringify({
         plugins: [
@@ -256,10 +260,8 @@ describe("GitHubProvider", () => {
             description: "Complete",
             version: "2.0.0",
             tags: ["go", "testing"],
-            conflicts: ["old-skill"],
-            companions: ["helper-skill"],
-            verified: true,
-            author: "dev",
+            author: { name: "dev", url: "https://example.com" },
+            metadata: { arcana: { conflicts: ["old-skill"], companions: ["helper-skill"] } },
           },
         ],
       }),
@@ -278,9 +280,26 @@ describe("GitHubProvider", () => {
       tags: ["go", "testing"],
       conflicts: ["old-skill"],
       companions: ["helper-skill"],
-      verified: true,
+      verified: false,
       author: "dev",
     });
+  });
+
+  // Regression: every entry once carried a self-assigned "verified": true, so any third-party
+  // marketplace could label its skills as trusted. Trust now follows the serving repo only.
+  it.each([
+    ["any/repo", false],
+    [OFFICIAL_REPO_SLUG, true],
+  ])("marks skills from %s as verified=%s, ignoring a manifest flag", async (slug, expected) => {
+    httpGetMock.mockResolvedValueOnce({
+      body: JSON.stringify({ plugins: [{ name: "s", description: "d", version: "1.0.0", verified: true }] }),
+      statusCode: 200,
+    });
+    const [owner, repo] = slug.split("/");
+
+    const skills = await new GitHubProvider(owner!, repo!).list();
+
+    expect(skills[0]!.verified).toBe(expected);
   });
 
   // ──────────────────────────────────────────

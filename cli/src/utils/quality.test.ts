@@ -67,7 +67,13 @@ describe("jaccardSimilarity", () => {
 describe("validateCompanions", () => {
   it("passes when all companions exist", () => {
     const plugins: MarketplacePlugin[] = [
-      { name: "skill-a", source: "./skills/skill-a", description: "desc a", version: "1.0.0", companions: ["skill-b"] },
+      {
+        name: "skill-a",
+        source: "./skills/skill-a",
+        description: "desc a",
+        version: "1.0.0",
+        metadata: { arcana: { companions: ["skill-b"] } },
+      },
       { name: "skill-b", source: "./skills/skill-b", description: "desc b", version: "1.0.0" },
     ];
     expect(validateCompanions(plugins)).toHaveLength(0);
@@ -75,7 +81,13 @@ describe("validateCompanions", () => {
 
   it("detects companion pointing to non-existent skill", () => {
     const plugins: MarketplacePlugin[] = [
-      { name: "skill-a", source: "./skills/skill-a", description: "desc a", version: "1.0.0", companions: ["ghost"] },
+      {
+        name: "skill-a",
+        source: "./skills/skill-a",
+        description: "desc a",
+        version: "1.0.0",
+        metadata: { arcana: { companions: ["ghost"] } },
+      },
     ];
     const issues = validateCompanions(plugins);
     expect(issues).toHaveLength(1);
@@ -199,7 +211,7 @@ describe("crossValidate", () => {
     const desc = "A valid description that is long enough to pass the minimum length requirement for skills";
     const { skillsDir, marketplacePath } = makeTestSetup(
       [{ name: "skill-a", description: desc }],
-      [{ name: "skill-a", description: desc, companions: ["nonexistent"] }],
+      [{ name: "skill-a", description: desc, metadata: { arcana: { companions: ["nonexistent"] } } }],
     );
     const issues = crossValidate(skillsDir, marketplacePath);
     const companionIssues = issues.filter((i) => i.category === "companion");

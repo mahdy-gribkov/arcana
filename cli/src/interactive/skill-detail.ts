@@ -84,7 +84,7 @@ export async function skillDetailFlow(
 
   // Aligned metadata
   const metadata: [string, string][] = [];
-  if (info?.verified) metadata.push(["Trust", chalk.green("Verified (official)")]);
+  if (info?.verified) metadata.push(["Trust", chalk.green("Official repo")]);
   else metadata.push(["Trust", "Community"]);
   if (info?.author) metadata.push(["Author", info.author]);
   if (info?.tags && info.tags.length > 0) metadata.push(["Tags", info.tags.join(", ")]);
