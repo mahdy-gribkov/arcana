@@ -52,6 +52,7 @@ beforeEach(async () => {
 });
 
 import { loadConfig, saveConfig, addProvider, removeProvider, validateConfig, clearConfigCache } from "./config.js";
+import { OFFICIAL_REPO_SLUG } from "../constants.js";
 
 describe("loadConfig", () => {
   it("returns defaults when no config file", () => {
@@ -59,6 +60,26 @@ describe("loadConfig", () => {
     expect(config.defaultProvider).toBe("arcana");
     expect(config.installDir).toContain(".agents");
     expect(config.providers.length).toBeGreaterThan(0);
+  });
+
+  // Regression: configs saved before the repo moved still name medy-gribkov/arcana, a handle now
+  // held by a different account; installs must resolve to the current official repo.
+  it("rewrites a saved retired official repo slug to the current one", () => {
+    mockFs.__setFile(
+      CONFIG_PATH,
+      JSON.stringify({
+        defaultProvider: "arcana",
+        installDir: join(MOCK_HOME, ".agents", "skills"),
+        providers: [
+          { name: "arcana", type: "github", url: "mahdy-gribkov/arcana", enabled: true },
+          { name: "custom", type: "github", url: "owner/repo", enabled: true },
+        ],
+      }),
+    );
+
+    const config = loadConfig();
+
+    expect(config.providers.map((p) => p.url)).toEqual([OFFICIAL_REPO_SLUG, "owner/repo"]);
   });
 
   it("loads from config file when present", () => {
@@ -139,7 +160,7 @@ describe("saveConfig", () => {
     const config = {
       defaultProvider: "arcana",
       installDir: join(MOCK_HOME, ".agents", "skills"),
-      providers: [{ name: "arcana", type: "github", url: "medy-gribkov/arcana", enabled: true }],
+      providers: [{ name: "arcana", type: "github", url: "mahdy-gribkov/arcana", enabled: true }],
     };
 
     saveConfig(config);
@@ -194,7 +215,7 @@ describe("removeProvider", () => {
       defaultProvider: "arcana",
       installDir: join(MOCK_HOME, ".agents", "skills"),
       providers: [
-        { name: "arcana", type: "github", url: "medy-gribkov/arcana", enabled: true },
+        { name: "arcana", type: "github", url: "mahdy-gribkov/arcana", enabled: true },
         { name: "custom", type: "github", url: "owner/repo", enabled: true },
       ],
     };

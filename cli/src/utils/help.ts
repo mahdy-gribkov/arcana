@@ -5,6 +5,7 @@ import * as p from "@clack/prompts";
 import chalk from "chalk";
 import { ui } from "./ui.js";
 import { getGroupedCommands } from "../command-defs.js";
+import { OFFICIAL_REPO_SLUG } from "../constants.js";
 
 /* v8 ignore start */
 const noColor = !!(process.env.NO_COLOR || process.env.TERM === "dumb");
@@ -93,7 +94,7 @@ export function buildCustomHelp(version: string): string {
   lines.push("");
   lines.push(`  ${ui.dim("LEARN MORE")}`);
   lines.push(`    arcana <command> --help          ${ui.dim("Show help for a command")}`);
-  lines.push(`    ${ui.dim("https://github.com/medy-gribkov/arcana")}`);
+  lines.push(`    ${ui.dim(`https://github.com/${OFFICIAL_REPO_SLUG}`)}`);
   lines.push("");
 
   return lines.join("\n");

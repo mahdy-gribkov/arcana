@@ -4,13 +4,14 @@ import { homedir } from "node:os";
 import type { ArcanaConfig, ProviderConfig } from "../types.js";
 import { ui } from "./ui.js";
 import { atomicWriteSync } from "./atomic.js";
+import { OFFICIAL_REPO_SLUG, RETIRED_REPO_SLUGS } from "../constants.js";
 
 const CONFIG_PATH = join(homedir(), ".arcana", "config.json");
 
 /** Module-level config cache. Avoids repeated disk reads during a single CLI invocation. */
 let _cache: ArcanaConfig | null = null;
 
-/** Matches owner/repo slug format (e.g. "medy-gribkov/arcana") */
+/** Matches owner/repo slug format (e.g. "mahdy-gribkov/arcana") */
 const SLUG_RE = /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/;
 
 const DEFAULT_CONFIG: ArcanaConfig = {
@@ -20,7 +21,7 @@ const DEFAULT_CONFIG: ArcanaConfig = {
     {
       name: "arcana",
       type: "github",
-      url: "medy-gribkov/arcana",
+      url: OFFICIAL_REPO_SLUG,
       enabled: true,
     },
     {
@@ -76,7 +77,7 @@ export function loadConfig(): ArcanaConfig {
       config = applyEnvOverrides({
         ...DEFAULT_CONFIG,
         ...loaded,
-        providers: loaded.providers ?? DEFAULT_CONFIG.providers.map((p) => ({ ...p })),
+        providers: (loaded.providers ?? DEFAULT_CONFIG.providers).map(withCurrentRepoSlug),
       });
     } catch {
       console.error(ui.warn("  Warning: Config file is corrupted, using defaults"));
@@ -85,6 +86,12 @@ export function loadConfig(): ArcanaConfig {
   }
   _cache = config;
   return cloneConfig(config);
+}
+
+/** The official repo moved; a config saved before the move must keep resolving to it. */
+function withCurrentRepoSlug(provider: ProviderConfig): ProviderConfig {
+  if (provider.type !== "github" || !RETIRED_REPO_SLUGS.includes(provider.url)) return { ...provider };
+  return { ...provider, url: OFFICIAL_REPO_SLUG };
 }
 
 function applyEnvOverrides(base: ArcanaConfig): ArcanaConfig {

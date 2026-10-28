@@ -32,6 +32,12 @@ export const MODEL_CONTEXTS: Record<string, number> = {
   default: 200_000,
 };
 
+// Official skill repository: the one home for its location (provider, default config, help text).
+export const OFFICIAL_REPO = { owner: "mahdy-gribkov", name: "arcana", branch: "master" } as const;
+export const OFFICIAL_REPO_SLUG = `${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.name}`;
+/** Earlier homes of the official repo; a saved config that still names one is read as OFFICIAL_REPO_SLUG. */
+export const RETIRED_REPO_SLUGS: readonly string[] = ["medy-gribkov/arcana"];
+
 // Validation
 /** Agent Skills spec: 1-64 chars, lowercase letters and digits, single hyphens, no hyphen at either end. */
 export const SKILL_NAME_REGEX = /^(?=.{1,64}$)[a-z0-9]+(?:-[a-z0-9]+)*$/;
