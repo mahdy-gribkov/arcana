@@ -113,27 +113,6 @@
       "conflicts": []
     },
     {
-      "name": "fullstack-developer",
-      "source": "./skills/fullstack-developer",
-      "description": "Full-stack web development with React, Node.js, databases, auth flow, and API error handling patterns.",
-      "version": "1.0.0",
-      "tags": [
-        "react",
-        "node",
-        "typescript",
-        "database",
-        "web"
-      ],
-      "verified": true,
-      "author": "arcana",
-      "companions": [
-        "database-design",
-        "api-design",
-        "nextjs-16"
-      ],
-      "conflicts": []
-    },
-    {
       "name": "game-engines",
       "source": "./skills/game-engines",
       "description": "Unity, Unreal Engine, and Godot. Engine-specific workflows, systems architecture, and production best practices.",
