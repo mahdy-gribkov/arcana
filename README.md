@@ -15,6 +15,8 @@
   <a href="#skills"><img src="https://img.shields.io/badge/Skills-22-d4943a?style=for-the-badge" alt="Skills"/></a>
 </p>
 
+Built by **Mahdy Lorens Gribkov** (מהדי לורנס גריבקוב) | [mahdygribkov.com](https://mahdygribkov.com) | [SporeSec](https://sporesec.com/en/mahdy-lorens-gribkov)
+
 ---
 
 ## What it does
